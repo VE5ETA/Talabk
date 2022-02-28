@@ -40,7 +40,7 @@ class SignUp extends Component {
             <label>name</label>
             <input
               //   value={this.state.name}
-              onChange={this.onInputChange}
+              //   onChange={this.onInputChange}
               type="text"
               className="form-control"
               placeholder="name"
