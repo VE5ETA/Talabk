@@ -57,7 +57,7 @@ class Login extends Component {
             Login
           </button>
           <p className="forgot-password text-right">
-            Don't have account? <a href="./Signup.js">sign up?</a>
+            Don't have account? <a href="#">sign up?</a>
           </p>
         </form>
       </div>
