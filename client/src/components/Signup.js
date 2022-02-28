@@ -14,7 +14,7 @@ class SignUp extends Component {
       }/${new Date().getFullYear()}`,
     };
     this.onInputChange = this.onInputChange.bind(this);
-    // this.onSubmit = this.onSubmit.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   onInputChange(e) {
@@ -22,19 +22,19 @@ class SignUp extends Component {
     console.log(this.state);
   }
 
-  //   onSubmit() {
-  //     axios
-  //       .post("http://localhost:3001/signUp", this.state)
-  //       .then((res) => console.log(res.status))
-  //       .catch((err) => {
-  //         console.error(err);
-  //       });
-  //   }
+  onSubmit() {
+    // axios
+    //   .post("http://localhost:3001/signUp", this.state)
+    //   .then((res) => console.log(res.status))
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
+  }
 
   render() {
     return (
       <div>
-        <form className="container">
+        <form onSubmit={this.onSubmit} className="container">
           <h3>Sign Up</h3>
           <div className="form-group">
             <label>name</label>
