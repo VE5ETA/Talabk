@@ -19,7 +19,7 @@ class SignUp extends Component {
 
   onInputChange(e) {
     this.setState({ [e.target.name]: e.target.value });
-    console.log(this.state);
+    // console.log(this.state);
   }
 
   onSubmit() {
@@ -39,8 +39,8 @@ class SignUp extends Component {
           <div className="form-group">
             <label>name</label>
             <input
-              //   value={this.state.name}
-              //   onChange={this.onInputChange}
+              value={this.state.name}
+              onChange={this.onInputChange}
               type="text"
               className="form-control"
               placeholder="name"
@@ -50,8 +50,8 @@ class SignUp extends Component {
           <div className="form-group">
             <label>Store name</label>
             <input
-              //   value={this.state.storeName}
-              //   onChange={this.onInputChange}
+              value={this.state.storeName}
+              onChange={this.onInputChange}
               type="text"
               className="form-control"
               placeholder="Store name"
@@ -61,8 +61,8 @@ class SignUp extends Component {
           <div className="form-group">
             <label>Email</label>
             <input
-              //   value={this.state.email}
-              //   onChange={this.onInputChange}
+              value={this.state.email}
+              onChange={this.onInputChange}
               type="email"
               className="form-control"
               placeholder="Enter email"
@@ -72,8 +72,8 @@ class SignUp extends Component {
           <div className="form-group">
             <label>Password</label>
             <input
-              //   value={this.state.password}
-              //   onChange={this.onInputChange}
+              value={this.state.password}
+              onChange={this.onInputChange}
               type="password"
               className="form-control"
               placeholder="Enter password"
