@@ -5,36 +5,63 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
-      password: "",
+      formValues: {},
+      formError: {},
+      isSubmitted: false,
     };
     this.onInputChange = this.onInputChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
   onInputChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-    console.log(this.state);
+    this.setState({
+      formValues: { ...this.state.formValues, [e.target.name]: e.target.value },
+    });
   }
 
-  onSubmit() {
+  onSubmit(e) {
+    e.preventDefault();
+    this.setState({
+      formError: this.validate(this.state.formValues),
+      isSubmitted: true,
+    });
     //   axios
-    //     .post("http://localhost:3001/signUp", this.state)
+    //     .post("http://localhost:3001/signUp", this.state.formValues)
     //     .then((res) => console.log(res.status))
     //     .catch((err) => {
     //       console.error(err);
     //     });
   }
 
+  validate(value) {
+    const error = {};
+    if (!value.username) {
+      error.username = "username is required!";
+    }
+    if (!value.password) {
+      error.password = "password is required!";
+    }
+    return error;
+  }
+
   render() {
     return (
-      <div>
-        <form onSubmit={this.onSubmit} className="container">
+      <div style={{ marginTop: "40px" }} className="container">
+        <div>
+          {Object.keys(this.state.formError).length === 0 &&
+          this.state.isSubmitted ? (
+            <div className="alert alert-success" role="alert">
+              login successful
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
+        <form onSubmit={this.onSubmit}>
           <h3>Login</h3>
           <div className="form-group">
             <label>username</label>
             <input
-              value={this.state.username}
               onChange={this.onInputChange}
               type="text"
               className="form-control"
@@ -42,10 +69,10 @@ class Login extends Component {
               name="username"
             />
           </div>
+          <p style={{ color: "red" }}>{this.state.formError.username}</p>
           <div className="form-group">
             <label>Password</label>
             <input
-              value={this.state.password}
               onChange={this.onInputChange}
               type="text"
               className="form-control"
@@ -53,6 +80,7 @@ class Login extends Component {
               name="password"
             />
           </div>
+          <p style={{ color: "red" }}>{this.state.formError.password}</p>
           <button type="submit" className="btn btn-primary btn-block">
             Login
           </button>
