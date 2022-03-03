@@ -11,6 +11,7 @@ if (process.env.NODE_ENV !== "production") {
 require("./utils/connectdb");
 require("./controllers/JwtStrategy");
 require("./controllers/LocalStrategy");
+require("./controllers/authenticate");
 
 const router = require("./routes/index");
 
