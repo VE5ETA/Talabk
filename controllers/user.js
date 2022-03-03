@@ -63,7 +63,6 @@ module.exports = {
     }
   },
   login: (req, res, next) => {
-    console.log("i got here");
     const token = getToken({ _id: req.user._id });
     const refreshToken = getRefreshToken({ _id: req.user._id });
     User.findById(req.user._id).then(
