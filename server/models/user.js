@@ -21,7 +21,7 @@ const User = new Schema({
     required: [true, "can't be blank"],
     minLength: [3, "can't be less then 3"],
     maxLength: [33, "can't be more then 33"],
-    match: [/^@?(\w){3,33}$/, "is invalid"],
+    match: [/^(\w){3,33}$/, "is invalid"],
     trim: true,
     unique: true,
     lowercase: true,
