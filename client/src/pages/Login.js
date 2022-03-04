@@ -1,15 +1,11 @@
 import React, { Component } from "react";
 // import axios from "axios";
 
-class SignUp extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      formValues: {
-        date: `${new Date().getDate()}/${
-          new Date().getMonth() + 1
-        }/${new Date().getFullYear()}`,
-      },
+      formValues: {},
       formError: {},
       isSubmitted: false,
     };
@@ -29,8 +25,6 @@ class SignUp extends Component {
       formError: this.validate(this.state.formValues),
       isSubmitted: true,
     });
-    // print in console for test
-    console.log(this.state.formValues);
     //   axios
     //     .post("http://localhost:3001/signUp", this.state.formValues)
     //     .then((res) => console.log(res.status))
@@ -44,33 +38,27 @@ class SignUp extends Component {
     if (!value.username) {
       error.username = "username is required!";
     }
-    if (!value.email) {
-      error.email = "email is required!";
-    }
     if (!value.password) {
       error.password = "password is required!";
-    }
-    if (value.password2 !== value.password) {
-      error.password2 = "password not match!";
     }
     return error;
   }
 
   render() {
     return (
-      <div>
+      <div style={{ marginTop: "40px" }} className="container">
         <div>
           {Object.keys(this.state.formError).length === 0 &&
           this.state.isSubmitted ? (
             <div className="alert alert-success" role="alert">
-              you are registered successfully in talab platform
+              login successful
             </div>
           ) : (
             ""
           )}
         </div>
-        <form onSubmit={this.onSubmit} className="container">
-          <h3>Sign Up</h3>
+        <form onSubmit={this.onSubmit}>
+          <h3>Login</h3>
           <div className="form-group">
             <label>username</label>
             <input
@@ -83,54 +71,21 @@ class SignUp extends Component {
           </div>
           <p style={{ color: "red" }}>{this.state.formError.username}</p>
           <div className="form-group">
-            <label>phone number</label>
+            <label>Password</label>
             <input
               onChange={this.onInputChange}
               type="text"
               className="form-control"
-              placeholder="Enter phone number"
-              name="phoneNumber"
-            />
-          </div>
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              onChange={this.onInputChange}
-              type="email"
-              className="form-control"
-              placeholder="Enter email"
-              name="email"
-            />
-          </div>
-          <p style={{ color: "red" }}>{this.state.formError.email}</p>
-          <div className="form-group">
-            <label>Password</label>
-            <input
-              onChange={this.onInputChange}
-              type="password"
-              className="form-control"
-              placeholder="Enter password"
+              placeholder="password"
               name="password"
             />
           </div>
           <p style={{ color: "red" }}>{this.state.formError.password}</p>
-          <div className="form-group">
-            <label>confirm Password</label>
-            <input
-              onChange={this.onInputChange}
-              type="password"
-              className="form-control"
-              placeholder="Enter password again"
-              name="password2"
-            />
-          </div>
-          <p style={{ color: "red" }}>{this.state.formError.password2}</p>
           <button type="submit" className="btn btn-primary btn-block">
-            Sign Up
+            Login
           </button>
-
           <p className="forgot-password text-right">
-            Don't have account? <a href="#">sign up?</a>
+            Don't have account? <a href="/SignUp">sign up?</a>
           </p>
         </form>
       </div>
@@ -138,4 +93,4 @@ class SignUp extends Component {
   }
 }
 
-export default SignUp;
+export default Login;
