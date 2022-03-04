@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 // import axios from "axios";
 
-class Login extends Component {
+class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      formValues: {},
+      formValues: {
+        date: `${new Date().getDate()}/${
+          new Date().getMonth() + 1
+        }/${new Date().getFullYear()}`,
+      },
       formError: {},
       isSubmitted: false,
     };
@@ -25,6 +29,8 @@ class Login extends Component {
       formError: this.validate(this.state.formValues),
       isSubmitted: true,
     });
+    // print in console for test
+    console.log(this.state.formValues);
     //   axios
     //     .post("http://localhost:3001/signUp", this.state.formValues)
     //     .then((res) => console.log(res.status))
@@ -38,8 +44,14 @@ class Login extends Component {
     if (!value.username) {
       error.username = "username is required!";
     }
+    if (!value.email) {
+      error.email = "email is required!";
+    }
     if (!value.password) {
       error.password = "password is required!";
+    }
+    if (value.password2 !== value.password) {
+      error.password2 = "password not match!";
     }
     return error;
   }
@@ -51,14 +63,14 @@ class Login extends Component {
           {Object.keys(this.state.formError).length === 0 &&
           this.state.isSubmitted ? (
             <div className="alert alert-success" role="alert">
-              login successful
+              you are registered successfully in talab platform
             </div>
           ) : (
             ""
           )}
         </div>
         <form onSubmit={this.onSubmit}>
-          <h3>Login</h3>
+          <h3>Sign Up</h3>
           <div className="form-group">
             <label>username</label>
             <input
@@ -71,21 +83,66 @@ class Login extends Component {
           </div>
           <p style={{ color: "red" }}>{this.state.formError.username}</p>
           <div className="form-group">
-            <label>Password</label>
+            <label>phone number</label>
             <input
               onChange={this.onInputChange}
               type="text"
               className="form-control"
-              placeholder="password"
+              placeholder="Enter phone number"
+              name="phoneNumber"
+            />
+          </div>
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              onChange={this.onInputChange}
+              type="email"
+              className="form-control"
+              placeholder="Enter email"
+              name="email"
+            />
+          </div>
+          <p style={{ color: "red" }}>{this.state.formError.email}</p>
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              onChange={this.onInputChange}
+              type="password"
+              className="form-control"
+              placeholder="Enter password"
               name="password"
             />
           </div>
           <p style={{ color: "red" }}>{this.state.formError.password}</p>
+          <div className="form-group">
+            <label>confirm Password</label>
+            <input
+              onChange={this.onInputChange}
+              type="password"
+              className="form-control"
+              placeholder="Enter password again"
+              name="password2"
+            />
+          </div>
+          <p style={{ color: "red" }}>{this.state.formError.password2}</p>
+          <div className="form-group">
+            <label>legal documents</label>
+            <input
+              onChange={this.onInputChange}
+              className="form-control"
+              type="file"
+              id="formFileMultiple"
+              multiple
+            />
+          </div>
+          <p style={{ color: "red" }}>{this.state.formError.password2}</p>
+
           <button type="submit" className="btn btn-primary btn-block">
-            Login
+            Sign Up
           </button>
+
           <p className="forgot-password text-right">
-            Don't have account? <a href="#">sign up?</a>
+            Already have account? <a href="/Login">login?</a>
           </p>
         </form>
       </div>
@@ -93,4 +150,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default SignUp;
