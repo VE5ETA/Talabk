@@ -27,6 +27,12 @@ module.exports = {
         name: "emailError",
         message: "The email is required",
       });
+    } else if (!req.body.password) {
+      res.statusCode = 500;
+      res.send({
+        name: "passwordError",
+        message: "The password is required",
+      });
     } else {
       User.register(
         new User({
