@@ -5,11 +5,7 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      formValues: {
-        date: `${new Date().getDate()}/${
-          new Date().getMonth() + 1
-        }/${new Date().getFullYear()}`,
-      },
+      formValues: {},
       formError: {},
       isSubmitted: false,
     };
@@ -31,16 +27,19 @@ class SignUp extends Component {
     });
     // print in console for test
     console.log(this.state.formValues);
-    //   axios
-    //     .post("http://localhost:3001/signUp", this.state.formValues)
-    //     .then((res) => console.log(res.status))
-    //     .catch((err) => {
-    //       console.error(err);
-    //     });
+    // axios
+    //   .post("http://localhost:3001/signUp", this.state.formValues)
+    //   .then((res) => console.log(res.status))
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
   }
 
   validate(value) {
     const error = {};
+    if (!value.name) {
+      error.name = "name is required!";
+    }
     if (!value.username) {
       error.username = "username is required!";
     }
@@ -72,6 +71,17 @@ class SignUp extends Component {
         <form onSubmit={this.onSubmit}>
           <h3>Sign Up</h3>
           <div className="form-group">
+            <label>name</label>
+            <input
+              onChange={this.onInputChange}
+              type="text"
+              className="form-control"
+              placeholder="Enter name"
+              name="name"
+            />
+          </div>
+          <p style={{ color: "red" }}>{this.state.formError.name}</p>
+          <div className="form-group">
             <label>username</label>
             <input
               onChange={this.onInputChange}
@@ -82,16 +92,6 @@ class SignUp extends Component {
             />
           </div>
           <p style={{ color: "red" }}>{this.state.formError.username}</p>
-          <div className="form-group">
-            <label>phone number</label>
-            <input
-              onChange={this.onInputChange}
-              type="text"
-              className="form-control"
-              placeholder="Enter phone number"
-              name="phoneNumber"
-            />
-          </div>
           <div className="form-group">
             <label>Email</label>
             <input
@@ -122,17 +122,6 @@ class SignUp extends Component {
               className="form-control"
               placeholder="Enter password again"
               name="password2"
-            />
-          </div>
-          <p style={{ color: "red" }}>{this.state.formError.password2}</p>
-          <div className="form-group">
-            <label>legal documents</label>
-            <input
-              onChange={this.onInputChange}
-              className="form-control"
-              type="file"
-              id="formFileMultiple"
-              multiple
             />
           </div>
           <p style={{ color: "red" }}>{this.state.formError.password2}</p>
