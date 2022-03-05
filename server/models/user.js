@@ -14,12 +14,12 @@ const Session = new Schema({
 const User = new Schema({
   name: {
     type: String,
-    required: [true, "can't be blank"],
+    required: [true, "name can't be blank"],
     match: [/^(\s)*[a-zA-Zء-ي]+(?:[-'\s][a-zA-Zء-ي]*)*(\s)*$/, "is invalid"],
   },
   userName: {
     type: String,
-    required: [true, "can't be blank"],
+    required: [true, "username can't be blank"],
     minLength: [3, "can't be less then 3"],
     maxLength: [33, "can't be more then 33"],
     match: [/^(\w){3,33}$/, "is invalid"],
@@ -29,7 +29,7 @@ const User = new Schema({
   },
   email: {
     type: String,
-    required: [true, "can't be blank"],
+    required: [true, "email can't be blank"],
     match: [/\S+@\S+\.\S+/, "is invalid"],
     trim: true,
     lowercase: true,
