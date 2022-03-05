@@ -12,7 +12,7 @@ function App() {
       <div className="container">
         <Menu />
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }
