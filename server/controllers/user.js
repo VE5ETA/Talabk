@@ -1,14 +1,11 @@
 "use strict";
 const User = require("../models/user"); //you my need me
 const jwt = require("jsonwebtoken");
-// const passport = require("passport");
-// const express = require("express");
-// const router = express.Router();
 const { getToken, COOKIE_OPTIONS, getRefreshToken } = require("./authenticate");
 
 module.exports = {
   signup: (req, res, next) => {
-    // Verify that first name is not empty
+    // Verify that name,username,email,password is not empty
     if (!req.body.name) {
       res.statusCode = 500;
       res.send({

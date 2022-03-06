@@ -44,9 +44,7 @@ app.use(cors(corsOptions));
 app.use(passport.initialize());
 app.use("/", router);
 
-//lucky guss
-let x = require("crypto").randomBytes(64).toString("hex");
-console.log(x);
+
 
 //Start the server in port 8081
 const server = app.listen(process.env.PORT || 8081, () => {
