@@ -1,15 +1,15 @@
 "use strict";
 const router = require("express").Router();
-const Usercontroller = require("../controllers/user");
+const userController = require("../controllers/user");
 const passport = require("passport");
-const { verifyUser } = require("../controllers/authenticate");
+const { verifyUser } = require("../middlewares/authenticate");
 // require("../controllers/authenticate");
 
 // require("../controllers/LocalStrategy");
-router.post("/signup", Usercontroller.signup);
-router.post("/login", passport.authenticate("local"), Usercontroller.login);
-router.post("/refreshToken", Usercontroller.refreshToken);
-router.get("/me", verifyUser, Usercontroller.me);
-router.get("/logout", verifyUser, Usercontroller.logout);
+router.post("/signup", userController.signup);
+router.post("/login", passport.authenticate("local"), userController.login);
+router.post("/refreshToken", userController.refreshToken);
+router.get("/me", verifyUser, userController.me);
+router.get("/logout", verifyUser, userController.logout);
 
 module.exports = router;
