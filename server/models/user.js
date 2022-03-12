@@ -46,6 +46,7 @@ const User = new Schema({
   },
   workIn: {
     type: mongoose.SchemaTypes.ObjectId,
+    ref: "Business",
   },
   authStrategy: {
     type: String,
