@@ -9,9 +9,9 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 require("./utils/connectdb");
-require("./controllers/JwtStrategy");
-require("./controllers/LocalStrategy");
-require("./controllers/authenticate");
+require("./middlewares/JwtStrategy");
+require("./middlewares/LocalStrategy");
+require("./middlewares/authenticate");
 
 const router = require("./routes/index");
 
@@ -43,8 +43,6 @@ app.use(cors(corsOptions));
 
 app.use(passport.initialize());
 app.use("/", router);
-
-
 
 //Start the server in port 8081
 const server = app.listen(process.env.PORT || 8081, () => {

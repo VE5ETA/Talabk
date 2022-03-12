@@ -1,7 +1,11 @@
 "use strict";
 const User = require("../models/user"); //you my need me
 const jwt = require("jsonwebtoken");
-const { getToken, COOKIE_OPTIONS, getRefreshToken } = require("./authenticate");
+const {
+  getToken,
+  COOKIE_OPTIONS,
+  getRefreshToken,
+} = require("../middlewares/authenticate");
 
 module.exports = {
   signup: (req, res, next) => {

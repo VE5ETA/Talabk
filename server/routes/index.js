@@ -1,8 +1,10 @@
 "use strict";
 const router = require("express").Router();
-const User = require("./user");
+const user = require("./user");
+const business = require("./business");
 
-router.use("/users", User);
+router.use("/users", user);
+router.use("/business", business);
 
 router.get("/", (req, res) => {
   res.send({ status: "success" });
