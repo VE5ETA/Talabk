@@ -11,11 +11,11 @@ const Business = new Schema({
     require: true,
     ref: "User",
   },
-  tradeName: {
-    type: String,
-    require: true,
-    unique: true,
-  },
+  // tradeName: {
+  //   type: String,
+  //   require: true,
+  //   unique: true,
+  // },
   legalName: {
     type: String,
     require: true,
@@ -37,7 +37,6 @@ const Business = new Schema({
     type: Boolean,
     default: false, // or active
   },
-
   businessState: {
     type: String,
     default: "suspension", // or active
