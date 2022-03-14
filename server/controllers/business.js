@@ -73,28 +73,13 @@ module.exports = {
           business.tradeName = req.body.tradeName;
         }
         if (req.body.legalName) {
-          // have error it role
-          // User.updateMany(
-          //   {
-          //     workIn: business.legalName,
-          //   },
-          //   {
-          //     workIn: req.body.legalName,
-          //   },
-          //   {},
-          //   (err, result) => {
-          //     if (err) console.log(err);
-          //     else console.log(result);
-          //   }
-          // );
-
           business.legalName = req.body.legalName;
         }
         if (req.body.businessType) {
           business.businessType = req.body.businessType;
         }
 
-        business.updatedAt = new Date.now();
+        business.updatedAt = Date.now();
 
         business.save();
 
