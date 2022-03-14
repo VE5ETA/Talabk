@@ -45,7 +45,7 @@ const User = new Schema({
     default: () => Date.now(),
   },
   workIn: {
-    type: Object,
+    type: String,
   },
   authStrategy: {
     type: String,
