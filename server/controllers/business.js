@@ -52,7 +52,7 @@ module.exports = {
     }
   },
   info: (req, res, next) => {
-    Business.findOne({ ownerID: req.user._id })
+    Business.findOne({ _id: req.user.workIn })
       .populate("ownerID")
       .then((business) => {
         if (business) {
