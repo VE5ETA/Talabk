@@ -128,8 +128,6 @@ module.exports = {
       }
     });
   },
-  addEmployee: (req, res, next) => {}, // will make it in version 2
-  removeEmployee: (req, res, next) => {}, // will make it in version 2
   showNewOrder: (req, res, next) => {},
   accept: (req, res, next) => {},
   refusal: (req, res, next) => {},

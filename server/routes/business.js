@@ -10,8 +10,8 @@ router.put("/update", verifyUser, businessController.update);
 router.delete("/delete", verifyUser, businessController.delete);
 
 // employees management
-router.post("/addEmployee", verifyUser, businessController.addEmployee);
-router.delete("/removeEmployee", verifyUser, businessController.removeEmployee);
+// router.post("/addEmployee", verifyUser, businessController.addEmployee); // will make it in version 2
+// router.delete("/removeEmployee", verifyUser, businessController.removeEmployee); // will make it in version 2
 
 // actions for orders
 router.get("/showNewOrder", verifyUser, businessController.showNewOrder);
