@@ -1,6 +1,7 @@
 "use strict";
 const User = require("../models/user");
-const Business = require("../models/business");
+const { Business } = require("../models/business");
+const { BuzDocs } = require("../models/business");
 
 module.exports = {
   create: (req, res, next) => {
@@ -18,7 +19,7 @@ module.exports = {
       });
     } else {
       User.findById(req.user._id).then((user) => {
-        if (user.workIn || user.workIn !== "") {
+        if (user.workIn) {
           res.statusCode = 500;
           res.send({
             message: "you are already have business",
@@ -104,10 +105,11 @@ module.exports = {
             workIn: business._id,
           },
           {
-            workIn: "",
+            $unset: { workIn: business._id },
           },
           {},
           (err, result) => {
+            //delete me later !!😁
             if (err) console.log(err);
             else console.log(result);
           }
@@ -124,6 +126,42 @@ module.exports = {
         res.statusCode = 500;
         res.send({
           message: "you don't have business",
+        });
+      }
+    });
+  },
+  uploadDocs: (req, res, next) => {
+    Business.findOne({ ownerID: req.user._id }).then((business) => {
+      if (business) {
+        const buzDocs = new BuzDocs({
+          businessID: req.user.workIn,
+          pdf: req.file.buffer,
+        });
+
+        buzDocs.save();
+        business.LegalDocs = buzDocs._id;
+        business.save();
+        res.statusCode = 200;
+        res.send({
+          message: "document uploaded successfully",
+          success: true,
+        });
+      } else {
+        res.statusCode = 500;
+        res.send({
+          message: "you don't have business",
+        });
+      }
+    });
+  },
+  downloadDocs: (req, res, next) => {
+    BuzDocs.findOne({ businessID: req.user.workIn }).then((buzDocs) => {
+      if (buzDocs) {
+        res.set("Content-Type", "application/pdf");
+        res.send(buzDocs.pdf);
+      } else {
+        res.status(404).send({
+          message: "file not found",
         });
       }
     });
