@@ -1,6 +1,7 @@
 "use strict";
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+
 const BuzDocs = new Schema({
   businessID: {
     // from Business collection
@@ -45,7 +46,7 @@ const Business = new Schema({
   },
   businessStatus: {
     type: Boolean,
-    default: false, // or active
+    default: false,
   },
   businessState: {
     type: String,
