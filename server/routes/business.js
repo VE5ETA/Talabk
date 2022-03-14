@@ -3,8 +3,6 @@ const router = require("express").Router();
 const businessController = require("../controllers/business");
 const { verifyUser } = require("../middlewares/authenticate");
 
-// router.get("/read", verifyUser, businessController.read);
-
 // business management
 router.post("/create", verifyUser, businessController.create);
 router.get("/info", verifyUser, businessController.info);

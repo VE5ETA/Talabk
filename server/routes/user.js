@@ -12,4 +12,7 @@ router.post("/refreshToken", userController.refreshToken);
 router.get("/me", verifyUser, userController.me);
 router.get("/logout", verifyUser, userController.logout);
 
+// router.post("/updateInfo", userController.updateInfo);
+// router.post("/resetPass", userController.resetPass);
+
 module.exports = router;

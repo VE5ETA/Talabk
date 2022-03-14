@@ -11,28 +11,28 @@ const Business = new Schema({
     require: true,
     ref: "User",
   },
-  // tradeName: {
-  //   type: String,
-  //   require: true,
-  //   unique: true,
-  // },
-  legalName: {
-    type: String,
-    require: true,
-  },
-  businessName: {
+  tradeName: {
     type: String,
     require: true,
     unique: true,
+  },
+  legalName: {
+    type: String,
+    require: true,
   },
   businessType: {
     // like restaurant, coffee, ...
     type: String,
   },
-  // document: {
-  //   type: Binary,
-  //   require: true,
-  // },
+  createdAt: {
+    type: Date,
+    default: () => Date.now(),
+    immutable: true,
+  },
+  updatedAt: {
+    type: Date,
+    default: () => Date.now(),
+  },
   businessStatus: {
     type: Boolean,
     default: false, // or active
