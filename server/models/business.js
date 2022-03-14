@@ -1,8 +1,18 @@
 "use strict";
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
-const BusinessLegalDocs = new Schema({});
+const BuzDocs = new Schema({
+  businessID: {
+    // from Business collection
+    type: mongoose.SchemaTypes.ObjectId,
+    require: true,
+    ref: "Business",
+  },
+  pdf: {
+    type: Buffer,
+    // contentType: String,
+  },
+});
 
 const Business = new Schema({
   ownerID: {
@@ -41,9 +51,14 @@ const Business = new Schema({
     type: String,
     default: "suspension", // or active
   },
+  LegalDocs: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "BuzDocs",
+  },
   balance: {
     type: String,
   },
 });
 
-module.exports = mongoose.model("Business", Business);
+exports.BuzDocs = mongoose.model("BuzDocs", BuzDocs);
+exports.Business = mongoose.model("Business", Business);
