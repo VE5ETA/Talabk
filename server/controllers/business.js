@@ -2,6 +2,7 @@
 const User = require("../models/user");
 const { Business } = require("../models/business");
 const { BuzDocs } = require("../models/business");
+const { Order } = require("../models/Order");
 
 module.exports = {
   create: (req, res, next) => {
@@ -166,7 +167,25 @@ module.exports = {
       }
     });
   },
-  showNewOrder: (req, res, next) => {},
+  showNewOrder: (req, res, next) => {
+    if (req.user.workIn) {
+      Order.find({ businessID: req.user.workIn, orderStatus: "new" })
+        .populate("businessID")
+        .then((order) => {
+          if (order) {
+            res.status(200).send(order);
+          } else {
+            res.status(500).send({
+              message: "There are no new order",
+            });
+          }
+        });
+    } else {
+      res.status(500).send({
+        message: "you don't have business",
+      });
+    }
+  },
   accept: (req, res, next) => {},
   refusal: (req, res, next) => {},
   updateStatus: (req, res, next) => {},
