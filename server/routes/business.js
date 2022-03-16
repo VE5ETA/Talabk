@@ -24,7 +24,7 @@ router.get("/downloadDocs", verifyUser, businessController.downloadDocs);
 // actions for orders
 router.get("/showNewOrder", verifyUser, businessController.showNewOrder);
 router.post("/accept", verifyUser, businessController.accept);
-router.delete("/refusal", verifyUser, businessController.refusal);
+router.delete("/reject", verifyUser, businessController.reject);
 router.put("/updateStatus", verifyUser, businessController.updateStatus);
 router.get("/showActiveOrder", verifyUser, businessController.showActiveOrder);
 
