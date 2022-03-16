@@ -4,6 +4,8 @@ const { Business } = require("../models/business");
 const { BuzDocs } = require("../models/business");
 const { Order } = require("../models/Order");
 
+const orderid = new RegExp(/^(\s\.\*\\)*[a-zA-Z0-9]{24,24}$/); // for order id
+
 module.exports = {
   create: (req, res, next) => {
     if (!req.body.tradeName) {
@@ -175,7 +177,7 @@ module.exports = {
           if (order) {
             res.status(200).send(order);
           } else {
-            res.status(500).send({
+            res.status(200).send({
               message: "There are no new order",
             });
           }
@@ -186,8 +188,110 @@ module.exports = {
       });
     }
   },
-  accept: (req, res, next) => {},
-  refusal: (req, res, next) => {},
-  updateStatus: (req, res, next) => {},
-  showActiveOrder: (req, res, next) => {},
+  accept: (req, res, next) => {
+    if (req.user.workIn) {
+      if (orderid.test(req.body.orderID)) {
+        Order.findOne({ _id: req.body.orderID, orderStatus: "new" }).then(
+          (order) => {
+            if (order) {
+              order.orderStatus = "accepted";
+              order.save();
+              res.status(200).send({
+                message: "order accepted",
+                success: true,
+              });
+            } else {
+              res.status(404).send({
+                message: "order not found or acceptede",
+              });
+            }
+          }
+        );
+      } else {
+        res.status(500).send({
+          message: "orderID invalid",
+        });
+      }
+    } else {
+      res.status(500).send({
+        message: "you don't have business",
+      });
+    }
+  },
+  reject: (req, res, next) => {
+    if (req.user.workIn) {
+      if (orderid.test(req.body.orderID)) {
+        Order.findOne({ _id: req.body.orderID, orderStatus: "new" }).then(
+          (order) => {
+            if (order) {
+              order.remove();
+              res.status(200).send({
+                message: "order rejected",
+                success: true,
+              });
+            } else {
+              res.status(404).send({
+                message: "order not found or rejected",
+              });
+            }
+          }
+        );
+      } else {
+        res.status(500).send({
+          message: "orderID invalid",
+        });
+      }
+    } else {
+      res.status(500).send({
+        message: "you don't have business",
+      });
+    }
+  },
+  updateStatus: (req, res, next) => {
+    if (req.user.workIn) {
+      if (orderid.test(req.body.orderID)) {
+        Order.findOne({ _id: req.body.orderID }).then((order) => {
+          if (order) {
+            order.orderStatus = req.body.status;
+            order.save();
+            res.status(200).send({
+              message: "order status updated successfully",
+              success: true,
+            });
+          } else {
+            res.status(404).send({
+              message: "order not found",
+            });
+          }
+        });
+      } else {
+        res.status(500).send({
+          message: "orderID invalid",
+        });
+      }
+    } else {
+      res.status(500).send({
+        message: "you don't have business",
+      });
+    }
+  },
+  showActiveOrder: (req, res, next) => {
+    if (req.user.workIn) {
+      Order.find({ businessID: req.user.workIn, orderStatus: { $ne: "new" } }) // $ne mean except or not equal
+        .populate("businessID")
+        .then((order) => {
+          if (order) {
+            res.status(200).send(order);
+          } else {
+            res.status(200).send({
+              message: "There are no active order",
+            });
+          }
+        });
+    } else {
+      res.status(500).send({
+        message: "you don't have business",
+      });
+    }
+  },
 };
