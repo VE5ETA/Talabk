@@ -38,6 +38,9 @@ const Order = new Schema({
   notes: {
     type: String,
   },
+  businessNotes: {
+    type: String,
+  },
 });
 
 exports.Order = mongoose.model("Order", Order);

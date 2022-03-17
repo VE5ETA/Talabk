@@ -8,50 +8,71 @@ const orderid = new RegExp(/^(\s\.\*\\)*[a-zA-Z0-9]{24,24}$/); // for order id
 
 module.exports = {
   create: (req, res, next) => {
-    if (!req.body.tradeName) {
-      res.statusCode = 500;
-      res.send({
-        name: "tradeNameError",
-        message: "business name is required",
-      });
-    } else if (!req.body.legalName) {
-      res.statusCode = 500;
-      res.send({
-        name: "legalNameError",
-        message: "legal name is required",
-      });
-    } else {
-      User.findById(req.user._id).then((user) => {
-        if (user.workIn) {
-          res.statusCode = 500;
-          res.send({
-            message: "you are already have business",
-          });
-        } else {
-          const newBusiness = new Business({
-            ownerID: user._id,
-            tradeName: req.body.tradeName,
-            legalName: req.body.legalName,
-            businessType: req.body.businessType,
-          });
+    try {
+      if (!req.body.tradeName) {
+        res.statusCode = 500;
+        res.send({
+          name: "tradeNameError",
+          message: "business name is required",
+        });
+      } else if (!req.body.legalName) {
+        res.statusCode = 500;
+        res.send({
+          name: "legalNameError",
+          message: "legal name is required",
+        });
+      } else {
+        User.findById(req.user._id).then((user) => {
+          if (user.workIn) {
+            res.statusCode = 500;
+            res.send({
+              message: "you are already have business",
+            });
+          } else if (user.workIn) {
+            res.statusCode = 500;
+            res.send({
+              message: "you are already have business",
+            });
+          } else {
+            Business.findOne({ tradeName: req.body.tradeName }).then(
+              (business) => {
+                if (business) {
+                  res.send({
+                    message: " business trade name already exist",
+                  });
+                } else {
+                  const newBusiness = new Business({
+                    ownerID: user._id,
+                    tradeName: req.body.tradeName,
+                    legalName: req.body.legalName,
+                    businessType: req.body.businessType,
+                  });
 
-          newBusiness.save();
+                  newBusiness.save();
+                  user.workIn = newBusiness._id;
 
-          user.workIn = newBusiness._id;
-
-          user.save((err, business) => {
-            if (err) {
-              res.statusCode = 500;
-              res.send(err);
-            } else {
-              res.statusCode = 200;
-              res.send({
-                message: "business was created",
-                success: true,
-              });
-            }
-          });
-        }
+                  user.save((err, business) => {
+                    if (err) {
+                      res.statusCode = 500;
+                      res.send(err);
+                    } else {
+                      res.statusCode = 200;
+                      res.send({
+                        message: "business was created",
+                        success: true,
+                      });
+                    }
+                  });
+                }
+              }
+            );
+          }
+        });
+      }
+    } catch (error) {
+      res.status(400).send({
+        message: error,
+        success: false,
       });
     }
   },
@@ -171,9 +192,8 @@ module.exports = {
   },
   showNewOrder: (req, res, next) => {
     if (req.user.workIn) {
-      Order.find({ businessID: req.user.workIn, orderStatus: "new" })
-        .populate("businessID")
-        .then((order) => {
+      Order.find({ businessID: req.user.workIn, orderStatus: "new" }).then(
+        (order) => {
           if (order) {
             res.status(200).send(order);
           } else {
@@ -181,7 +201,8 @@ module.exports = {
               message: "There are no new order",
             });
           }
-        });
+        }
+      );
     } else {
       res.status(500).send({
         message: "you don't have business",
@@ -195,7 +216,14 @@ module.exports = {
           (order) => {
             if (order) {
               order.orderStatus = "accepted";
+              order.businessNotes = req.body.businessNotes;
               order.save();
+              Business.findOne({ _id: req.user.workIn }).then((business) => {
+                if (business) {
+                  business.balance = business.balance + order.subTotal;
+                  business.save();
+                }
+              });
               res.status(200).send({
                 message: "order accepted",
                 success: true,
@@ -218,13 +246,46 @@ module.exports = {
       });
     }
   },
+  done: (req, res, next) => {
+    if (req.user.workIn) {
+      if (orderid.test(req.body.orderID)) {
+        Order.findOne({ _id: req.body.orderID, orderStatus: "accepted" }).then(
+          (order) => {
+            if (order) {
+              order.orderStatus = "done";
+              order.businessNotes = req.body.businessNotes;
+              order.save();
+              res.status(200).send({
+                message: "order done",
+                success: true,
+              });
+            } else {
+              res.status(404).send({
+                message: "order not found or not accepted",
+              });
+            }
+          }
+        );
+      } else {
+        res.status(500).send({
+          message: "orderID invalid",
+        });
+      }
+    } else {
+      res.status(500).send({
+        message: "you don't have business",
+      });
+    }
+  },
   reject: (req, res, next) => {
     if (req.user.workIn) {
       if (orderid.test(req.body.orderID)) {
         Order.findOne({ _id: req.body.orderID, orderStatus: "new" }).then(
           (order) => {
             if (order) {
-              order.remove();
+              order.orderStatus = "rejected";
+              order.businessNotes = req.body.businessNotes;
+              order.save();
               res.status(200).send({
                 message: "order rejected",
                 success: true,
@@ -277,8 +338,10 @@ module.exports = {
   },
   showActiveOrder: (req, res, next) => {
     if (req.user.workIn) {
-      Order.find({ businessID: req.user.workIn, orderStatus: { $ne: "new" } }) // $ne mean except or not equal
-        .populate("businessID")
+      Order.find({
+        businessID: req.user.workIn,
+        orderStatus: "accepted",
+      }) // $ne mean except or not equal
         .then((order) => {
           if (order) {
             res.status(200).send(order);
