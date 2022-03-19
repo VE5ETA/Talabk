@@ -3,9 +3,11 @@ const router = require("express").Router();
 const userController = require("../controllers/user");
 const passport = require("passport");
 const { verifyUser } = require("../middlewares/authenticate");
+const business = require("./business");
 // require("../controllers/authenticate");
-
 // require("../controllers/LocalStrategy");
+router.use("/business", verifyUser, business);
+
 router.post("/signup", userController.signup);
 router.post("/login", passport.authenticate("local"), userController.login);
 router.post("/refreshToken", userController.refreshToken);

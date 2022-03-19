@@ -1,32 +1,28 @@
 "use strict";
 const router = require("express").Router();
 const businessController = require("../controllers/business");
-const { verifyUser } = require("../middlewares/authenticate");
 const { pdf, LimitErrorHandler } = require("../middlewares/multer");
+const order = require("./order");
+const menu = require("./menu");
 // business management
-router.post("/create", verifyUser, businessController.create);
-router.get("/info", verifyUser, businessController.info);
-router.put("/update", verifyUser, businessController.update);
-router.delete("/delete", verifyUser, businessController.delete);
+
+router.post("/", businessController.create);
+router.get("/", businessController.info);
+router.put("/", businessController.update);
+router.delete("/", businessController.delete);
 router.post(
   "/uploadDocs",
-  verifyUser,
   pdf.single("pdf"),
   LimitErrorHandler,
   businessController.uploadDocs
 );
-router.get("/downloadDocs", verifyUser, businessController.downloadDocs);
+router.get("/downloadDocs", businessController.downloadDocs);
 
 // employees management
 // router.post("/addEmployee", verifyUser, businessController.addEmployee); // will make it in version 2
 // router.delete("/removeEmployee", verifyUser, businessController.removeEmployee); // will make it in version 2
 
-// actions for orders
-router.get("/showNewOrder", verifyUser, businessController.showNewOrder);
-router.post("/accept", verifyUser, businessController.accept);
-router.post("/done", verifyUser, businessController.done);
-router.post("/reject", verifyUser, businessController.reject);
-router.put("/updateStatus", verifyUser, businessController.updateStatus);
-router.get("/showActiveOrder", verifyUser, businessController.showActiveOrder);
+router.use("/order", order);
+router.use("/menu", menu);
 
 module.exports = router;
