@@ -17,7 +17,7 @@ const Order = new Schema({
     type: String,
     require: true,
   },
-  orderStatus: {
+  orderState: {
     type: String,
     default: "new",
   },
