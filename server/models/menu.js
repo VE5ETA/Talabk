@@ -54,13 +54,22 @@ const Reservation = new Schema({
     require: true,
     ref: "Table",
   },
-  chairNumber: {
-    type: Number,
+  start: {
+    type: Date,
     require: true,
   },
-  status: {
-    type: Boolean,
-    default: true,
+  end: {
+    type: Date,
+    require: true,
+  },
+  state: {
+    type: String,
+    default: "new",
+  },
+  OrderID: {
+    type: mongoose.SchemaTypes.ObjectId,
+    require: true,
+    ref: "Order",
   },
 });
 
