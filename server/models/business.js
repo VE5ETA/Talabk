@@ -22,14 +22,30 @@ const Business = new Schema({
     require: true,
     ref: "User",
   },
+  userName: {
+    type: String,
+    required: [true, "username can't be blank"],
+    minLength: [3, "can't be less then 3"],
+    maxLength: [33, "can't be more then 33"],
+    match: [/^(\w){3,33}$/, "is invalid"],
+    trim: true,
+    unique: true,
+    lowercase: true,
+  },
+  qrImg: {
+    type: Buffer,
+  },
+  logo: {
+    type: Buffer,
+  },
   tradeName: {
     type: String,
     require: true,
-    unique: true,
   },
-  legalName: {
+  BranchNumber: {
     type: String,
     require: true,
+    unique: true,
   },
   businessType: {
     // like restaurant, coffee, ...

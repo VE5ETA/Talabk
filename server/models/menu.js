@@ -2,6 +2,47 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// const Menu = new Schema({
+//   businessID: {
+//     type: mongoose.SchemaTypes.ObjectId,
+//     require: true,
+//     ref: "Business",
+//   },
+//   BuzUserName: {
+//     type: String,
+//     required: [true, "username can't be blank"],
+//     minLength: [3, "can't be less then 3"],
+//     maxLength: [33, "can't be more then 33"],
+//     match: [/^(\w){3,33}$/, "is invalid"],
+//     trim: true,
+//     unique: true,
+//     lowercase: true,
+//   },
+//   name: {
+//     type: String,
+//     require: true,
+//   },
+//   qrImg: {
+//     type: Buffer,
+//     // contentType: String,
+//   },
+//   price: {
+//     type: Number,
+//     require: true,
+//   },
+//   discount: {
+//     type: Number,
+//     default: 0,
+//   },
+//   state: {
+//     type: String,
+//     default: "new",
+//   },
+//   status: {
+//     type: Boolean,
+//     default: true,
+//   },
+// });
 const Item = new Schema({
   businessID: {
     type: mongoose.SchemaTypes.ObjectId,
@@ -20,10 +61,10 @@ const Item = new Schema({
     type: Number,
     require: true,
   },
-  discount: {
-    type: Number,
-    default: 0,
-  },
+  // discount: {
+  //   type: Number,
+  //   default: 0,
+  // },
   state: {
     type: String,
     default: "new",
@@ -62,10 +103,10 @@ const Reservation = new Schema({
     type: Date,
     require: true,
   },
-  state: {
-    type: String,
-    default: "new",
-  },
+  // state: {
+  //   type: String,
+  //   default: "new",
+  // },
   OrderID: {
     type: mongoose.SchemaTypes.ObjectId,
     require: true,
@@ -73,6 +114,7 @@ const Reservation = new Schema({
   },
 });
 
+// exports.Menu = mongoose.model("Menu", Menu);
 exports.Item = mongoose.model("Item", Item);
 exports.Table = mongoose.model("Table", Table);
 exports.Reservation = mongoose.model("Reservation", Reservation);
