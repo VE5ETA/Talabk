@@ -1,5 +1,5 @@
 "use strict";
-const User = require("../models/user"); //you my need me
+const User = require("../models/user"); //you may need me
 exports.verifyPlatform = (req, res, next) => {
   User.findById(req.user._id).then(
     (user) => {

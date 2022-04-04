@@ -14,11 +14,19 @@ module.exports = {
           name: "tradeNameError",
           message: "business name is required",
         });
-      } else if (!req.body.legalName) {
+      }
+      // else if (!req.body.legalName) { // removed
+      //   res.statusCode = 500;
+      //   res.send({
+      //     name: "legalNameError",
+      //     message: "legal name is required",
+      //   });
+      // }
+      else if (!req.body.BranchID) {
         res.statusCode = 500;
         res.send({
-          name: "legalNameError",
-          message: "legal name is required",
+          name: "BranchIDError",
+          message: "Branch ID is required",
         });
       } else {
         User.findById(req.user._id).then((user) => {
@@ -42,8 +50,9 @@ module.exports = {
                 } else {
                   const newBusiness = new Business({
                     ownerID: user._id,
+                    // userName: req.body.userName, // removed
                     tradeName: req.body.tradeName,
-                    legalName: req.body.legalName,
+                    BranchID: req.body.BranchID,
                     businessType: req.body.businessType,
                   });
 
