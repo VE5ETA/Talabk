@@ -15,8 +15,6 @@ router.post("/signup", userController.signup);
 router.post("/login", passport.authenticate("local"), userController.login);
 router.post("/refreshToken", userController.refreshToken);
 router.get("/me", verifyUser, userController.me);
-router.get("/me", verifyUser, userController.me);
-router.get("/me", verifyUser, userController.me);
 router.get("/logout", verifyUser, userController.logout);
 
 // router.post("/updateInfo", userController.updateInfo);
