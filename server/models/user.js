@@ -16,7 +16,7 @@ const User = new Schema({
     type: String,
     required: [true, "name can't be blank"],
     match: [/^(\s)*[a-zA-Zء-ي]+(?:[-'\s][a-zA-Zء-ي]*)*(\s)*$/, "is invalid"],
-    trim: true,
+    // trim: true, // removed ❗
   },
   userName: {
     type: String,
