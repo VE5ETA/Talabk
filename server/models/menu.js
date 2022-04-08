@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const Menu = new Schema({
   businessID: {
     type: mongoose.SchemaTypes.ObjectId,
-    require: true,
+    required: true,
     ref: "Business",
   },
   UserName: {
@@ -21,7 +21,7 @@ const Menu = new Schema({
   },
   name: {
     type: String,
-    require: true,
+    required: true,
   },
   logo: {
     type: Buffer,
@@ -46,12 +46,12 @@ const Menu = new Schema({
 const Item = new Schema({
   MenuID: {
     type: mongoose.SchemaTypes.ObjectId,
-    require: true,
+    required: true,
     ref: "Menu",
   },
   name: {
     type: String,
-    require: true,
+    required: true,
   },
   img: {
     type: Buffer,
@@ -59,7 +59,7 @@ const Item = new Schema({
   },
   price: {
     type: Number,
-    require: true,
+    required: true,
   },
   // discount: {
   //   type: Number,
@@ -77,12 +77,12 @@ const Item = new Schema({
 const Table = new Schema({
   MenuID: {
     type: mongoose.SchemaTypes.ObjectId,
-    require: true,
+    required: true,
     ref: "Menu",
   },
   chairNumber: {
     type: Number,
-    require: true,
+    required: true,
   },
   status: {
     type: Boolean,
@@ -92,16 +92,16 @@ const Table = new Schema({
 const Reservation = new Schema({
   tableID: {
     type: mongoose.SchemaTypes.ObjectId,
-    require: true,
+    required: true,
     ref: "Table",
   },
   start: {
     type: Date,
-    require: true,
+    required: true,
   },
   end: {
     type: Date,
-    require: true,
+    required: true,
   },
   // state: {
   //   type: String,
@@ -109,7 +109,7 @@ const Reservation = new Schema({
   // },
   OrderID: {
     type: mongoose.SchemaTypes.ObjectId,
-    require: true,
+    required: true,
     ref: "Order",
   },
 });

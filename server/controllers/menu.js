@@ -1,5 +1,6 @@
 "use strict";
-const Menu = require("../models/menu");
+const { Menu } = require("../models/menu");
+const { Business } = require("../models/business");
 const qrcode = require("qrcode");
 module.exports = {
   create: (req, res, next) => {
@@ -16,29 +17,38 @@ module.exports = {
           name: "nameError",
           message: "name is required",
         });
-      } else if (!req.file.buffer) {
-        res.statusCode = 500;
-        res.send({
-          name: "logoError",
-          message: "logo is required",
-        });
-      } else {
+      }
+      // else if (!req.file.buffer) {
+      //   res.statusCode = 500;
+      //   res.send({
+      //     name: "logoError",
+      //     message: "logo is required",
+      //   });
+      // }
+      else {
         Business.findOne({ ownerID: req.user._id }).then((business) => {
           if (business) {
-            const Menu = new Menu({
+            const newMenu = new Menu({
               businessID: req.user.workIn,
               UserName: req.body.UserName,
               name: req.body.name,
-              logo: req.file.buffer,
-              logoMimetype: req.file.mimetype,
+              // logo: req.file.buffer,
+              // logoMimetype: req.file.mimetype,
             });
-
+            newMenu.save((err) => {
+              if (err) {
+                res.status(400).send({
+                  message: err,
+                  success: false,
+                });
+              } else {
+                res.status(200).send({
+                  message: "Menu created successfully",
+                  success: true,
+                });
+              }
+            });
             // Menu.save() ? qrcode.toDataURL ❗ complate here
-
-            res.status(200).send({
-              message: "Menu created successfully",
-              success: true,
-            });
           } else {
             res.status(500).send({
               message: "you don't have business",
