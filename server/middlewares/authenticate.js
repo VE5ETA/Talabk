@@ -15,7 +15,7 @@ exports.COOKIE_OPTIONS = {
 
 exports.getToken = (user) => {
   return jwt.sign(user, process.env.JWT_SECRET, {
-    expiresIn: eval(process.env.SESSION_EXPIRY),
+    expiresIn: eval(process.env.SESSION_EXPIRY) * 60, //⚠❗❕❗⚠ the defualt is 15 min but I will change it to 15 hours for now to make development easier ⚠❗❕❗⚠
   });
 };
 

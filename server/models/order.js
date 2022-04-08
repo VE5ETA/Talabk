@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const Order = new Schema({
   businessID: {
     type: mongoose.SchemaTypes.ObjectId,
-    require: true,
+    required: true,
     ref: "Business",
   },
   orderDate: {
@@ -15,7 +15,7 @@ const Order = new Schema({
   },
   orderType: {
     type: String,
-    require: true,
+    required: true,
   },
   orderState: {
     type: String,
@@ -23,14 +23,14 @@ const Order = new Schema({
   },
   customerNumber: {
     type: String,
-    require: true,
+    required: true,
   },
   subTotal: {
     type: Number,
   },
   items: {
     type: Array,
-    require: true,
+    required: true,
   },
   // quantity: {
   //   type: Number,
