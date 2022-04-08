@@ -2,6 +2,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const uniqueValidator = require("mongoose-unique-validator");
+
 const Menu = new Schema({
   businessID: {
     type: mongoose.SchemaTypes.ObjectId,
@@ -17,7 +19,8 @@ const Menu = new Schema({
     match: [/^(\w){3,33}$/, "is invalid"],
     trim: true,
     unique: true,
-    lowercase: true,
+    uniqueCaseInsensitive: true,
+    // lowercase: true, //removed to use uniqueCaseInsensitive ❗⛔
   },
   name: {
     type: String,
@@ -112,6 +115,10 @@ const Reservation = new Schema({
     required: true,
     ref: "Order",
   },
+});
+
+Menu.plugin(uniqueValidator, {
+  message: "Error, expected {PATH} to be unique. {VALUE} is already used!",
 });
 
 exports.Menu = mongoose.model("Menu", Menu);

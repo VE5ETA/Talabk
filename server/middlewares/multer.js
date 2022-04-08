@@ -1,9 +1,16 @@
 const multer = require("multer");
 
 exports.LimitErrorHandler = (err, req, res, next) => {
-  if (err) {
-    res.statusCode = 413;
-    res.send(err);
+  if (err.code === "LIMIT_FILE_SIZE") {
+    res.status(413).send({
+      message: err.message,
+      success: false,
+    });
+  } else if (err) {
+    res.status(415).send({
+      message: err.message,
+      success: false,
+    });
   } else {
     next();
   }
@@ -23,6 +30,7 @@ exports.pdf = multer({
 });
 exports.logo = multer({
   limits: {
+    files: 1,
     fileSize: 1500000, //1.5 mb // increased by 133% so it will be 2 mb after encoding with base64
   },
   fileFilter(req, file, cb) {

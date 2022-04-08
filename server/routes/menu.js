@@ -2,7 +2,6 @@
 const router = require("express").Router();
 const menuController = require("../controllers/menu");
 const { logo, LimitErrorHandler } = require("../middlewares/multer");
-// const { pdf, LimitErrorHandler } = require("../middlewares/multer");
 
 //router.post("/getmenu:id", verifyUser, businessController.done);
 //router.post("/reject", verifyUser, businessController.reject);
@@ -13,5 +12,6 @@ router.put("/", menuController.update);
 router.delete("/", menuController.delete);
 
 router.post("/addItem", menuController.addItem);
+router.get("/menuLogo", menuController.menuLogo); //temp -- only for testing 🧪
 
 module.exports = router;

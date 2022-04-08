@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const passportLocalMongoose = require("passport-local-mongoose");
+const uniqueValidator = require("mongoose-unique-validator");
 
 const Session = new Schema({
   refreshToken: {
@@ -26,7 +27,8 @@ const User = new Schema({
     match: [/^(\w){3,33}$/, "is invalid"],
     trim: true,
     unique: true,
-    lowercase: true,
+    uniqueCaseInsensitive: true,
+    // lowercase: true, //removed to use uniqueCaseInsensitive ❗⛔
   },
   email: {
     type: String,
@@ -70,6 +72,9 @@ User.set("toJSON", {
 
 User.plugin(passportLocalMongoose, {
   usernameField: "userName",
+});
+User.plugin(uniqueValidator, {
+  message: "Error, expected {PATH} to be unique. {VALUE} is already used!",
 });
 
 module.exports = mongoose.model("User", User);
