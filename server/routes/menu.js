@@ -13,5 +13,6 @@ router.delete("/", menuController.delete);
 
 router.post("/addItem", menuController.addItem);
 router.get("/menuLogo", menuController.menuLogo); //temp -- only for testing 🧪
+router.get("/menuLogo", menuController.menuQR); //temp -- only for testing 🧪
 
 module.exports = router;

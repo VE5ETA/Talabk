@@ -1,7 +1,7 @@
 "use strict";
 const { Menu } = require("../models/menu");
 const { Business } = require("../models/business");
-const qrcode = require("qrcode");
+const { generateQR } = require("../middlewares/generateQR");
 module.exports = {
   create: (req, res, next) => {
     try {
@@ -40,11 +40,14 @@ module.exports = {
                   success: false,
                 });
               } else {
-                // res.status(200).send({
-                //   message: "Menu created successfully",
-                //   success: true,
-                // });
-              
+                generateQR(req.body.UserName).then((qr) => {
+                  newMenu.qrImg = qr;
+                  newMenu.save();
+                });
+                res.status(200).send({
+                  message: "Menu created successfully",
+                  success: true,
+                });
               }
             });
             // Menu.save() ? qrcode.toDataURL ❗ complate here
@@ -80,4 +83,5 @@ module.exports = {
       }
     });
   },
+  menuQR: (req, res, next) => {},
 };
