@@ -54,7 +54,6 @@ module.exports = {
                 });
               }
             });
-            // Menu.save() ? qrcode.toDataURL ❗ complate here
           } else {
             res.status(500).send({
               message: "you don't have business",
