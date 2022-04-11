@@ -33,6 +33,7 @@ module.exports = {
               logo: req.file.buffer,
               logoMimetype: req.file.mimetype,
             });
+            // console.log(req.file.buffer);
             newMenu.save((err) => {
               if (err) {
                 res.status(400).send({
@@ -41,7 +42,10 @@ module.exports = {
                 });
               } else {
                 generateQR(req.body.UserName).then((qr) => {
-                  newMenu.qrImg = qr;
+                  const x = qr.split(",");
+                  const base64string = x[1];
+                  const buffer = Buffer.from(base64string, "base64");
+                  newMenu.qrImg = buffer;
                   newMenu.save();
                 });
                 res.status(200).send({
@@ -83,5 +87,16 @@ module.exports = {
       }
     });
   },
-  menuQR: (req, res, next) => {},
+  menuQR: (req, res, next) => {
+    Menu.findOne({ businessID: req.user.workIn }).then((menu) => {
+      if (menu) {
+        res.set("Content-Type", "image/png");
+        res.status(200).send(menu.qrImg);
+      } else {
+        res.status(404).send({
+          message: "QR not found",
+        });
+      }
+    });
+  },
 };

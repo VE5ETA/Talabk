@@ -1,6 +1,6 @@
 "use strict";
 const mongoose = require("mongoose");
-const url = process.env.MONGO_DB_CONNECTION_STRING;
+const url = process.env.MONGO_DB_CONNECTION_STRING; //changed the db name for validation issues 🧰
 const connect = mongoose.connect(
   url
   //     ,{
