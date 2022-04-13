@@ -60,6 +60,9 @@ const Item = new Schema({
     type: Buffer,
     // contentType: String,
   },
+  imgMimetype: {
+    type: String,
+  },
   price: {
     type: Number,
     required: true,
