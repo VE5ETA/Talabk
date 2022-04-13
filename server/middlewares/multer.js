@@ -23,7 +23,7 @@ exports.pdf = multer({
   fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(pdf)$/))
       return cb(
-        new Error("This is not a correct format of the file only use PDF")
+        new Error("This is not a correct format of the file, PDF only!")
       );
     cb(undefined, true);
   },
@@ -36,7 +36,24 @@ exports.logo = multer({
   fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(jpg|jpeg|png)$/))
       return cb(
-        new Error("This is not a correct format of the file, use jpg, png only")
+        new Error(
+          "This is not a correct format of the file, use jpg, jpeg, png only"
+        )
+      );
+    cb(undefined, true);
+  },
+});
+exports.item = multer({
+  limits: {
+    files: 1,
+    fileSize: 500000, //0.5 mb // increased by 133% so it will be ~0.7 mb after encoding with base64
+  },
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/))
+      return cb(
+        new Error(
+          "This is not a correct format of the file, use jpg, jpeg, png only"
+        )
       );
     cb(undefined, true);
   },

@@ -1,7 +1,7 @@
 "use strict";
 const router = require("express").Router();
 const menuController = require("../controllers/menu");
-const { logo, LimitErrorHandler } = require("../middlewares/multer");
+const { logo, LimitErrorHandler, item } = require("../middlewares/multer");
 
 //router.post("/getmenu:id", verifyUser, businessController.done);
 //router.post("/reject", verifyUser, businessController.reject);
@@ -11,7 +11,15 @@ router.get("/", menuController.info);
 router.put("/", menuController.update);
 router.delete("/", menuController.delete);
 
-router.post("/addItem", menuController.addItem);
+router.post(
+  "/Item",
+  item.single("item"),
+  LimitErrorHandler,
+  menuController.addItem
+);
+router.get("/Item", menuController.getItem);
+router.put("/Item", menuController.updateItem);
+router.delete("/Item", menuController.deleteItem);
 router.get("/menuLogo", menuController.menuLogo); //temp -- only for testing 🧪
 router.get("/menuQR", menuController.menuQR); //temp -- only for testing 🧪
 
