@@ -1,6 +1,8 @@
 "use strict";
 module.exports = {
-  test: (req, res, next) => {
-    res.send("hey you're an admin 😁");
-  },
+  showNewRequest: (req, res, next) => {},
+  acceptBuz: (req, res, next) => {},
+  rejectBuz: (req, res, next) => {},
+  showActiveBuz: (req, res, next) => {},
+  showSuspensionBuz: (req, res, next) => {},
 };

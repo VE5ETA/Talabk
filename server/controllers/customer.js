@@ -69,6 +69,9 @@ module.exports = {
       });
     }
   },
+  editOrder: (req, res, next) => {},
+  cancelOrder: (req, res, next) => {},
+  getOrder: (req, res, next) => {},
 };
 
 // for test in insomnia
