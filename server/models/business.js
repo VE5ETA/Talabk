@@ -66,7 +66,7 @@ const Business = new Schema({
   },
   businessState: {
     type: String,
-    default: "suspension", // or active
+    default: "pending", // suspension or active
   },
   LegalDocs: {
     type: mongoose.SchemaTypes.ObjectId,
