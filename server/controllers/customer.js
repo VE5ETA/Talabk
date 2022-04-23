@@ -1,5 +1,4 @@
 "use strict";
-const User = require("../models/user");
 const { Business } = require("../models/business");
 const { Order } = require("../models/Order");
 
@@ -69,27 +68,87 @@ module.exports = {
       });
     }
   },
-  editOrder: (req, res, next) => {},
-  cancelOrder: (req, res, next) => {},
-  getOrder: (req, res, next) => {},
+  editOrder: (req, res, next) => {
+    Order.findOne({ _id: req.body.id }).then((order) => {
+      if (order) {
+        if (order.orderState === "new") {
+          try {
+            Order.updateOne(
+              { _id: req.body.id },
+              { $set: { items: req.body.items } }
+            ).then((order) => {
+              if (order) {
+                res.status(200).send({
+                  message: "order updated successfully",
+                  success: true,
+                });
+              } else {
+                res.status(404).send({
+                  message: "order not found",
+                });
+              }
+            });
+          } catch (err) {
+            res.status(500).send(err);
+          }
+        } else {
+          // 406 => Not Acceptable
+          res.status(406).send({
+            message: "can't edit order after accepted from business",
+          });
+        }
+      } else {
+        res.status(404).send({
+          message: "order not found",
+        });
+      }
+    });
+  },
+  cancelOrder: (req, res, next) => {
+    Order.findOne({ _id: req.body.id }).then((order) => {
+      if (order) {
+        if (order.orderState === "new") {
+          try {
+            Order.updateOne(
+              { _id: req.body.id },
+              { $set: { orderState: "canceled" } }
+            ).then((order) => {
+              if (order) {
+                res.status(200).send({
+                  message: "order cancelled successfully",
+                  success: true,
+                });
+              } else {
+                res.status(404).send({
+                  message: "order not found",
+                });
+              }
+            });
+          } catch (err) {
+            res.status(500).send(err);
+          }
+        } else {
+          // 406 => Not Acceptable
+          res.status(406).send({
+            message: "can't cancel order after accepted from business",
+          });
+        }
+      } else {
+        res.status(404).send({
+          message: "order not found",
+        });
+      }
+    });
+  },
+  getOrder: (req, res, next) => {
+    Order.find({ customerNumber: req.body.customerNumber }).then((order) => {
+      if (order.length != 0) {
+        res.status(200).send(order);
+      } else {
+        res.status(404).send({
+          message: "no orders found",
+        });
+      }
+    });
+  },
 };
-
-// for test in insomnia
-
-// {
-// 	"businessID": "622efea2adf5a46cc0611e73",
-// 	"orderType": "sada",
-// 	"customerNumber": "0555555555",
-// 	"subTotal": 150,
-// 	"items": [
-// 		{
-// 		"item1": "aa",
-// 		"quantity": 1
-// 	    },
-// 		{
-// 		"item2": "bb",
-// 		"quantity": 5
-// 		}
-// 	],
-// 	"notes": "aadsa1xzc cz"
-// }
