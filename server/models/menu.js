@@ -36,6 +36,9 @@ const Menu = new Schema({
     type: Buffer,
     // contentType: String,
   },
+  qrMimetype: {
+    type: String,
+  },
   state: {
     type: String,
     default: "new",
@@ -44,6 +47,10 @@ const Menu = new Schema({
     type: Boolean,
     default: true,
   },
+  // itemsCount: {
+  //   type: Number,
+  //   default: true,
+  // },
 });
 
 const Item = new Schema({
