@@ -8,7 +8,7 @@ const { logo, LimitErrorHandler, item } = require("../middlewares/multer");
 
 router.post("/", logo.single("logo"), LimitErrorHandler, menuController.create);
 router.get("/", menuController.info);
-router.put("/", menuController.update);
+router.put("/", logo.single("logo"), LimitErrorHandler, menuController.update);
 router.delete("/", menuController.delete);
 
 router.post(
@@ -18,9 +18,15 @@ router.post(
   menuController.addItem
 );
 router.get("/Item", menuController.getItem);
-router.put("/Item", menuController.updateItem);
+router.put(
+  "/Item",
+  item.single("item"),
+  LimitErrorHandler,
+  menuController.updateItem
+);
 router.delete("/Item", menuController.deleteItem);
 router.get("/menuLogo", menuController.menuLogo); //temp -- only for testing 🧪
 router.get("/menuQR", menuController.menuQR); //temp -- only for testing 🧪
+router.get("/fullmenu", menuController.fullmenu); //full menu with items 🌝
 
 module.exports = router;

@@ -33,12 +33,13 @@ module.exports = {
           if (user.workIn) {
             res.statusCode = 500;
             res.send({
-              message: "you are already have business",
+              message: "you already have a business",
             });
           } else if (user.workIn) {
+            // need to check this ❗❕
             res.statusCode = 500;
             res.send({
-              message: "you are already have business",
+              message: "you already have a business",
             });
           } else {
             Business.findOne({ tradeName: req.body.tradeName }).then(
@@ -100,6 +101,7 @@ module.exports = {
       });
   },
   update: (req, res, next) => {
+    // this needs to updated ❗
     Business.findOne({ ownerID: req.user._id }).then((business) => {
       if (business) {
         if (req.body.tradeName) {
@@ -130,6 +132,7 @@ module.exports = {
     });
   },
   delete: (req, res, next) => {
+    // should be updated to delete all related stuff as menu etc..
     Business.findOne({ ownerID: req.user._id }).then((business) => {
       if (business) {
         User.updateMany(
