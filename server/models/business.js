@@ -22,7 +22,7 @@ const Business = new Schema({
     require: true,
     ref: "User",
   },
-  // userName: {
+  // username: {
   //   type: String,
   //   required: [true, "username can't be blank"],
   //   minLength: [3, "can't be less then 3"],

@@ -6,11 +6,11 @@ const { generateQR } = require("../middlewares/generateQR");
 module.exports = {
   create: (req, res, next) => {
     try {
-      if (!req.body.UserName) {
+      if (!req.body.username) {
         res.statusCode = 500;
         res.send({
-          name: "UserNameError",
-          message: "User Name is required",
+          name: "usernameError",
+          message: "username is required",
         });
       } else if (!req.body.name) {
         res.statusCode = 500;
@@ -36,7 +36,7 @@ module.exports = {
               if (business) {
                 const newMenu = new Menu({
                   businessID: req.user.workIn,
-                  UserName: req.body.UserName,
+                  username: req.body.username,
                   name: req.body.name,
                   logo: req.file.buffer,
                   logoMimetype: req.file.mimetype,
@@ -49,7 +49,7 @@ module.exports = {
                       success: false,
                     });
                   } else {
-                    generateQR(req.body.UserName).then((qr) => {
+                    generateQR(req.body.username).then((qr) => {
                       // const x = qr.split(","); original code
                       // const base64string = x[1]; original code
                       // const buffer = Buffer.from(base64string, "base64"); original code
@@ -103,10 +103,10 @@ module.exports = {
     try {
       Menu.findOne({ businessID: req.user.workIn }).then((menu) => {
         if (menu) {
-          if (req.body.UserName) {
-            menu.UserName = req.body.UserName;
+          if (req.body.username) {
+            menu.username = req.body.username;
             //this will remake QR with the updated username
-            generateQR(req.body.UserName).then((qr) => {
+            generateQR(req.body.username).then((qr) => {
               const x = qr.split(/[:;,]/);
               const buffer = Buffer.from(x[3], x[2]);
               menu.qrImg = buffer;
