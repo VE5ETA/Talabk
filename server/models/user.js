@@ -19,7 +19,7 @@ const User = new Schema({
     match: [/^(\s)*[a-zA-Zء-ي]+(?:[-'\s][a-zA-Zء-ي]*)*(\s)*$/, "is invalid"],
     trim: true, // returned ✔
   },
-  userName: {
+  username: {
     type: String,
     required: [true, "username can't be blank"],
     minLength: [3, "can't be less then 3"],
@@ -71,7 +71,7 @@ User.set("toJSON", {
 });
 
 User.plugin(passportLocalMongoose, {
-  usernameField: "userName",
+  usernameField: "username",
 });
 User.plugin(uniqueValidator, {
   message: "Error, expected {PATH} to be unique. {VALUE} is already used!",

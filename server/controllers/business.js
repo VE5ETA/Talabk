@@ -51,7 +51,7 @@ module.exports = {
                 } else {
                   const newBusiness = new Business({
                     ownerID: user._id,
-                    // userName: req.body.userName, // removed
+                    // username: req.body.username, // removed
                     tradeName: req.body.tradeName,
                     BranchID: req.body.BranchID,
                     businessType: req.body.businessType,

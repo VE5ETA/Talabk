@@ -10,7 +10,7 @@ const Menu = new Schema({
     required: true,
     ref: "Business",
   },
-  UserName: {
+  username: {
     // ID
     type: String,
     required: [true, "username can't be blank"],

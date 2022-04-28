@@ -16,11 +16,11 @@ module.exports = {
         name: "nameError",
         message: "The name is required",
       });
-    } else if (!req.body.userName) {
+    } else if (!req.body.username) {
       res.statusCode = 500;
       res.send({
-        name: "userNameError",
-        message: "The userName is required",
+        name: "usernameError",
+        message: "The username is required",
       });
     } else if (!req.body.email) {
       res.statusCode = 500;
@@ -38,7 +38,7 @@ module.exports = {
       User.register(
         new User({
           name: req.body.name,
-          userName: req.body.userName,
+          username: req.body.username,
           email: req.body.email,
         }),
         req.body.password,
