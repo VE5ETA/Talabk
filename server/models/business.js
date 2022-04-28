@@ -45,7 +45,7 @@ const Business = new Schema({
   BranchID: {
     type: String,
     require: true,
-    unique: true,
+    // unique: true, // looking for better option
   },
   businessType: {
     // like restaurant, coffee, ...
