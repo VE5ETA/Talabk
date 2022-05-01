@@ -15,7 +15,7 @@
 - [ ]  looking for better alternative to "menu branchID" unique property
 
 ### Done ✓
-
+- [x] ~~solve mongoose uniqueValidator problem with login in multi users.~~  **solved by editing the package index.js file**
 - [x] remove the uniqe from branchID 
 
 ----------
