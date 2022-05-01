@@ -271,15 +271,15 @@ module.exports = {
   getItem: (req, res, next) => {
     // There's no value for this but I did it anyways.
     try {
-      if (!req.body.itemID) {
+      if (!req.body.ID) {
         res.status(400).send({
-          name: "itemIDError",
+          name: "IDError",
           message: "item ID is required",
         });
       } else {
         Menu.findOne({ businessID: req.user.workIn }).then((menu) => {
           if (menu) {
-            Item.findOne({ MenuID: menu._id, _id: req.body.itemID }).then(
+            Item.findOne({ MenuID: menu._id, _id: req.body.ID }).then(
               (item) => {
                 if (item) {
                   // this used for testing
@@ -310,15 +310,15 @@ module.exports = {
   },
   updateItem: (req, res, next) => {
     try {
-      if (!req.body.itemID) {
+      if (!req.body.ID) {
         res.status(400).send({
-          name: "itemIDError",
+          name: "IDError",
           message: "item ID is required",
         });
       } else {
         Menu.findOne({ businessID: req.user.workIn }).then((menu) => {
           if (menu) {
-            Item.findOne({ MenuID: menu._id, _id: req.body.itemID }).then(
+            Item.findOne({ MenuID: menu._id, _id: req.body.ID }).then(
               (item) => {
                 if (item) {
                   if (req.body.name) {
@@ -374,15 +374,15 @@ module.exports = {
   },
   deleteItem: (req, res, next) => {
     try {
-      if (!req.body.itemID) {
+      if (!req.body.ID) {
         res.status(400).send({
-          name: "itemIDError",
+          name: "IDError",
           message: "item ID is required",
         });
       } else {
         Menu.findOne({ businessID: req.user.workIn }).then((menu) => {
           if (menu) {
-            Item.findOne({ MenuID: menu._id, _id: req.body.itemID }).then(
+            Item.findOne({ MenuID: menu._id, _id: req.body.ID }).then(
               (item) => {
                 if (item) {
                   item.remove((err) => {

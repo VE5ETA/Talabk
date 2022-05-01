@@ -3,8 +3,6 @@ const User = require("../models/user");
 const { Business } = require("../models/business");
 const { BuzDocs } = require("../models/business");
 
-const orderid = new RegExp(/^(\s\.\*\\)*[a-zA-Z0-9]{24,24}$/); // for order id
-
 module.exports = {
   create: (req, res, next) => {
     try {
@@ -44,39 +42,40 @@ module.exports = {
           } else {
             //this was updated for the changes made in business model ⚠
             //this will look for if Business BranchID exsit with ignoring letters case
-            Business.findOne({ tradeName: req.body.tradeName,BranchID:{ $regex : new RegExp(req.body.BranchID, "i") } }).then(
-              (business) => {
-                if (business) {
-                  res.send({
-                    message: " this business Branch ID already exist",
-                  });
-                } else {
-                  const newBusiness = new Business({
-                    ownerID: user._id,
-                    // username: req.body.username, // removed
-                    tradeName: req.body.tradeName,
-                    BranchID: req.body.BranchID,
-                    businessType: req.body.businessType,
-                  });
+            Business.findOne({
+              tradeName: req.body.tradeName,
+              BranchID: { $regex: new RegExp(req.body.BranchID, "i") },
+            }).then((business) => {
+              if (business) {
+                res.send({
+                  message: " this business Branch ID already exist",
+                });
+              } else {
+                const newBusiness = new Business({
+                  ownerID: user._id,
+                  // username: req.body.username, // removed
+                  tradeName: req.body.tradeName,
+                  BranchID: req.body.BranchID,
+                  businessType: req.body.businessType,
+                });
 
-                  newBusiness.save();
-                  user.workIn = newBusiness._id;
+                newBusiness.save();
+                user.workIn = newBusiness._id;
 
-                  user.save((err, business) => {
-                    if (err) {
-                      res.statusCode = 500;
-                      res.send(err);
-                    } else {
-                      res.statusCode = 200;
-                      res.send({
-                        message: "business was created",
-                        success: true,
-                      });
-                    }
-                  });
-                }
+                user.save((err, business) => {
+                  if (err) {
+                    res.statusCode = 500;
+                    res.send(err);
+                  } else {
+                    res.statusCode = 200;
+                    res.send({
+                      message: "business was created",
+                      success: true,
+                    });
+                  }
+                });
               }
-            );
+            });
           }
         });
       }

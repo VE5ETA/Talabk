@@ -4,15 +4,14 @@ const { Order } = require("../models/Order");
 
 module.exports = {
   createOrder: (req, res, next) => {
-    const buzRegex = new RegExp(/^(\s\.\*\\)*[a-zA-Z0-9]{24,24}$/); // for business id
     const phoneRegex = new RegExp(
       /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/
     ); // for customer phone number
 
-    if (!req.body.businessID || !buzRegex.test(req.body.businessID)) {
+    if (!req.body.ID) {
       res.status(500).send({
-        name: "businessIdError",
-        message: "business Id is invalid",
+        name: "IDError",
+        message: "business ID is invalid",
       });
     } else if (!req.body.orderType) {
       res.status(500).send({
@@ -39,10 +38,10 @@ module.exports = {
         message: "subTotal is invalid",
       });
     } else {
-      Business.findById({ _id: req.body.businessID }).then((business) => {
+      Business.findById({ _id: req.body.ID }).then((business) => {
         if (business) {
           const newOrder = new Order({
-            businessID: req.body.businessID,
+            businessID: req.body.ID,
             orderType: req.body.orderType,
             customerNumber: req.body.customerNumber,
             subTotal: req.body.subTotal,
@@ -69,12 +68,12 @@ module.exports = {
     }
   },
   editOrder: (req, res, next) => {
-    Order.findOne({ _id: req.body.id }).then((order) => {
+    Order.findOne({ _id: req.body.ID }).then((order) => {
       if (order) {
         if (order.orderState === "new") {
           try {
             Order.updateOne(
-              { _id: req.body.id },
+              { _id: req.body.ID },
               { $set: { items: req.body.items } }
             ).then((order) => {
               if (order) {
@@ -105,12 +104,12 @@ module.exports = {
     });
   },
   cancelOrder: (req, res, next) => {
-    Order.findOne({ _id: req.body.id }).then((order) => {
+    Order.findOne({ _id: req.body.ID }).then((order) => {
       if (order) {
         if (order.orderState === "new") {
           try {
             Order.updateOne(
-              { _id: req.body.id },
+              { _id: req.body.ID },
               { $set: { orderState: "canceled" } }
             ).then((order) => {
               if (order) {
