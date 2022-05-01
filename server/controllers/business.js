@@ -42,11 +42,13 @@ module.exports = {
               message: "you already have a business",
             });
           } else {
-            Business.findOne({ tradeName: req.body.tradeName }).then(
+            //this was updated for the changes made in business model ⚠
+            //this will look for if Business BranchID exsit with ignoring letters case
+            Business.findOne({ tradeName: req.body.tradeName,BranchID:{ $regex : new RegExp(req.body.BranchID, "i") } }).then(
               (business) => {
                 if (business) {
                   res.send({
-                    message: " business trade name already exist",
+                    message: " this business Branch ID already exist",
                   });
                 } else {
                   const newBusiness = new Business({
