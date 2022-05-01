@@ -1,11 +1,12 @@
 "use strict";
 const router = require("express").Router();
 const user = require("./user");
+const { isValidObjID } = require("../middlewares/middleware");
 
 const customer = require("./customer");
 
 router.use("/user", user);
-router.use("/customer", customer);
+router.use("/customer", isValidObjID, customer);
 
 router.get("/", (req, res) => {
   res.send({ status: "success" });
