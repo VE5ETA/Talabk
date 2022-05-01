@@ -72,6 +72,7 @@ User.set("toJSON", {
 
 User.plugin(passportLocalMongoose, {
   usernameField: "username",
+  usernameCaseInsensitive:true,
 });
 User.plugin(uniqueValidator, {
   message: "Error, expected {PATH} to be unique. {VALUE} is already used!",
