@@ -1,7 +1,7 @@
 "use strict";
 const User = require("../models/user");
-const { Business } = require("../models/business");
-const { BuzDocs } = require("../models/business");
+const { Business, BuzDocs } = require("../models/business");
+const { Menu } = require("../models/menu");
 
 module.exports = {
   create: (req, res, next) => {
@@ -29,14 +29,7 @@ module.exports = {
       } else {
         User.findById(req.user._id).then((user) => {
           if (user.workIn) {
-            res.statusCode = 500;
-            res.send({
-              message: "you already have a business",
-            });
-          } else if (user.workIn) {
-            // need to check this ❗❕
-            res.statusCode = 500;
-            res.send({
+            res.status(403).send({
               message: "you already have a business",
             });
           } else {
@@ -59,18 +52,26 @@ module.exports = {
                   businessType: req.body.businessType,
                 });
 
-                newBusiness.save();
-                user.workIn = newBusiness._id;
-
-                user.save((err, business) => {
+                newBusiness.save((err, business) => {
                   if (err) {
-                    res.statusCode = 500;
-                    res.send(err);
+                    res.status(500).send({
+                      message: err,
+                      success: false,
+                    });
                   } else {
-                    res.statusCode = 200;
-                    res.send({
-                      message: "business was created",
-                      success: true,
+                    user.workIn = business._id;
+                    user.save((err, user) => {
+                      if (err) {
+                        res.status(500).send({
+                          message: err,
+                          success: false,
+                        });
+                      } else {
+                        res.status(200).send({
+                          message: "business was created",
+                          success: true,
+                        });
+                      }
                     });
                   }
                 });
@@ -87,84 +88,146 @@ module.exports = {
     }
   },
   info: (req, res, next) => {
-    Business.findOne({ _id: req.user.workIn })
-      .populate("ownerID")
-      .then((business) => {
+    try {
+      Business.findOne({ _id: req.user.workIn })
+        // .populate("ownerID") // there is no need for this :D
+        .then((business) => {
+          if (business) {
+            res.status(200).send(business);
+          } else {
+            res.status(404).send({
+              message: "you don't have business",
+            });
+          }
+        });
+    } catch (error) {
+      res.status(400).send({
+        message: error,
+        success: false,
+      });
+    }
+  },
+  update: (req, res, next) => {
+    // this needs to updated ❗
+    try {
+      Business.findOne({ ownerID: req.user._id }).then((business) => {
         if (business) {
-          res.statusCode = 200;
-          res.send(business);
+          if (req.body.tradeName) {
+            business.tradeName = req.body.tradeName;
+          }
+          if (req.body.BranchID) {
+            Business.findOne({
+              tradeName: req.body.tradeName,
+              BranchID: { $regex: new RegExp(req.body.BranchID, "i") },
+            }).then((businessBranchIDexists) => {
+              if (businessBranchIDexists) {
+                res.send({
+                  message: " this business Branch ID already exist",
+                });
+              } else {
+                business.BranchID = req.body.BranchID;
+              }
+            });
+          }
+          if (req.body.businessType) {
+            business.businessType = req.body.businessType;
+          }
+          business.updatedAt = Date.now();
+          business.save((err, business) => {
+            if (err) {
+              res.status(500).send({
+                message: err,
+                success: false,
+              });
+            } else {
+              res.status(200).send({
+                message: "business updated successfully",
+                success: true,
+              });
+            }
+          });
         } else {
-          res.statusCode = 500;
-          res.send({
+          res.status(404).send({
             message: "you don't have business",
           });
         }
       });
-  },
-  update: (req, res, next) => {
-    // this needs to updated ❗
-    Business.findOne({ ownerID: req.user._id }).then((business) => {
-      if (business) {
-        if (req.body.tradeName) {
-          business.tradeName = req.body.tradeName;
-        }
-        if (req.body.legalName) {
-          business.legalName = req.body.legalName;
-        }
-        if (req.body.businessType) {
-          business.businessType = req.body.businessType;
-        }
-
-        business.updatedAt = Date.now();
-
-        business.save();
-
-        res.statusCode = 200;
-        res.send({
-          message: "business updated successfully",
-          success: true,
-        });
-      } else {
-        res.statusCode = 500;
-        res.send({
-          message: "you don't have business",
-        });
-      }
-    });
+    } catch (error) {
+      res.status(400).send({
+        message: error,
+        success: false,
+      });
+    }
   },
   delete: (req, res, next) => {
     // should be updated to delete all related stuff as menu etc..
-    Business.findOne({ ownerID: req.user._id }).then((business) => {
-      if (business) {
-        User.updateMany(
-          {
-            workIn: business._id,
-          },
-          {
-            $unset: { workIn: business._id },
-          },
-          {},
-          (err, result) => {
-            //delete me later !!😁
-            if (err) console.log(err);
-            else console.log(result);
-          }
-        );
-
-        business.remove();
-
-        res.statusCode = 200;
-        res.send({
-          message: "business deleted successfully",
-          success: true,
+    try {
+      if (!req.body.tradeName) {
+        res.status(400).send({
+          name: "tradeNameError",
+          message: "trade Name is required to verify deleteing Business",
         });
       } else {
-        res.statusCode = 500;
-        res.send({
-          message: "you don't have business",
+        Menu.findOne({
+          businessID: req.user.workIn,
+        }).then((menu) => {
+          if (menu) {
+            res.status(403).send({
+              message: "you need to delete the menu first!! ",
+              success: false,
+            });
+          } else {
+            Business.findOne({ ownerID: req.user._id }).then((business) => {
+              if (business) {
+                if (business.tradeName !== req.body.tradeName) {
+                  res.status(403).send({
+                    message:
+                      "please enter the correct business trade name to confirm deleting the business",
+                    success: false,
+                  });
+                } else {
+                  User.updateMany(
+                    { workIn: business._id },
+                    { $unset: { workIn: business._id } },
+                    (err, result) => {
+                      if (err) {
+                        res.status(500).send({
+                          message: err,
+                          success: false,
+                        });
+                      } else {
+                        business.remove((err, result) => {
+                          if (err) {
+                            res.status(500).send({
+                              message: err,
+                              success: false,
+                            });
+                          } else {
+                            res.status(200).send({
+                              message: "business deleted successfully",
+                              success: true,
+                            });
+                          }
+                        });
+                      }
+                    }
+                  );
+                }
+              } else {
+                res.status(404).send({
+                  message: "you don't have business",
+                });
+              }
+            });
+          }
         });
       }
-    });
+    } catch (error) {
+      res.status(400).send({
+        message: error,
+        success: false,
+      });
+    }
   },
   uploadDocs: (req, res, next) => {
     Business.findOne({ ownerID: req.user._id }).then((business) => {

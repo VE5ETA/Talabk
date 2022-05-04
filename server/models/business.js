@@ -45,7 +45,7 @@ const Business = new Schema({
   BranchID: {
     type: String,
     require: true,
-    // unique: true, // looking for better option
+    // unique: true, // removed to use better option
   },
   businessType: {
     // like restaurant, coffee, ...
@@ -66,7 +66,7 @@ const Business = new Schema({
   },
   businessState: {
     type: String,
-    default: "pending", // suspension or active
+    default: "pending, business isn't verified yet", // suspension or active
   },
   LegalDocs: {
     type: mongoose.SchemaTypes.ObjectId,
