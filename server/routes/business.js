@@ -23,7 +23,7 @@ router.get("/downloadDocs", businessController.downloadDocs);
 // router.post("/addEmployee", verifyUser, businessController.addEmployee); // will make it in version 2
 // router.delete("/removeEmployee", verifyUser, businessController.removeEmployee); // will make it in version 2
 
-router.use("/order", isValidObjID, order);
-router.use("/menu", isValidObjID, menu);
+router.use("/order", isValidObjID, order); //removed to use more specific on the needed routes
+router.use("/menu", isValidObjID, menu); //removed to use more specific on the needed routes
 
 module.exports = router;

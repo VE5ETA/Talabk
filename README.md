@@ -6,14 +6,18 @@
 
 ### Todo
 
+- [ ] prevent the menu from displaying any manu/item/table if status are false.
 - [ ] prevent the business from doing any action before verifing.
+- [ ] update all api url schema to be lowercase and to be all standard.
 
 ### In Progress
 
-- [ ] add tables item controller to the menu.
 - [ ] update and review business controller.
+- [ ] fix isValidObjID and use on the needed routes.
 
 ### Done ✓
+
+- [x] add tables item controller to the menu.
 
 - [x] ~~add regex to all api that's take objectID.~~
   - **created middleware to use in any objID route**
