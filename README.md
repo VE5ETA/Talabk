@@ -13,9 +13,10 @@
 ### In Progress
 
 - [ ] update and review business controller.
-- [ ] fix isValidObjID and use on the needed routes.
 
 ### Done ✓
+
+- [x] fix isValidObjID and use on the needed routes.
 
 - [x] add tables item controller to the menu.
 
