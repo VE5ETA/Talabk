@@ -11,6 +11,7 @@ module.exports = exports = InternalCache;
 
 function InternalCache() {
   this.activePaths = new ActiveRoster();
+  this.strictMode = undefined;
 }
 
 InternalCache.prototype.fullPath = undefined;
