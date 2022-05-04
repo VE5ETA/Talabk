@@ -2,7 +2,7 @@
 const router = require("express").Router();
 const businessController = require("../controllers/business");
 const { pdf, LimitErrorHandler } = require("../middlewares/multer");
-const { isValidObjID } = require("../middlewares/middleware");
+const { isValidBuz } = require("../middlewares/middleware");
 const order = require("./order");
 const menu = require("./menu");
 // business management
@@ -23,7 +23,7 @@ router.get("/downloadDocs", businessController.downloadDocs);
 // router.post("/addEmployee", verifyUser, businessController.addEmployee); // will make it in version 2
 // router.delete("/removeEmployee", verifyUser, businessController.removeEmployee); // will make it in version 2
 
-router.use("/order", order); //removed to use more specific on the needed routes
-router.use("/menu", menu); //removed to use more specific on the needed routes
+router.use("/order", isValidBuz, order); //isValidObjID removed to use it more specific on the needed routes
+router.use("/menu", isValidBuz, menu); //isValidObjID removed to use it more specific on the needed routes
 
 module.exports = router;

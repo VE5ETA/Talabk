@@ -1,6 +1,5 @@
 "use strict";
 const { Menu, Item, Table } = require("../models/menu");
-const { Business } = require("../models/business");
 const { generateQR } = require("../middlewares/generateQR");
 module.exports = {
   create: (req, res, next) => {
@@ -31,42 +30,34 @@ module.exports = {
               message: "you already have a menu",
             });
           } else {
-            Business.findOne({ ownerID: req.user._id }).then((business) => {
-              if (business) {
-                const newMenu = new Menu({
-                  businessID: req.user.workIn,
-                  username: req.body.username,
-                  name: req.body.name,
-                  logo: req.file.buffer,
-                  logoMimetype: req.file.mimetype,
-                });
-                // console.log(req.file.buffer);
-                newMenu.save((err) => {
-                  if (err) {
-                    res.status(400).send({
-                      message: err,
-                      success: false,
-                    });
-                  } else {
-                    generateQR(req.body.username).then((qr) => {
-                      // const x = qr.split(","); original code
-                      // const base64string = x[1]; original code
-                      // const buffer = Buffer.from(base64string, "base64"); original code
-                      const x = qr.split(/[:;,]/); // improved
-                      const buffer = Buffer.from(x[3], x[2]);
-                      newMenu.qrImg = buffer;
-                      newMenu.qrMimetype = x[1];
-                      newMenu.save();
-                    });
-                    res.status(200).send({
-                      message: "Menu created successfully",
-                      success: true,
-                    });
-                  }
+            const newMenu = new Menu({
+              businessID: req.user.workIn,
+              username: req.body.username,
+              name: req.body.name,
+              logo: req.file.buffer,
+              logoMimetype: req.file.mimetype,
+            });
+            // console.log(req.file.buffer);
+            newMenu.save((err) => {
+              if (err) {
+                res.status(400).send({
+                  message: err,
+                  success: false,
                 });
               } else {
-                res.status(500).send({
-                  message: "you don't have business",
+                generateQR(req.body.username).then((qr) => {
+                  // const x = qr.split(","); original code
+                  // const base64string = x[1]; original code
+                  // const buffer = Buffer.from(base64string, "base64"); original code
+                  const x = qr.split(/[:;,]/); // improved
+                  const buffer = Buffer.from(x[3], x[2]);
+                  newMenu.qrImg = buffer;
+                  newMenu.qrMimetype = x[1];
+                  newMenu.save();
+                });
+                res.status(200).send({
+                  message: "Menu created successfully",
+                  success: true,
                 });
               }
             });
@@ -156,6 +147,7 @@ module.exports = {
   delete: (req, res, next) => {
     try {
       if (!req.body.name) {
+        // this just sure to prevent deleting by accident
         res.status(400).send({
           name: "menuNameError",
           message: "Menu name is required to verify deleteing Menu",
@@ -163,33 +155,50 @@ module.exports = {
       } else {
         Menu.findOne({ businessID: req.user.workIn }).then((menu) => {
           if (menu) {
-            Item.deleteMany({ MenuID: menu._id }, (err, result) => {
-              if (err) {
-                res.status(400).send({
-                  message: err,
-                  success: false,
-                });
-              } else {
-                menu.remove((err) => {
-                  if (err) {
-                    res.status(400).send({
-                      message: err,
-                      success: false,
-                    });
-                  } else {
-                    res.status(200).send({
-                      message:
-                        "Menu and his items has been removed successfully",
-                      result: result,
-                      success: true,
-                    });
-                  }
-                });
-              }
-            });
+            if (menu.name !== req.body.name) {
+              res.status(403).send({
+                message:
+                  "please enter the correct menu name to confirm deleting the menu",
+                success: false,
+              });
+            } else {
+              Item.deleteMany({ MenuID: menu._id }, (err, result) => {
+                if (err) {
+                  res.status(400).send({
+                    message: err,
+                    success: false,
+                  });
+                } else {
+                  Table.deleteMany({ MenuID: menu._id }, (err, result) => {
+                    if (err) {
+                      res.status(400).send({
+                        message: err,
+                        success: false,
+                      });
+                    } else {
+                      menu.remove((err, result) => {
+                        if (err) {
+                          res.status(400).send({
+                            message: err,
+                            success: false,
+                          });
+                        } else {
+                          res.status(200).send({
+                            message:
+                              "Menu and related items, tables has been removed successfully",
+                            success: true,
+                          });
+                        }
+                      });
+                    }
+                  });
+                }
+              });
+            }
           } else {
             res.status(404).send({
-              message: "you don't even have a menu 🙂",
+              message: "you don't have a menu 🙂",
+              success: false,
             });
           }
         });

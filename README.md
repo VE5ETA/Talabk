@@ -6,15 +6,22 @@
 
 ### Todo
 
-- [ ] prevent the menu from displaying any manu/item/table if status are false.
-- [ ] prevent the business from doing any action before verifing.
 - [ ] update all api url schema to be lowercase and to be all standard.
+- [ ] update all functions with trycatch Statement
+  - [ ] and HTTP response status codes to be standardized.
+  - [ ] and standardize error massage .
 
 ### In Progress
 
-- [ ] update and review business controller.
+- [ ] prevent the menu from displaying any manu/item/table if status are false.
 
 ### Done ✓
+
+- [x] ~~prevent the business from doing any action before verifing.~~
+
+  - done ✔, business can't create menu or deal with orders without being verified or active.
+
+- [x] update and review business controller.
 
 - [x] fix isValidObjID and use on the needed routes.
 
