@@ -93,6 +93,10 @@ const Table = new Schema({
     required: true,
     ref: "Menu",
   },
+  tableNumber: {
+    type: Number,
+    required: true,
+  },
   chairNumber: {
     type: Number,
     required: true,

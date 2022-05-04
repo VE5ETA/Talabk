@@ -1,6 +1,5 @@
 "use strict";
-const { Menu } = require("../models/menu");
-const { Item } = require("../models/menu");
+const { Menu, Item, Table } = require("../models/menu");
 const { Business } = require("../models/business");
 const { generateQR } = require("../middlewares/generateQR");
 module.exports = {
@@ -401,6 +400,218 @@ module.exports = {
                 } else {
                   res.status(404).send({
                     message: "this item don't exist",
+                  });
+                }
+              }
+            );
+          } else {
+            res.status(404).send({
+              message: "you don't even have a menu 🙂",
+            });
+          }
+        });
+      }
+    } catch (error) {
+      res.status(400).send({
+        message: error,
+        success: false,
+      });
+    }
+  },
+  addTable: (req, res, next) => {
+    try {
+      if (!req.body.tableNumber) {
+        res.statusCode = 500;
+        res.send({
+          name: "tableNumberError",
+          message: "table Number is required",
+        });
+      } else if (!req.body.chairNumber) {
+        res.statusCode = 500;
+        res.send({
+          name: "chairNumberError",
+          message: "chair Number is required",
+        });
+      } else {
+        Menu.findOne({ businessID: req.user.workIn }).then((menu) => {
+          if (menu) {
+            Table.findOne({
+              MenuID: menu._id,
+              tableNumber: req.body.tableNumber,
+            }).then((tableExists) => {
+              if (tableExists) {
+                res.send({
+                  message: " this table Number already used",
+                });
+              } else {
+                const table = new Table({
+                  MenuID: menu._id,
+                  tableNumber: req.body.tableNumber,
+                  chairNumber: req.body.chairNumber,
+                });
+                table.save((err) => {
+                  if (err) {
+                    res.status(400).send({
+                      message: err,
+                      success: false,
+                    });
+                  } else {
+                    res.status(200).send({
+                      message: "table added to the Menu successfully",
+                      success: true,
+                    });
+                  }
+                });
+              }
+            });
+          } else {
+            res.status(404).send({
+              message: "you don't have menu",
+              success: false,
+            });
+          }
+        });
+      }
+    } catch (error) {
+      res.status(400).send({
+        message: error,
+        success: false,
+      });
+    }
+  },
+  getTable: (req, res, next) => {
+    try {
+      if (!req.body.ID) {
+        res.status(400).send({
+          name: "IDError",
+          message: "table ID is required",
+        });
+      } else {
+        Menu.findOne({ businessID: req.user.workIn }).then((menu) => {
+          if (menu) {
+            Table.findOne({ MenuID: menu._id, _id: req.body.ID }).then(
+              (table) => {
+                if (table) {
+                  res.status(200).send(table);
+                } else {
+                  res.status(404).send({
+                    message: "this table don't exist",
+                  });
+                }
+              }
+            );
+          } else {
+            res.status(404).send({
+              message: "you don't even have a menu 🙂",
+            });
+          }
+        });
+      }
+    } catch (error) {
+      res.status(400).send({
+        message: error,
+        success: false,
+      });
+    }
+  },
+  updateTable: (req, res, next) => {
+    try {
+      if (!req.body.ID) {
+        res.status(400).send({
+          name: "IDError",
+          message: "table ID is required",
+        });
+      } else {
+        Menu.findOne({ businessID: req.user.workIn }).then((menu) => {
+          if (menu) {
+            Table.findOne({ MenuID: menu._id, _id: req.body.ID }).then(
+              (table) => {
+                if (table) {
+                  if (req.body.tableNumber) {
+                    // make check here for tableNumber if exists
+                    Table.findOne({
+                      MenuID: menu._id,
+                      tableNumber: req.body.tableNumber,
+                    }).then((tableExists) => {
+                      if (tableExists) {
+                        res.send({
+                          message: " this table Number already used",
+                        });
+                      } else {
+                        table.tableNumber = req.body.tableNumber;
+                      }
+                    });
+                  }
+                  if (req.body.chairNumber) {
+                    table.chairNumber = req.body.chairNumber;
+                  }
+                  if (req.body.status) {
+                    table.status = req.body.status;
+                  }
+
+                  table.save((err) => {
+                    if (err) {
+                      res.status(400).send({
+                        message: err,
+                        success: false,
+                      });
+                    } else {
+                      res.status(200).send({
+                        message: "table has been updated successfully",
+                        success: true,
+                      });
+                    }
+                  });
+                } else {
+                  res.status(404).send({
+                    message: "this table don't exist",
+                  });
+                }
+              }
+            );
+          } else {
+            res.status(404).send({
+              message: "you don't even have a menu 🙂",
+            });
+          }
+        });
+      }
+    } catch (error) {
+      res.status(400).send({
+        message: error,
+        success: false,
+      });
+    }
+  },
+  deleteTable: (req, res, next) => {
+    try {
+      if (!req.body.ID) {
+        res.status(400).send({
+          name: "IDError",
+          message: "table ID is required",
+        });
+      } else {
+        Menu.findOne({ businessID: req.user.workIn }).then((menu) => {
+          if (menu) {
+            Table.findOne({ MenuID: menu._id, _id: req.body.ID }).then(
+              (table) => {
+                if (table) {
+                  table.remove((err) => {
+                    if (err) {
+                      res.status(400).send({
+                        message: err,
+                        success: false,
+                      });
+                    } else {
+                      res.status(200).send({
+                        message: "table has been removed successfully",
+                        success: true,
+                      });
+                    }
+                  });
+                } else {
+                  res.status(404).send({
+                    message: "this table don't exist",
                   });
                 }
               }
