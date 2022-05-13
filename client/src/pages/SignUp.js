@@ -16,11 +16,11 @@ export default function SignUp() {
             style={{ marginRight: "0px", marginTop: "0px", marginLeft: 0 }}
           >
             <form className="custom-form">
-              <h1>انضم معنا</h1>
+              <h1>JOIN WITH US</h1>
               <div className="row form-group">
                 <div className="col-sm-4 label-column">
                   <label className="col-form-label" htmlFor="name-input-field">
-                    الاسم
+                    Name
                   </label>
                 </div>
                 <div className="col-sm-6 input-column">
@@ -30,7 +30,7 @@ export default function SignUp() {
               <div className="row form-group">
                 <div className="col-sm-4 label-column">
                   <label className="col-form-label" htmlFor="email-input-field">
-                    البريد الالكتروني
+                    Email
                   </label>
                 </div>
                 <div className="col-sm-6 input-column">
@@ -43,7 +43,7 @@ export default function SignUp() {
                     className="col-form-label"
                     htmlFor="pawssword-input-field"
                   >
-                    كلمة المرور
+                    Password
                   </label>
                 </div>
                 <div className="col-sm-6 input-column">
@@ -56,7 +56,7 @@ export default function SignUp() {
                     className="col-form-label"
                     htmlFor="repeat-pawssword-input-field"
                   >
-                    تأكيد كلمة المرور
+                    Confirm Password
                   </label>
                 </div>
                 <div className="col-sm-6 input-column">
@@ -64,11 +64,13 @@ export default function SignUp() {
                 </div>
               </div>
               <button className="btn btn-light submit-button" type="button">
-                انضم الان
+                join with us
               </button>
               <div className="col-lg-12 text-center mt-4">
-                <label className="form-label">لديك حساب بالفعل؟&nbsp;</label>
-                <NavLink to="/login">&nbsp;سجل دخول من هنا</NavLink>
+                <label className="form-label">
+                  did you have account before?
+                </label>
+                <NavLink to="/login"> login here</NavLink>
               </div>
             </form>
           </div>

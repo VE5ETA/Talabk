@@ -17,11 +17,11 @@ export default function Login() {
             style={{ marginRight: "0px", marginTop: "0px", marginLeft: 0 }}
           >
             <form className="custom-form">
-              <h1>سجل الدخول</h1>
+              <h1>LOGIN</h1>
               <div className="row form-group">
                 <div className="col-sm-4 label-column">
                   <label className="col-form-label" htmlFor="email-input-field">
-                    البريد الالكتروني
+                    Email
                   </label>
                 </div>
                 <div className="col-sm-6 input-column">
@@ -34,7 +34,7 @@ export default function Login() {
                     className="col-form-label"
                     htmlFor="pawssword-input-field"
                   >
-                    كلمة المرور
+                    ؛assword
                   </label>
                 </div>
                 <div className="col-sm-6 input-column">
@@ -42,7 +42,7 @@ export default function Login() {
                 </div>
               </div>
               <button className="btn btn-light submit-button" type="button">
-                تسجيل الدخول
+                login
               </button>
             </form>
           </div>

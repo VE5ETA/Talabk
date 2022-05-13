@@ -18,7 +18,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signUp" element={<SignUp />} />
-          <Route path="/aa" element={<NewReq />} />
+          {/* for test */}
+          <Route path="/:buzname/menu" element={<NewReq />} />
+          <Route path="/:buzname/menu/:itemName" element={<NewReq />} />
 
           {/* privete page */}
           <Route element={<RequireAuth />}>
