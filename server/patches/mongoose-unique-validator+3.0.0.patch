@@ -1,0 +1,15 @@
+diff --git a/node_modules/mongoose-unique-validator/index.js b/node_modules/mongoose-unique-validator/index.js
+index a410715..0b0540d 100644
+--- a/node_modules/mongoose-unique-validator/index.js
++++ b/node_modules/mongoose-unique-validator/index.js
+@@ -57,6 +57,10 @@ const plugin = function(schema, options) {
+                             const parentDoc = isSubdocument ? this.ownerDocument() : this;
+                             const isNew = typeof parentDoc.isNew === 'boolean' ? parentDoc.isNew : !isQuery;
+ 
++                            if (!isNew && !isQuery && pathName === '_id' && !this.isModified(pathName)) {
++                                resolve(true);
++                                return;
++                            }
+                             const conditions = {};
+                             each(paths, (name) => {
+                                 let pathValue;
