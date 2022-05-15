@@ -20,7 +20,7 @@ export default function SignUp() {
 
     const genericErrorMessage = "Something went wrong! Please try again later.";
 
-    fetch(process.env.REACT_APP_API_ENDPOINT + "users/signup", {
+    fetch(process.env.REACT_APP_API_ENDPOINT + "user/signup", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
