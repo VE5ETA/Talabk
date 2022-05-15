@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 export default function BuzCard(props) {
   return (
-    <div className="col-md-3 col-sm-6">
+    <div className="col-md-3 col-sm-6 mb-3">
       <NavLink
         className="text-decoration-none text-dark"
         to={props.tradeName + "/menu"}
@@ -15,7 +15,7 @@ export default function BuzCard(props) {
             {props.type}
           </strong>
           <div className="mb-1 text-muted">Description</div>
-          <p className="card-text">{props.Desc}</p>
+          <p className="card-text text-break overflow-hidden">{props.Desc}</p>
         </div>
       </NavLink>
     </div>

@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 
-export default function MenuItem() {
+export default function MenuItem(props) {
   let [quantite, setQuantite] = useState(1);
+  let [itemDetail, setItemDetail] = useState({});
 
   // not work
-  function plus(e) {
+  function plus() {
     if (quantite != 30) {
       setQuantite(quantite + 1);
     }
@@ -15,6 +16,11 @@ export default function MenuItem() {
     if (quantite > 1) {
       setQuantite(quantite - 1);
     }
+  }
+
+  function addToCart() {
+    setItemDetail({ name: props.name, quantite: quantite });
+    console.log(itemDetail);
   }
 
   return (
@@ -28,7 +34,7 @@ export default function MenuItem() {
           />
           <h3 className="mb-0">
             <div className="text-dark text-decoration-none" href="#">
-              business name
+              {props.name}
             </div>
           </h3>
           <strong className="d-inline-block mb-2 text-success">
@@ -70,6 +76,7 @@ export default function MenuItem() {
           <button
             className="container btn btn-outline-primary btn-sm mt-2"
             type="button"
+            onClick={addToCart}
           >
             Add to Card
           </button>

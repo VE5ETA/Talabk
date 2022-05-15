@@ -50,6 +50,7 @@ module.exports = {
                   tradeName: req.body.tradeName,
                   BranchID: req.body.BranchID,
                   businessType: req.body.businessType,
+                  description: req.body.description,
                 });
 
                 newBusiness.save((err, business) => {

@@ -3,11 +3,13 @@ const { Business } = require("../models/business");
 
 exports.isValidObjID = (req, res, next) => {
   try {
-    if (req.body.ID.match(/^[0-9a-fA-F]{24}$/)) {
-      next();
-    } else {
-      throw Error;
-    }
+    if (req.body.id) {
+      if (req.body.id.match(/^[0-9a-fA-F]{24}$/)) {
+        next();
+      } else {
+        throw Error;
+      }
+    } else next();
   } catch (error) {
     res.status(400).send({
       message: error && "not valid Object ID", // the && will send the value if the error was null

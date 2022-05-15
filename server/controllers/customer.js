@@ -150,4 +150,15 @@ module.exports = {
       }
     });
   },
+  showStores: (req, res, next) => {
+    Business.find({ businessState: "active" }).then((business) => {
+      if (business) {
+        res.status(200).send(business);
+      } else {
+        res.status(204).send({
+          message: "There are no active business",
+        });
+      }
+    });
+  },
 };

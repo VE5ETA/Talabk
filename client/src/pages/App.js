@@ -12,6 +12,7 @@ import NotFound from "./NotFound";
 import NewReq from "./plateformPage/NewReq";
 import Menu from "./cutomerPage/Menu";
 import Cart from "./cutomerPage/Cart";
+import Store from "./Store";
 
 function App() {
   return (
@@ -22,9 +23,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signUp" element={<SignUp />} />
+          <Route path="/stores" element={<Store />} />
           <Route path="/cart" element={<Cart />} />
           {/* for test */}
-          <Route path="/:buzname/menu" element={<Menu />} />
+          <Route path="/stores/:buzname/menu" element={<Menu />} />
           <Route path="/:buzname/menu/:itemName" element={<NewReq />} />
 
           {/* privete page */}

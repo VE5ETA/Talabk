@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
+// import Footer from "../../components/Footer";
+// import Header from "../../components/Header";
 import MenuItem from "../../components/MenuItem";
 
 export default function Menu() {
@@ -42,8 +42,8 @@ export default function Menu() {
 
       <div className="container">
         <div className="row mb-2">
-          <MenuItem />
-          <MenuItem />
+          <MenuItem name="item name 1" />
+          <MenuItem name="item name 2" />
         </div>
       </div>
 

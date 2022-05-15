@@ -2,7 +2,6 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 // import Header from "../components/Header"; moved to Layout.js
 // import Footer from "../components/Footer"; moved to Layout.js
-import BuzCard from "../components/BuzCard";
 import "../pages/Style/styles.min.css";
 
 export default function Home() {
@@ -23,6 +22,10 @@ export default function Home() {
         <div className="container px-4 px-lg-5 my-5">
           <div className="text-center text-dark">
             <h1 className="display-4 fw-bolder">Talabk</h1>
+            <p className="lead fw-normal text-dark mb-4">
+              Go to the stores page to browse the different types of stores and
+              choose what you want
+            </p>
             <NavLink
               to="/stores"
               className="btn btn-warning btn-lg btn-block col-md-2"
@@ -33,20 +36,6 @@ export default function Home() {
           </div>
         </div>
       </header>
-
-      <section className="py-5">
-        <div className="container mt-2 res-card">
-          <div className="row">
-            {/* example */}
-            <BuzCard
-              img="https://static.pexels.com/photos/7096/people-woman-coffee-meeting.jpg"
-              tradeName="businessName"
-              type="coffe"
-              Desc="This is a company that builds websites, web apps and e-commerce solutions."
-            />
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
