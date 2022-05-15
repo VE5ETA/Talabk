@@ -20,7 +20,7 @@ export default function NotFound() {
             <button
               onClick={() => navigate("/")}
               type="button"
-              class="btn btn-primary"
+              className="btn btn-primary"
             >
               Go back to home page
             </button>

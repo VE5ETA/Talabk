@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import RequireAuth from "../Auth/RequireAuth";
+import RequireAuth from "../context/RequireAuth";
+
+import { UserContext } from "../context/UserContext";
 
 import SignUp from "./SignUp";
 import Login from "./Login";

@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 
+import { UserContext } from "../context/UserContext";
+
 export default function Header(props) {
+  const [userContext, setUserContext] = useContext(UserContext);
+
   if (props.haveCard === true) {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -79,12 +83,12 @@ export default function Header(props) {
             </ul>
             <form className="d-flex">
               <NavLink to="/login">
-                <button type="button" class="btn btn-outline-primary">
+                <button type="button" className="btn btn-outline-primary">
                   Login
                 </button>
               </NavLink>
               <NavLink to="/signup">
-                <button type="button" class="btn btn-outline-secondary">
+                <button type="button" className="btn btn-outline-secondary">
                   Signup
                 </button>
               </NavLink>

@@ -1,11 +1,61 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
-import Header from "../components/Header";
+
+import { UserContext } from "../context/UserContext";
+// import Header from "../components/Header"; //moved to Layout.js
 
 export default function SignUp() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [name, setName] = useState();
+  const [username, setUsername] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [userContext, setUserContext] = useContext(UserContext);
+
+  const formSubmitHandler = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError("");
+
+    const genericErrorMessage = "Something went wrong! Please try again later.";
+
+    fetch(process.env.REACT_APP_API_ENDPOINT + "users/signup", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, username, email, password }),
+    })
+      .then(async (response) => {
+        setIsSubmitting(false);
+        if (!response.ok) {
+          if (response.status === 400) {
+            setError("Please fill all the fields correctly!");
+          } else if (response.status === 401) {
+            setError("Invalid email and password combination.");
+          } else if (response.status === 500) {
+            console.log(response);
+            const data = await response.json();
+            if (data.message) setError(data.message || genericErrorMessage);
+          } else {
+            setError(genericErrorMessage);
+          }
+        } else {
+          const data = await response.json();
+          setUserContext((oldValues) => {
+            return { ...oldValues, token: data.token };
+          });
+        }
+      })
+      .catch((error) => {
+        setIsSubmitting(false);
+        setError(genericErrorMessage);
+      });
+  };
+
+  // html
   return (
     <div>
-      <Header />
       <div className="container" style={{ marginTop: "111px" }}>
         <div className="row register-form">
           <div className="col">
@@ -15,7 +65,7 @@ export default function SignUp() {
             className="col-md-8 col-xl-7 offset-md-2"
             style={{ marginRight: "0px", marginTop: "0px", marginLeft: 0 }}
           >
-            <form className="custom-form">
+            <form onSubmit={formSubmitHandler} className="custom-form">
               <h1>JOIN WITH US</h1>
               <div className="row form-group">
                 <div className="col-sm-4 label-column">
@@ -24,7 +74,32 @@ export default function SignUp() {
                   </label>
                 </div>
                 <div className="col-sm-6 input-column">
-                  <input className="form-control" type="text" />
+                  <input
+                    className="form-control"
+                    id="name"
+                    placeholder="name"
+                    onChange={(e) => setName(e.target.value)}
+                    type="text"
+                  />
+                </div>
+              </div>
+              <div className="row form-group">
+                <div className="col-sm-4 label-column">
+                  <label
+                    className="col-form-label"
+                    htmlFor="userName-input-field"
+                  >
+                    User Name
+                  </label>
+                </div>
+                <div className="col-sm-6 input-column">
+                  <input
+                    className="form-control"
+                    id="username"
+                    placeholder="User Name"
+                    onChange={(e) => setUsername(e.target.value)}
+                    type="text"
+                  />
                 </div>
               </div>
               <div className="row form-group">
@@ -34,7 +109,13 @@ export default function SignUp() {
                   </label>
                 </div>
                 <div className="col-sm-6 input-column">
-                  <input className="form-control" type="email" />
+                  <input
+                    className="form-control"
+                    id="email"
+                    placeholder="Email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    type="email"
+                  />
                 </div>
               </div>
               <div className="row form-group">
@@ -47,11 +128,18 @@ export default function SignUp() {
                   </label>
                 </div>
                 <div className="col-sm-6 input-column">
-                  <input className="form-control" type="password" />
+                  <input
+                    className="form-control"
+                    id="password"
+                    placeholder="Password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    type="password"
+                  />
                 </div>
               </div>
               <div className="row form-group">
                 <div className="col-sm-4 label-column">
+                  {/* ❗ need to complate this ❗ */}
                   <label
                     className="col-form-label"
                     htmlFor="repeat-pawssword-input-field"
@@ -60,10 +148,21 @@ export default function SignUp() {
                   </label>
                 </div>
                 <div className="col-sm-6 input-column">
-                  <input className="form-control" type="password" />
+                  <input
+                    className="form-control"
+                    placeholder="this needs to be complate ❗"
+                    type="password"
+                  />
                 </div>
               </div>
-              <button className="btn btn-light submit-button" type="button">
+              <button
+                className="btn btn-light submit-button"
+                intent="primary"
+                disabled={isSubmitting}
+                text={`${isSubmitting ? "Registering" : "Register"}`}
+                fill
+                type="submit"
+              >
                 join with us
               </button>
               <div className="col-lg-12 text-center mt-4">
@@ -72,6 +171,12 @@ export default function SignUp() {
                 </label>
                 <NavLink to="/login"> login here</NavLink>
               </div>
+
+              {error && (
+                <div className="callout callout-danger">
+                  <h4>{error}</h4>
+                </div>
+              )}
             </form>
           </div>
           <div className="col">

@@ -1,13 +1,12 @@
 import React from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+// import Header from "../components/Header"; moved to Layout.js
+// import Footer from "../components/Footer"; moved to Layout.js
 import BuzCard from "../components/BuzCard";
 import "../pages/Style/styles.min.css";
 
 export default function Home() {
   return (
     <div>
-      <Header />
       <header className="bg-dark py-5">
         <div className="container px-4 px-lg-5 my-5">
           <div className="text-center text-white">
@@ -20,8 +19,8 @@ export default function Home() {
       </header>
 
       <section className="py-5">
-        <div class="container mt-2 res-card">
-          <div class="row">
+        <div className="container mt-2 res-card">
+          <div className="row">
             {/* example */}
             <BuzCard
               img="https://static.pexels.com/photos/7096/people-woman-coffee-meeting.jpg"
@@ -32,8 +31,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 }
