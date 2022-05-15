@@ -1,51 +1,35 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; //no
+import React, { useContext, useState } from "react";
+// import { NavLink } from "react-router-dom";
 // import Header from "../components/Header"; // moved to Layout.js
 import "./Style/styles.min.css";
 
 import { UserContext } from "../context/UserContext";
-import { errorAlert } from "../helper/Options";
-import { ToastContainer, toast } from "react-toastify";
 
-export default function Login() {
-  // const [succssed, setSuccssed] = useState(false); // later 🕔
+export default function Logout() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState(undefined);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [userContext, setUserContext] = useContext(UserContext);
 
-  const navigate = useNavigate();
-  // const location = useLocation(); //in the future
-
-  useEffect(() => {
-    if (error) {
-      errorAlert(error);
-    }
-  }, [error]);
-
   const formSubmitHandler = (e) => {
-    toast.clearWaitingQueue();
-    toast.dismiss();
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
 
     const genericErrorMessage = "Something went wrong! Please try again later.";
 
-    fetch(process.env.REACT_APP_API_ENDPOINT + "user/login", {
-      method: "POST",
+    fetch(process.env.REACT_APP_API_ENDPOINT + "user/logout", {
+      method: "GET",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
+      // body: JSON.stringify({ username, password }), //no body
     })
       .then(async (response) => {
         setIsSubmitting(false);
         if (!response.ok) {
           if (response.status === 400) {
-            setError("Please fill all the fields correctly!");
+            setError("Bad Request! something want wrong");
           } else if (response.status === 401) {
-            setError("Invalid username and password combination.");
+            setError("you're already logged out .");
           } else {
             setError(genericErrorMessage);
           }
@@ -54,10 +38,6 @@ export default function Login() {
           setUserContext((oldValues) => {
             return { ...oldValues, token: data.token };
           });
-          // setSuccssed(true); // later 🕔
-          if (data?.token) {
-            navigate("/"); // i will change this to location.state?.form
-          }
         }
       })
       .catch((error) => {
@@ -68,7 +48,6 @@ export default function Login() {
 
   return (
     <div>
-      <ToastContainer newestOnTop={false} limit={1} />
       <div className="container" style={{ marginTop: "111px" }}>
         <div className="row register-form">
           <div className="col">
@@ -127,6 +106,11 @@ export default function Login() {
               >
                 login
               </button>
+              {error && (
+                <div className="callout callout-danger">
+                  <h4>{error}</h4>
+                </div>
+              )}
             </form>
           </div>
           <div className="col">

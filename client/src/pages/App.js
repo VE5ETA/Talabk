@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RequireAuth from "../context/RequireAuth";
 
-import { UserContext } from "../context/UserContext";
+// import { UserContext } from "../context/UserContext"; //maybe not ?
 
 import SignUp from "./SignUp";
 import Login from "./Login";

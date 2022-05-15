@@ -1,16 +1,16 @@
 import React, { useContext } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { AuthContext } from "./AuthContext";
+import { UserContext } from "./UserContext";
 
 // this function is protect critical page
 // get user role from context and check if admin or not
 export default function RequireAuth() {
-  const { isLoggedIn } = useContext(AuthContext);
+  const [userContext, setUserContext] = useContext(UserContext);
   const location = useLocation();
-
-  return isLoggedIn ? (
+  //this needs to be fixed ❗
+  return userContext.token ? (
     <Outlet />
   ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
+    <Navigate to="/login" replace state={{ from: location }} />
   );
 }

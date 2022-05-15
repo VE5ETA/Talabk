@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 export default function Header(props) {
-  const [userContext, setUserContext] = useContext(UserContext);
+  const [userContext] = useContext(UserContext);
 
   if (props.haveCard === true) {
     return (
