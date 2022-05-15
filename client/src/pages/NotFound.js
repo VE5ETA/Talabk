@@ -5,29 +5,18 @@ export default function NotFound() {
   let navigate = useNavigate();
 
   return (
-    <div className="container" style={{ marginTop: "111px" }}>
-      <div className="row register-form">
-        <div className="col">
-          <div />
-        </div>
-        <div
-          className="col-md-8 col-xl-7 offset-md-2"
-          style={{ marginRight: "0px", marginTop: "0px", marginLeft: 0 }}
-        >
-          <form className="custom-form">
-            <h1>page not found</h1>
-            <br></br>
-            <button
-              onClick={() => navigate("/")}
-              type="button"
-              className="btn btn-primary"
-            >
-              Go back to home page
-            </button>
-          </form>
-        </div>
-        <div className="col">
-          <div />
+    <div className="page-notFound d-flex flex-row align-items-center">
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-md-12 text-center">
+            <span className="display-1 d-block">404</span>
+            <div className="mb-4 lead">
+              The page you are looking for was not found.
+            </div>
+            <a onClick={() => navigate("/")} className="btn btn-link">
+              Back to Home
+            </a>
+          </div>
         </div>
       </div>
     </div>

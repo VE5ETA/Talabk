@@ -1,156 +1,80 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 
-class MenuItem extends Component {
-  render() {
-    const itemStyle = {
-      margin: "35px 5px",
-    };
-    return (
-      <div style={{ marginTop: "40px" }}>
-        <div className="tab-content" id="myTabContent">
-          <div
-            className="tab-pane fade show active"
-            id="Tap1"
-            role="tabpanel"
-            aria-labelledby="Tap1-tab"
-          >
-            {/* item 1 Tap1 */}
-            <div style={itemStyle} className="d-flex position-relative">
-              <img src="#" className="flex-shrink-0 me-3" alt="item 1" />
-              <div>
-                <h5 className="mt-0">item name</h5>
-                <p>
-                  This is some placeholder content for the custom component. It
-                  is intended to mimic what some real-world content would look
-                  like, and we're using it here to give the component a bit of
-                  body and size.
-                </p>
-                <a href="#" className="stretched-link">
-                  Add to cart
-                </a>
-              </div>
+export default function MenuItem() {
+  let [quantite, setQuantite] = useState(1);
+
+  // not work
+  function plus(e) {
+    if (quantite != 30) {
+      setQuantite(quantite + 1);
+    }
+  }
+  function min() {
+    if (quantite > 1) {
+      setQuantite(quantite - 1);
+    }
+  }
+
+  return (
+    <div className="col-md-4 menu-item-card">
+      <div className="card flex-md-row mb-4 box-shadow h-md-200 shadow p-3 mb-5 bg-body rounded">
+        <div className="card-body d-flex flex-column align-items-start">
+          <img
+            src="https://thumbs.dreamstime.com/z/eat-sweet-dessert-cuisine-tart-food-cafe-menu-pastry-products-close-up-delicious-item-restaurant-enjoy-fresh-layered-ca-cake-142773107.jpg"
+            className="flex-auto d-md-block menu-item-img mb-2"
+            alt="Card image cap"
+          />
+          <h3 className="mb-0">
+            <div className="text-dark text-decoration-none" href="#">
+              business name
+            </div>
+          </h3>
+          <strong className="d-inline-block mb-2 text-success">
+            resturant
+          </strong>
+          <div className="mb-1 text-muted">Description</div>
+          <p className="card-text mb-auto ">
+            This is a wider card with supporting text below as a natural lead-in
+            to additional content.
+          </p>
+          <div className="d-flex align-items-center d-inline-block mt-2">
+            <div className="align-items-center col-md-6">
+              <h4 className="mr-1">13.99 SAR</h4>
             </div>
 
-            {/* item 2  Tap1 */}
-            <div style={itemStyle} className="d-flex position-relative">
-              <img src="#" className="flex-shrink-0 me-3" alt="item 2" />
-              <div>
-                <h5 className="mt-0">item name</h5>
-                <p>
-                  This is some placeholder content for the custom component. It
-                  is intended to mimic what some real-world content would look
-                  like, and we're using it here to give the component a bit of
-                  body and size.
-                </p>
-                <a href="#" className="stretched-link">
-                  Add to cart
-                </a>
-              </div>
-            </div>
-
-            {/* item 3  Tap1 */}
-            <div style={itemStyle} className="d-flex position-relative">
-              <img src="#" className="flex-shrink-0 me-3" alt="item 3" />
-              <div>
-                <h5 className="mt-0">item name</h5>
-                <p>
-                  This is some placeholder content for the custom component. It
-                  is intended to mimic what some real-world content would look
-                  like, and we're using it here to give the component a bit of
-                  body and size.
-                </p>
-                <a href="#" className="stretched-link">
-                  Add to cart
-                </a>
-              </div>
-            </div>
+            <button
+              onClick={min}
+              className="btn btn-outline-danger"
+              type="button"
+            >
+              <FontAwesomeIcon icon={faMinus} />
+            </button>
+            <label
+              id="quan"
+              style={{ width: "150px" }}
+              className="form-control"
+            >
+              {quantite}
+            </label>
+            <button
+              onClick={plus}
+              className="btn btn-outline-success"
+              type="button"
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
           </div>
 
-          <div
-            className="tab-pane fade"
-            id="Tap2"
-            role="tabpanel"
-            aria-labelledby="Tap2-tab"
+          <button
+            className="container btn btn-outline-primary btn-sm mt-2"
+            type="button"
           >
-            {/* item 1 Tap2 */}
-            <div style={itemStyle} className="d-flex position-relative">
-              <img src="#" className="flex-shrink-0 me-3" alt="item 1" />
-              <div>
-                <h5 className="mt-0">item name</h5>
-                <p>
-                  This is some placeholder content for the custom component. It
-                  is intended to mimic what some real-world content would look
-                  like, and we're using it here to give the component a bit of
-                  body and size.
-                </p>
-                <a href="#" className="stretched-link">
-                  Add to cart
-                </a>
-              </div>
-            </div>
-
-            {/* item 2  Tap2 */}
-            <div style={itemStyle} className="d-flex position-relative">
-              <img src="#" className="flex-shrink-0 me-3" alt="item 2" />
-              <div>
-                <h5 className="mt-0">item name</h5>
-                <p>
-                  This is some placeholder content for the custom component. It
-                  is intended to mimic what some real-world content would look
-                  like, and we're using it here to give the component a bit of
-                  body and size.
-                </p>
-                <a href="#" className="stretched-link">
-                  Add to cart
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div
-            className="tab-pane fade"
-            id="Tap3"
-            role="tabpanel"
-            aria-labelledby="Tap3-tab"
-          >
-            {/* item 1  Tap3 */}
-            <div style={itemStyle} className="d-flex position-relative">
-              <img src="#" className="flex-shrink-0 me-3" alt="item 1" />
-              <div>
-                <h5 className="mt-0">item name</h5>
-                <p>
-                  This is some placeholder content for the custom component. It
-                  is intended to mimic what some real-world content would look
-                  like, and we're using it here to give the component a bit of
-                  body and size.
-                </p>
-                <a href="#" className="stretched-link">
-                  Add to cart
-                </a>
-              </div>
-            </div>
-
-            {/* item 2 Tap3 */}
-            <div style={itemStyle} className="d-flex position-relative">
-              <img src="#" className="flex-shrink-0 me-3" alt="item 2" />
-              <div>
-                <h5 className="mt-0">item name</h5>
-                <p>
-                  This is some placeholder content for the custom component. It
-                  is intended to mimic what some real-world content would look
-                  like, and we're using it here to give the component a bit of
-                  body and size.
-                </p>
-                <a href="#" className="stretched-link">
-                  Add to cart
-                </a>
-              </div>
-            </div>
-          </div>
+            Add to Card
+          </button>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
-
-export default MenuItem;

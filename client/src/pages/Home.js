@@ -24,7 +24,7 @@ export default function Home() {
             {/* example */}
             <BuzCard
               img="https://static.pexels.com/photos/7096/people-woman-coffee-meeting.jpg"
-              tradeName="business name"
+              tradeName="businessName"
               type="coffe"
               Desc="This is a company that builds websites, web apps and e-commerce solutions."
             />
