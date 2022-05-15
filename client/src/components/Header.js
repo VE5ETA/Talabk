@@ -81,18 +81,28 @@ export default function Header(props) {
                 </NavLink>
               </li>
             </ul>
-            <form className="d-flex">
-              <NavLink to="/login">
-                <button type="button" className="btn btn-outline-primary">
-                  Login
-                </button>
-              </NavLink>
-              <NavLink to="/signup">
-                <button type="button" className="btn btn-outline-secondary">
-                  Signup
-                </button>
-              </NavLink>
-            </form>
+            {userContext.token ? (
+              <form className="d-flex">
+                <NavLink to="/logout">
+                  <button type="button" className="btn btn-outline-secondary">
+                    logout
+                  </button>
+                </NavLink>
+              </form>
+            ) : (
+              <form className="d-flex">
+                <NavLink to="/login">
+                  <button type="button" className="btn btn-outline-primary">
+                    Login
+                  </button>
+                </NavLink>
+                <NavLink to="/signup">
+                  <button type="button" className="btn btn-outline-secondary">
+                    Signup
+                  </button>
+                </NavLink>
+              </form>
+            )}
           </div>
         </div>
       </nav>
