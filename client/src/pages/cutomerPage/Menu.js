@@ -9,7 +9,7 @@ export default function Menu() {
 
   return (
     <>
-      <Header haveCard={true} />
+      {/* <Header haveCard={true} /> */}
 
       <section className="py-5">
         <div className="container">
@@ -47,7 +47,7 @@ export default function Menu() {
         </div>
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

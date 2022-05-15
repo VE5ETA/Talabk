@@ -23,7 +23,7 @@ export default function Login() {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: username, password }),
+      body: JSON.stringify({ username, password }),
     })
       .then(async (response) => {
         setIsSubmitting(false);
