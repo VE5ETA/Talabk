@@ -160,7 +160,7 @@ export default function SignUp() {
                 intent="primary"
                 disabled={isSubmitting}
                 text={`${isSubmitting ? "Registering" : "Register"}`}
-                fill
+                // fill //not needed
                 type="submit"
               >
                 join with us

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
 // this function is protect critical page
@@ -7,9 +7,14 @@ import { UserContext } from "./UserContext";
 export default function RequireAuth() {
   const [userContext, setUserContext] = useContext(UserContext);
   const location = useLocation();
+  const navigate = useNavigate();
   //this needs to be fixed ❗
   return userContext.token ? (
-    <Outlet />
+    location.state?.from ? (
+      navigate(location.state.from) // this needs to be  checked 📃
+    ) : (
+      <Outlet />
+    )
   ) : (
     <Navigate to="/login" replace state={{ from: location }} />
   );

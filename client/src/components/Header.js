@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,9 +9,65 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { UserContext } from "../context/UserContext";
+import { errorAlert, successAlert } from "../helper/Options";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-export default function Head(props) {
-  const [userContext] = useContext(UserContext);
+export default function Header(props) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(undefined);
+  const [succssed, setSuccssed] = useState(false);
+  const [userContext, setUserContext] = useContext(UserContext);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (error) {
+      errorAlert(error);
+    }
+    if (succssed) {
+      successAlert("you have logged out successfuly 👋😁");
+      navigate("/");
+    }
+  }, [error, succssed]);
+
+  const formSubmitHandler = (e) => {
+    toast.clearWaitingQueue();
+    toast.dismiss();
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError("");
+
+    const genericErrorMessage = "Something went wrong! Please try again later.";
+    fetch(process.env.REACT_APP_API_ENDPOINT + "user/logout", {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userContext.token}`,
+      },
+    })
+      .then(async (response) => {
+        setIsSubmitting(false);
+        if (!response.ok) {
+          if (response.status === 400) {
+            setError("Bad Request! something want wrong");
+          } else if (response.status === 401) {
+            setError("you're already logged out .");
+          } else {
+            setError(genericErrorMessage);
+          }
+        } else {
+          setUserContext((oldValues) => {
+            return { ...oldValues, details: undefined, token: null };
+          });
+          setSuccssed(true);
+        }
+      })
+      .catch((error) => {
+        setIsSubmitting(false);
+        setError(genericErrorMessage);
+      });
+  };
 
   return (
     <header>
@@ -23,7 +79,7 @@ export default function Head(props) {
                 fontFamily: "'Anton', sans-serif",
                 fontFamily: "'Oswald', sans-serif",
                 fontFamily: "'Lobster', cursive",
-                fontSize: 50,
+                fontSize: 55,
               }}
               className="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none"
             >
@@ -114,23 +170,32 @@ export default function Head(props) {
                         <hr className="dropdown-divider" />
                       </li>
                       <li>
-                        <a className="dropdown-item text-white" href="#">
-                          Sign out
-                        </a>
+                        <form
+                          onSubmit={formSubmitHandler}
+                          className="dropdown-item text-white"
+                          href="#"
+                        >
+                          <button
+                            type="submit"
+                            className="btn btn-outline-secondary"
+                          >
+                            logout
+                          </button>
+                        </form>
                       </li>
                     </ul>
                   </div>
                 </li>
               </ul>
             ) : (
-              <div class="text-end">
+              <div className="text-end">
                 <NavLink to="/login">
-                  <button type="button" class="btn btn-outline-light me-2">
+                  <button type="button" className="btn btn-outline-light me-2">
                     Login
                   </button>
                 </NavLink>
                 <NavLink to="/signup">
-                  <button type="button" class="btn btn-warning">
+                  <button type="button" className="btn btn-warning">
                     Sign-up
                   </button>
                 </NavLink>

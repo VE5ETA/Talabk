@@ -5,7 +5,7 @@ import "./Style/styles.min.css";
 
 import { UserContext } from "../context/UserContext";
 import { errorAlert } from "../helper/Options";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export default function Login() {
   // const [succssed, setSuccssed] = useState(false); // later 🕔
@@ -68,7 +68,6 @@ export default function Login() {
 
   return (
     <div>
-      <ToastContainer newestOnTop={false} limit={1} />
       <div className="container" style={{ marginTop: "111px" }}>
         <div className="row register-form">
           <div className="col">
@@ -122,7 +121,7 @@ export default function Login() {
                 intent="primary"
                 disabled={isSubmitting}
                 text={`${isSubmitting ? "Signing In" : "Sign In"}`}
-                fill
+                // fill //for now
                 type="submit"
               >
                 login
