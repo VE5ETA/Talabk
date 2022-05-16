@@ -13,6 +13,7 @@ import NewReq from "./plateformPage/NewReq";
 import Menu from "./cutomerPage/Menu";
 import Cart from "./cutomerPage/Cart";
 import Store from "./Store";
+import CreateForm from "./BusinessPage/CreateForm";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/stores" element={<Store />} />
           <Route path="/cart" element={<Cart />} />
           {/* for test */}
+          <Route path="/createBusiness" element={<CreateForm />} />
           <Route path="/stores/:buzname/menu" element={<Menu />} />
           <Route path="/:buzname/menu/:itemName" element={<NewReq />} />
 

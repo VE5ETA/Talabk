@@ -32,22 +32,7 @@ export default function Store() {
   return (
     <section className="py-5">
       <div className="container mt-2 res-card">
-        <div className="row">
-          {data()}
-          {/* example */}
-          {/* <BuzCard
-            img="https://static.pexels.com/photos/7096/people-woman-coffee-meeting.jpg"
-            tradeName="businessName"
-            type="coffe"
-            Desc="This is a company that builds websites, web apps and e-commerce solutions."
-          />
-          <BuzCard
-            img="https://static.pexels.com/photos/7096/people-woman-coffee-meeting.jpg"
-            tradeName="mac"
-            type="coffe"
-            Desc="This is a company that builds websites, web apps and e-commerce solutions."
-          /> */}
-        </div>
+        <div className="row">{data()}</div>
       </div>
     </section>
   );

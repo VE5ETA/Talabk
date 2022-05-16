@@ -56,7 +56,7 @@ export default function Login() {
           });
           // setSuccssed(true); // later 🕔
           if (data?.token) {
-            navigate("/"); // i will change this to location.state?.form
+            navigate("/createBusiness"); // i will change this to location.state?.form
           }
         }
       })
