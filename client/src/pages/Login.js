@@ -4,13 +4,15 @@ import { useNavigate } from "react-router-dom"; //no
 import "./Style/styles.min.css";
 
 import { UserContext } from "../context/UserContext";
-import { errorAlert } from "../helper/Options";
+import { errorAlert, successAlert } from "../helper/Options";
 import { toast } from "react-toastify";
 
 export default function Login() {
   // const [succssed, setSuccssed] = useState(false); // later 🕔
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(undefined);
+  const [succssed, setSuccssed] = useState(false);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [userContext, setUserContext] = useContext(UserContext);
@@ -22,7 +24,11 @@ export default function Login() {
     if (error) {
       errorAlert(error);
     }
-  }, [error]);
+    if (succssed) {
+      successAlert("you have logged in successfuly 👋😁");
+      navigate("/");
+    }
+  }, [error, succssed]);
 
   const formSubmitHandler = (e) => {
     toast.clearWaitingQueue();
@@ -54,10 +60,11 @@ export default function Login() {
           setUserContext((oldValues) => {
             return { ...oldValues, token: data.token };
           });
-          // setSuccssed(true); // later 🕔
-          if (data?.token) {
-            navigate("/createBusiness"); // i will change this to location.state?.form
-          }
+          setSuccssed(true); // later 🕔// now it's the time ⌛
+          //the bleow was removed to show an alert ⬇
+          // if (data?.token) {
+          //   navigate("/createBusiness"); // i will change this to location.state?.form
+          // }
         }
       })
       .catch((error) => {

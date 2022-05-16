@@ -7,7 +7,7 @@ import { ToastContainer } from "react-toastify";
 export default function Layout() {
   return (
     <div className="App">
-      <ToastContainer newestOnTop={true} limit={1} />
+      <ToastContainer theme={"dark"} newestOnTop={true} limit={1} />
       <Header />
       <Outlet />
       <Footer />

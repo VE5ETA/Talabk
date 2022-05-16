@@ -1,19 +1,36 @@
-import React, { useContext, useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext, useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
-// import Header from "../components/Header"; //moved to Layout.js
+import { errorAlert, successAlert } from "../helper/Options";
+import { toast } from "react-toastify";
 
 export default function SignUp() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [succssed, setSuccssed] = useState(false);
+
   const [name, setName] = useState();
   const [username, setUsername] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [userContext, setUserContext] = useContext(UserContext);
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (error) {
+      errorAlert(error);
+    }
+    if (succssed) {
+      successAlert("you have logged in successfuly 👋😁");
+      navigate("/");
+    }
+  }, [error, succssed]);
+
   const formSubmitHandler = (e) => {
+    toast.clearWaitingQueue();
+    toast.dismiss();
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
@@ -55,133 +72,123 @@ export default function SignUp() {
 
   // html
   return (
-    <div>
-      <div className="container" style={{ marginTop: "111px" }}>
-        <div className="row register-form">
-          <div className="col">
-            <div />
-          </div>
-          <div
-            className="col-md-8 col-xl-7 offset-md-2"
-            style={{ marginRight: "0px", marginTop: "0px", marginLeft: 0 }}
-          >
-            <form onSubmit={formSubmitHandler} className="custom-form">
-              <h1>JOIN WITH US</h1>
-              <div className="row form-group">
-                <div className="col-sm-4 label-column">
-                  <label className="col-form-label" htmlFor="name-input-field">
-                    Name
-                  </label>
-                </div>
-                <div className="col-sm-6 input-column">
-                  <input
-                    className="form-control"
-                    id="name"
-                    placeholder="name"
-                    onChange={(e) => setName(e.target.value)}
-                    type="text"
-                  />
-                </div>
-              </div>
-              <div className="row form-group">
-                <div className="col-sm-4 label-column">
-                  <label
-                    className="col-form-label"
-                    htmlFor="userName-input-field"
-                  >
-                    User Name
-                  </label>
-                </div>
-                <div className="col-sm-6 input-column">
-                  <input
-                    className="form-control"
-                    id="username"
-                    placeholder="User Name"
-                    onChange={(e) => setUsername(e.target.value)}
-                    type="text"
-                  />
-                </div>
-              </div>
-              <div className="row form-group">
-                <div className="col-sm-4 label-column">
-                  <label className="col-form-label" htmlFor="email-input-field">
-                    Email
-                  </label>
-                </div>
-                <div className="col-sm-6 input-column">
-                  <input
-                    className="form-control"
-                    id="email"
-                    placeholder="Email"
-                    onChange={(e) => setEmail(e.target.value)}
-                    type="email"
-                  />
-                </div>
-              </div>
-              <div className="row form-group">
-                <div className="col-sm-4 label-column">
-                  <label
-                    className="col-form-label"
-                    htmlFor="pawssword-input-field"
-                  >
-                    Password
-                  </label>
-                </div>
-                <div className="col-sm-6 input-column">
-                  <input
-                    className="form-control"
-                    id="password"
-                    placeholder="Password"
-                    onChange={(e) => setPassword(e.target.value)}
-                    type="password"
-                  />
-                </div>
-              </div>
-              <div className="row form-group">
-                <div className="col-sm-4 label-column">
-                  {/* ❗ need to complate this ❗ */}
-                  <label
-                    className="col-form-label"
-                    htmlFor="repeat-pawssword-input-field"
-                  >
-                    Confirm Password
-                  </label>
-                </div>
-                <div className="col-sm-6 input-column">
-                  <input
-                    className="form-control"
-                    placeholder="this needs to be complate ❗"
-                    type="password"
-                  />
-                </div>
-              </div>
-              <button
-                className="btn btn-light submit-button"
-                intent="primary"
-                disabled={isSubmitting}
-                text={`${isSubmitting ? "Registering" : "Register"}`}
-                // fill //not needed
-                type="submit"
-              >
-                join with us
-              </button>
-              <div className="col-lg-12 text-center mt-4">
-                <label className="form-label">
-                  did you have account before?
+    <div className="container" style={{ marginTop: "111px" }}>
+      <div className="row register-form">
+        <div className="col">
+          <div />
+        </div>
+        <div
+          className="col-md-8 col-xl-7 offset-md-2"
+          style={{ marginRight: "0px", marginTop: "0px", marginLeft: 0 }}
+        >
+          <form onSubmit={formSubmitHandler} className="custom-form">
+            <h1>JOIN WITH US</h1>
+            <div className="row form-group">
+              <div className="col-sm-4 label-column">
+                <label className="col-form-label" htmlFor="name-input-field">
+                  Name
                 </label>
-                <NavLink to="/login"> login here</NavLink>
               </div>
-
-              {error && (
-                <div className="callout callout-danger">
-                  <h4>{error}</h4>
-                </div>
-              )}
-            </form>
-          </div>
-          <div className="col">
-            <div />
-          </div>
+              <div className="col-sm-6 input-column">
+                <input
+                  className="form-control"
+                  id="name"
+                  placeholder="name"
+                  onChange={(e) => setName(e.target.value)}
+                  type="text"
+                />
+              </div>
+            </div>
+            <div className="row form-group">
+              <div className="col-sm-4 label-column">
+                <label
+                  className="col-form-label"
+                  htmlFor="userName-input-field"
+                >
+                  User Name
+                </label>
+              </div>
+              <div className="col-sm-6 input-column">
+                <input
+                  className="form-control"
+                  id="username"
+                  placeholder="User Name"
+                  onChange={(e) => setUsername(e.target.value)}
+                  type="text"
+                />
+              </div>
+            </div>
+            <div className="row form-group">
+              <div className="col-sm-4 label-column">
+                <label className="col-form-label" htmlFor="email-input-field">
+                  Email
+                </label>
+              </div>
+              <div className="col-sm-6 input-column">
+                <input
+                  className="form-control"
+                  id="email"
+                  placeholder="Email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  type="email"
+                />
+              </div>
+            </div>
+            <div className="row form-group">
+              <div className="col-sm-4 label-column">
+                <label
+                  className="col-form-label"
+                  htmlFor="pawssword-input-field"
+                >
+                  Password
+                </label>
+              </div>
+              <div className="col-sm-6 input-column">
+                <input
+                  className="form-control"
+                  id="password"
+                  placeholder="Password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  type="password"
+                />
+              </div>
+            </div>
+            <div className="row form-group">
+              <div className="col-sm-4 label-column">
+                {/* ❗ need to complate this ❗ */}
+                <label
+                  className="col-form-label"
+                  htmlFor="repeat-pawssword-input-field"
+                >
+                  Confirm Password
+                </label>
+              </div>
+              <div className="col-sm-6 input-column">
+                <input
+                  className="form-control"
+                  placeholder="this needs to be complate ❗"
+                  type="password"
+                />
+              </div>
+            </div>
+            <button
+              className="btn btn-light submit-button"
+              intent="primary"
+              disabled={isSubmitting}
+              text={`${isSubmitting ? "Registering" : "Register"}`}
+              // fill //not needed
+              type="submit"
+            >
+              join with us
+            </button>
+            <div className="col-lg-12 text-center mt-4">
+              <label className="form-label">did you have account before?</label>
+              <NavLink to="/login"> login here</NavLink>
+            </div>
+          </form>
+        </div>
+        <div className="col">
+          <div />
         </div>
       </div>
     </div>
