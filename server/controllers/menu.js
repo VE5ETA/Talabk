@@ -36,6 +36,7 @@ module.exports = {
               name: req.body.name,
               logo: req.file.buffer,
               logoMimetype: req.file.mimetype,
+              description: req.body.description,
             });
             // console.log(req.file.buffer);
             newMenu.save((err) => {
@@ -109,6 +110,9 @@ module.exports = {
           }
           if (req.body.state) {
             menu.state = req.body.state;
+          }
+          if (req.body.description) {
+            menu.description = req.body.description;
           }
           if (req.body.status) {
             menu.status = req.body.status;

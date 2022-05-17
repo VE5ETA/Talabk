@@ -5,7 +5,8 @@ import { useParams } from "react-router-dom";
 import MenuItem from "../../components/MenuItem";
 
 export default function Menu() {
-  let { buzname } = useParams();
+  let { username } = useParams();
+  console.log(username);
 
   return (
     <>
@@ -41,7 +42,7 @@ export default function Menu() {
 
       <div className="container">
         <div className="row mb-2">
-          <MenuItem price={99999.99} id={1} name="item name 1" />
+          <MenuItem price={99.99} id={1} name="item name 1" />
           <MenuItem price={25.99} id={2} name="item name 2" />
         </div>
       </div>

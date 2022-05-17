@@ -1,6 +1,7 @@
 "use strict";
 const { Business } = require("../models/business");
 const { Order } = require("../models/Order");
+const { Menu } = require("../models/menu");
 
 module.exports = {
   createOrder: (req, res, next) => {
@@ -151,14 +152,83 @@ module.exports = {
     });
   },
   showStores: (req, res, next) => {
-    Business.find({ businessState: "active" }).then((business) => {
-      if (business) {
-        res.status(200).send(business);
-      } else {
-        res.status(204).send({
-          message: "There are no active business",
-        });
+    try {
+      Business.aggregate([
+        {
+          $match: {
+            businessState: "active",
+          },
+        },
+        {
+          $lookup: {
+            from: "menus",
+            localField: "_id",
+            foreignField: "businessID",
+            as: "menu",
+          },
+        },
+        {
+          $unwind: {
+            path: "$menu",
+          },
+        },
+        {
+          $group: {
+            _id: "$menu",
+          },
+        },
+        {
+          $replaceRoot: {
+            newRoot: "$_id",
+          },
+        },
+      ]).then((menus) => {
+        if (menus) {
+          res.status(200).send(menus);
+        } else {
+          res.status(404).send({
+            message: "no menu found",
+          });
+        }
+      });
+    } catch (error) {
+      res.status(400).send({
+        message: error,
+        success: false,
+      });
+    }
+  },
+  fullmenu: (req, res, next) => {
+    try {
+      if (!req.param.username) {
       }
-    });
+      Menu.findOne({ businessID: req.user.workIn }).then((menu) => {
+        if (menu) {
+          Item.find({ MenuID: menu._id }).then((item) => {
+            if (item) {
+              let m2i = { head: menu, body: item };
+              // menu.items = item;
+              // let x = { meow: "meow!🐱" };
+              // x.items = item;
+              // res.status(200).send(x.items[0]);
+              res.status(200).send(m2i);
+            } else {
+              res.status(404).send({
+                message: "this menu don't have items",
+              });
+            }
+          });
+        } else {
+          res.status(404).send({
+            message: "you don't even have a menu 🙂",
+          });
+        }
+      });
+    } catch (error) {
+      res.status(400).send({
+        message: error,
+        success: false,
+      });
+    }
   },
 };

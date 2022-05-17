@@ -3,8 +3,11 @@ const { Business } = require("../models/business");
 
 exports.isValidObjID = (req, res, next) => {
   try {
-    if (req.body.id) {
-      if (req.body.id.match(/^[0-9a-fA-F]{24}$/)) {
+    if (req.body?.ID || req.parms?.ID) {
+      if (
+        req.body.ID.match(/^[0-9a-fA-F]{24}$/) ||
+        req.parms.ID.match(/^[0-9a-fA-F]{24}$/)
+      ) {
         next();
       } else {
         throw Error;

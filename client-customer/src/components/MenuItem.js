@@ -25,13 +25,16 @@ export default function MenuItem(props) {
   //   quantite: quantite,
   // });
 
-  function addToCart() {
+  useEffect(() => {
     setItemDetail({
       id: props.id,
       price: props.price,
       name: props.name,
       quantite: quantite,
     });
+  }, [quantite]);
+
+  function addToCart() {
     addItem(itemDetail);
   }
 
