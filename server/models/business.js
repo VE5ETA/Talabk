@@ -64,10 +64,6 @@ const Business = new Schema({
     type: Boolean,
     default: false,
   },
-  description: {
-    type: String,
-    default: "",
-  },
   businessState: {
     type: String,
     default: "pending, business isn't verified yet", // suspension or active

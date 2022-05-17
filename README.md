@@ -6,6 +6,7 @@
 
 ### Todo
 
+- [ ] check order import in customer controlle.
 - [ ] update all api url schema to be lowercase and to be all standard.
 - [ ] update all functions with trycatch Statement
   - [ ] and HTTP response status codes to be standardized.

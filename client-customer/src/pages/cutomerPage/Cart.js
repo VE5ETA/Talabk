@@ -3,11 +3,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnglesLeft } from "@fortawesome/free-solid-svg-icons";
 import { orderInfo } from "../../helper/OrderInfo";
 import CartProduct from "../../components/CartProduct";
+import { itemCount } from "../../helper/OrderInfo";
 
 export default function Card() {
-  const [subTotal, setSubTotal] = useState(0);
-  const [count, setCount] = useState(0);
+  // const [subTotal, setSubTotal] = useState(0);
+  // const [count, setCount] = useState(0);
   const [orderType, setOrderType] = useState("inside");
+  let subTotal = 0;
+  let count = 0;
 
   return (
     <div className="cart">
@@ -35,10 +38,9 @@ export default function Card() {
             </h4>
             <ul className="list-group mb-3">
               {orderInfo.items.length !== 0 ? (
-                orderInfo.items.map((item) => {
-                  // setSubTotal(subTotal + item.price);
-                  // console.log(subTotal);
-                  // setCount(count + 1);
+                orderInfo.items.map((item, index) => {
+                  subTotal += item.price * item.quantite;
+                  count += item.quantite;
                   return (
                     <CartProduct
                       key={item.id}

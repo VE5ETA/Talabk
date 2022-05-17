@@ -26,6 +26,10 @@ const Menu = new Schema({
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+    default: "",
+  },
   logo: {
     type: Buffer,
   },
