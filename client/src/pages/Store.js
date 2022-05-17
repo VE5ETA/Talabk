@@ -8,7 +8,12 @@ export default function Store() {
   useEffect(() => {
     getStoresData();
   }, []);
-
+  //--------------------------\\
+  useEffect(() => {
+    data();
+  }, [storesData]);
+  //--------------------------\\
+  
   function getStoresData() {
     axios
       .get(process.env.REACT_APP_API_ENDPOINT + "customer/stores")

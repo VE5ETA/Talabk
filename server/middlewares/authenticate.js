@@ -8,7 +8,7 @@ exports.COOKIE_OPTIONS = {
   // Since localhost is not having https protocol,
   // secure cookies do not work correctly (in postman)
   // secure: !dev, //this will work with insomnia ✅, this won't work with chrome❄
-  secure: true, //this will work with chrome 🍥, this won't work with insomnia 💠, i edit this now in 16/5 🔨😎 old value = !dev
+  secure: dev, //this will work with chrome 🍥, this won't work with insomnia 💠, i edit this now in 16/5 🔨😎 old value = !dev
   signed: true,
   maxAge: eval(process.env.REFRESH_TOKEN_EXPIRY) * 1000,
   sameSite: "none",

@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const passport = require("passport");
 
 if (process.env.NODE_ENV !== "production") {
+  //this will run by defualt
   // Load environment variables from .env file in non prod environments
   require("dotenv").config();
 }

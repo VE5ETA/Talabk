@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { UserContext } from "../context/UserContext";
-import { errorAlert, successAlert } from "../helper/Options";
+import { errorAlert, infoAlert } from "../helper/Options";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -26,7 +26,7 @@ export default function Header(props) {
       errorAlert(error);
     }
     if (succssed) {
-      successAlert("you have logged out successfuly 👋😁");
+      infoAlert(" good bye 🖐 ");
       navigate("/");
     }
   }, [error, succssed]);
@@ -73,7 +73,7 @@ export default function Header(props) {
     <header>
       <div className="px-3 py-2 bg-dark text-white">
         <div className="container">
-          <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+          <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-3">
             <div
               style={{
                 fontFamily: "'Anton', sans-serif",

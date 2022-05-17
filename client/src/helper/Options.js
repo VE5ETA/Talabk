@@ -1,6 +1,8 @@
 import { toast } from "react-toastify";
 
-export const errorAlert = (x) =>
+export const errorAlert = (x) => {
+  toast.clearWaitingQueue();
+  toast.dismiss();
   toast.error(x, {
     position: "top-right",
     autoClose: 5000,
@@ -11,7 +13,8 @@ export const errorAlert = (x) =>
     progress: undefined,
     pauseOnFocusLoss: true,
   });
-export const successAlert = (x) =>
+};
+export const successAlert = (x) => {
   toast.success(x, {
     position: "top-right",
     autoClose: 5000,
@@ -22,7 +25,10 @@ export const successAlert = (x) =>
     progress: undefined,
     pauseOnFocusLoss: true,
   });
-export const warningAlert = (x) =>
+};
+export const warningAlert = (x) => {
+  toast.clearWaitingQueue();
+  toast.dismiss();
   toast.warning(x, {
     position: "top-right",
     autoClose: 5000,
@@ -33,7 +39,10 @@ export const warningAlert = (x) =>
     progress: undefined,
     pauseOnFocusLoss: true,
   });
-export const infoAlert = (x) =>
+};
+export const infoAlert = (x) => {
+  toast.clearWaitingQueue();
+  toast.dismiss();
   toast.info(x, {
     position: "top-right",
     autoClose: 5000,
@@ -44,3 +53,4 @@ export const infoAlert = (x) =>
     progress: undefined,
     pauseOnFocusLoss: true,
   });
+};

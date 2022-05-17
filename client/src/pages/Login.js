@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"; //no
 import "./Style/styles.min.css";
 
 import { UserContext } from "../context/UserContext";
-import { errorAlert, successAlert } from "../helper/Options";
+import { errorAlert, infoAlert } from "../helper/Options";
 import { toast } from "react-toastify";
 
 export default function Login() {
@@ -25,14 +25,12 @@ export default function Login() {
       errorAlert(error);
     }
     if (succssed) {
-      successAlert("you have logged in successfuly 👋😁");
+      infoAlert("you have logged in successfuly 👋😁");
       navigate("/");
     }
   }, [error, succssed]);
 
   const formSubmitHandler = (e) => {
-    toast.clearWaitingQueue();
-    toast.dismiss();
     e.preventDefault();
     setIsSubmitting(true);
     setError("");

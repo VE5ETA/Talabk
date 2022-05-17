@@ -23,14 +23,12 @@ export default function SignUp() {
       errorAlert(error);
     }
     if (succssed) {
-      successAlert("you have logged in successfuly 👋😁");
+      successAlert("your account has been created successfuly 👋😁");
       navigate("/");
     }
   }, [error, succssed]);
 
   const formSubmitHandler = (e) => {
-    toast.clearWaitingQueue();
-    toast.dismiss();
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
