@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faMinus, faTags } from "@fortawesome/free-solid-svg-icons";
 import { addItem } from "../helper/OrderInfo";
 
 export default function MenuItem(props) {
@@ -60,7 +60,9 @@ export default function MenuItem(props) {
           </p> */}
           <div className="d-flex align-items-center d-inline-block mt-2">
             <div className="align-items-center ">
-              <h5 className="mr-1">{props.price} SAR</h5>
+              <h5 className="mr-1">
+                {props.price} SAR <FontAwesomeIcon icon={faTags} />
+              </h5>
             </div>
           </div>
 

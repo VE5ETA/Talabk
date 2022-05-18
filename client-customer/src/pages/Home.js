@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 // import Header from "../components/Header"; moved to Layout.js
 // import Footer from "../components/Footer"; moved to Layout.js
 import "../pages/Style/styles.min.css";
+import Store from "./Store";
 
 export default function Home() {
+  // const [showStores, setShowStores] = useState(false);
+  // if (!showStores) {
   return (
     <div>
       <header className="bg-dark py-5">
@@ -27,15 +30,36 @@ export default function Home() {
               choose what you want
             </p>
             <NavLink
-              to="/stores"
+              to={"/stores"}
               className="btn btn-warning btn-lg btn-block col-md-2"
               type="button"
             >
               Browse Store List
             </NavLink>
+            {/* <button
+              className="btn btn-warning btn-lg btn-block col-md-2"
+              type="button"
+              onClick={() => setShowStores(true)}
+            >
+              Browse Store List
+            </button> */}
           </div>
         </div>
       </header>
     </div>
   );
-}
+} //else {
+//   return (
+//     <div>
+//       <button
+//         className="btn btn-warning btn-lg btn-block col-md-2"
+//         type="button"
+//         onClick={() => setShowStores(false)}
+//       >
+//         Browse Store List
+//       </button>
+//       <Store />
+//     </div>
+//   );
+// }
+// }
