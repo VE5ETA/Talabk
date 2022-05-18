@@ -13,7 +13,7 @@ export default function Card() {
   let count = 0;
 
   return (
-    <div className="cart">
+    <div className="cart bg-light">
       <div className="container">
         <div className="py-5 text-center">
           <img
@@ -60,32 +60,6 @@ export default function Card() {
                 </div>
                 <span className="text-muted">{subTotal}SAR</span>
               </li>
-              <li className="list-group-item d-flex justify-content-between lh-condensed">
-                <div>
-                  <h6 className="my-0 mb-2">chose the type of order </h6>
-                  <input
-                    className="form-check-input me-1"
-                    type="checkbox"
-                    id="flexCheckDefault1"
-                    defaultValue
-                  />
-                  <label
-                    defaultValue
-                    htmlFor="flexCheckDefault1"
-                    className="text-muted me-1"
-                  >
-                    inside
-                  </label>
-                  <input
-                    className="form-check-input me-1"
-                    type="checkbox"
-                    id="flexCheckDefault2"
-                  />
-                  <label htmlFor="flexCheckDefault2" className="text-muted">
-                    pickup
-                  </label>
-                </div>
-              </li>
             </ul>
             <form className="card p-2">
               <div className="input-group">
@@ -95,7 +69,7 @@ export default function Card() {
                   placeholder="Promo code"
                 />
                 <div className="input-group-append">
-                  <button type="submit" className="btn btn-secondary">
+                  <button type="button" className="btn btn-secondary">
                     Redeem
                   </button>
                 </div>
@@ -217,12 +191,8 @@ export default function Card() {
               </div>
               <hr className="mb-4" />
 
-              <button className="btn btn-primary" type="submit">
-                <FontAwesomeIcon icon={faAnglesLeft} />
-              </button>
-
               <button
-                className="btn btn-primary btn-lg btn-block col-md-6"
+                className="btn btn-primary btn-lg btn-block"
                 type="submit"
               >
                 Continue to checkout

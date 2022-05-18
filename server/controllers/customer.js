@@ -2,6 +2,7 @@
 const { Business } = require("../models/business");
 const { Order } = require("../models/Order");
 const { Menu } = require("../models/menu");
+const { Item } = require("../models/menu");
 
 module.exports = {
   createOrder: (req, res, next) => {
@@ -200,30 +201,30 @@ module.exports = {
   },
   fullmenu: (req, res, next) => {
     try {
-      if (!req.param.username) {
+      if (!req.params.username) {
+        res.status(500).send({
+          message: "username is required",
+        });
+      } else {
+        Menu.findOne({ username: req.params.username }).then((menu) => {
+          if (menu) {
+            Item.find({ MenuID: menu._id }).then((item) => {
+              if (item) {
+                let allMenuData = { head: menu, body: item };
+                res.status(200).send(allMenuData);
+              } else {
+                res.status(201).send({
+                  message: "this menu don't have items",
+                });
+              }
+            });
+          } else {
+            res.status(404).send({
+              message: "didn't found business with the given name",
+            });
+          }
+        });
       }
-      Menu.findOne({ businessID: req.user.workIn }).then((menu) => {
-        if (menu) {
-          Item.find({ MenuID: menu._id }).then((item) => {
-            if (item) {
-              let m2i = { head: menu, body: item };
-              // menu.items = item;
-              // let x = { meow: "meow!🐱" };
-              // x.items = item;
-              // res.status(200).send(x.items[0]);
-              res.status(200).send(m2i);
-            } else {
-              res.status(404).send({
-                message: "this menu don't have items",
-              });
-            }
-          });
-        } else {
-          res.status(404).send({
-            message: "you don't even have a menu 🙂",
-          });
-        }
-      });
     } catch (error) {
       res.status(400).send({
         message: error,

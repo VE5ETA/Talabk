@@ -8,11 +8,10 @@ export default function Store() {
   useEffect(() => {
     getMenusData();
   }, []);
-  //--------------------------\\
+
   useEffect(() => {
     data();
   }, [MenusData]);
-  //--------------------------\\
 
   function getMenusData() {
     axios
@@ -29,8 +28,6 @@ export default function Store() {
           username={Menu.username}
           name={Menu.name}
           description={Menu.description}
-          // type={Menu.businessType}
-          // Desc={Menu.description}
         />
       );
     });

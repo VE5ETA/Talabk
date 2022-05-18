@@ -24,18 +24,6 @@ export default function Header(props) {
                 Talabk
               </NavLink>
             </div>
-            <NavLink to="/cart">
-              <button
-                type="button"
-                className="btn btn-secondary position-relative"
-              >
-                Inbox
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                  99+
-                  <span className="visually-hidden">unread messages</span>
-                </span>
-              </button>
-            </NavLink>
           </div>
         </div>
       </div>
