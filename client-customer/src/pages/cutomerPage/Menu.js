@@ -29,7 +29,9 @@ export default function Menu() {
   function getmenuData() {
     axios
       .get(process.env.REACT_APP_API_ENDPOINT + `customer/@${username}`)
-      .then((res) => setMenuData(res.data));
+      .then((res) => {
+        setMenuData(res.data);
+      });
   }
 
   function data() {
@@ -64,12 +66,12 @@ export default function Menu() {
                       style={{ maxWidth: "100%" }}
                       src={`data:${menuData.head.logoMimetype};base64,${menuData.head.logo}`}
                       className="card-image"
-                      alt={username + " logo"}
+                      alt={menuData.head.name + " logo"}
                     />
                   </div>
                   <div className="col-md-8">
                     <div className="card-body">
-                      <h5 className="card-title">{username}</h5>
+                      <h5 className="card-title">{menuData.head.name}</h5>
                       <p className="card-text">{menuData.head.description}</p>
                       {/* if business have contact info */}
                       {/* <a className="text-decoration-none" href="#">

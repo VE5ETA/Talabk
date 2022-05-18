@@ -217,12 +217,12 @@ module.exports = {
             Item.aggregate([
               {
                 $match: {
-                  MenuID: menu._id,
+                  MenuID: menu[0]._id,
                 },
               },
             ]).then((items) => {
               if (items) {
-                let allMenuData = { head: menu, body: items };
+                let allMenuData = { head: menu[0], body: items };
                 res.status(200).send(allMenuData);
               } else {
                 res.status(201).send({
