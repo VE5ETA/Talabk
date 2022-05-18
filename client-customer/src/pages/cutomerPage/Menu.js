@@ -1,18 +1,22 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import MenuItem from "../../components/MenuItem";
+import { CustomerContext } from "../../context/CustomerContext";
 
 export default function Menu() {
+  const [customerContext, setCustomerContext] = useContext(CustomerContext);
+
   let { username } = useParams();
 
   let [menuData, setMenuData] = useState([]);
-  const cartContext = createContext({});
-
   useEffect(() => {
     getmenuData();
     if (localStorage.getItem(username)) {
       console.log(localStorage.getItem(username));
+      setCustomerContext((oldValues) => {
+        return { ...oldValues, username: localStorage.getItem(username) };
+      });
     } else {
       localStorage.setItem(username, {});
     }
