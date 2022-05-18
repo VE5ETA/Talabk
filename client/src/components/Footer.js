@@ -1,5 +1,13 @@
 import React from "react";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTwitter,
+  faYoutube,
+  faWhatsapp,
+  faInstagram,
+} from "@fortawesome/free-brands-svg-icons";
+
 export default function Footer() {
   return (
     <footer className="w-100 py-4 flex-shrink-0 d-flex flex-column h-100 bg-dark ">
@@ -7,11 +15,11 @@ export default function Footer() {
         <div className="row gy-4 gx-5">
           <div className="col-lg-4 col-md-6">
             <h5 className="h1 text-white">FB.</h5>
-            <p className="small text-muted">
+            <p className="small text-white">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
               eiusmod tempor incididunt.
             </p>
-            <p className="small text-muted mb-0">
+            <p className="small text-white mb-0">
               © Copyrights. All rights reserved.{" "}
               <a className="text-primary" href="#">
                 Bootstrapious.com
@@ -20,7 +28,7 @@ export default function Footer() {
           </div>
           <div className="col-lg-2 col-md-6">
             <h5 className="text-white mb-3">Quick links</h5>
-            <ul className="list-unstyled text-muted">
+            <ul className="list-unstyled text-white">
               <li>
                 <a href="#">Home</a>
               </li>
@@ -37,7 +45,7 @@ export default function Footer() {
           </div>
           <div className="col-lg-2 col-md-6">
             <h5 className="text-white mb-3">Quick links</h5>
-            <ul className="list-unstyled text-muted">
+            <ul className="list-unstyled text-white">
               <li>
                 <a href="#">Home</a>
               </li>
@@ -52,30 +60,62 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-          <div className="col-lg-4 col-md-6">
-            <h5 className="text-white mb-3">Newsletter</h5>
-            <p className="small text-muted">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt.
-            </p>
-            <form action="#">
-              <div className="input-group mb-3">
-                <input
-                  className="form-control"
-                  type="text"
-                  placeholder="Recipient's username"
-                  aria-label="Recipient's username"
-                  aria-describedby="button-addon2"
-                />
-                <button
-                  className="btn btn-primary"
-                  id="button-addon2"
-                  type="button"
-                >
-                  <i className="fas fa-paper-plane" />
-                </button>
-              </div>
-            </form>
+          <div className="col-lg-4 col-md-6 ">
+            <h5 className="text-white mb-3">Stay connected</h5>
+            <ul className="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small ">
+              <li>
+                <a href="#" className="nav-link text-white">
+                  <div className="bi d-block mx-auto mb-1 text-white mb-3">
+                    <svg
+                      className="bi d-block mx-auto mb-1"
+                      width={24}
+                      height={24}
+                    >
+                      <FontAwesomeIcon icon={faTwitter} />
+                    </svg>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" className="nav-link text-white">
+                  <div className="bi d-block mx-auto mb-1 text-white mb-3">
+                    <svg
+                      className="bi d-block mx-auto mb-1"
+                      width={24}
+                      height={24}
+                    >
+                      <FontAwesomeIcon icon={faYoutube} />
+                    </svg>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" className="nav-link text-white">
+                  <div className="bi d-block mx-auto mb-1 text-white mb-3">
+                    <svg
+                      className="bi d-block mx-auto mb-1"
+                      width={24}
+                      height={24}
+                    >
+                      <FontAwesomeIcon icon={faWhatsapp} />
+                    </svg>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" className="nav-link text-white">
+                  <div className="bi d-block mx-auto mb-1 text-white mb-3">
+                    <svg
+                      className="bi d-block mx-auto mb-1"
+                      width={24}
+                      height={24}
+                    >
+                      <FontAwesomeIcon icon={faInstagram} />
+                    </svg>
+                  </div>
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

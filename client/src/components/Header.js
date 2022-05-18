@@ -32,8 +32,6 @@ export default function Header(props) {
   }, [error, succssed]);
 
   const formSubmitHandler = (e) => {
-    toast.clearWaitingQueue();
-    toast.dismiss();
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
@@ -73,7 +71,7 @@ export default function Header(props) {
     <header>
       <div className="px-3 py-2 bg-dark text-white">
         <div className="container">
-          <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-3">
+          <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-4">
             <div
               style={{
                 fontFamily: "'Anton', sans-serif",
@@ -130,7 +128,7 @@ export default function Header(props) {
                   </a>
                 </li>
                 <li>
-                  <div className="dropdown text-end ">
+                  <div className="dropdown-center text-end ">
                     <a
                       href="#"
                       className="nav-link text-white dropdown-toggle"

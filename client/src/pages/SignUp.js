@@ -3,7 +3,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
 import { errorAlert, successAlert } from "../helper/Options";
-import { toast } from "react-toastify";
 
 export default function SignUp() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -60,6 +59,7 @@ export default function SignUp() {
           setUserContext((oldValues) => {
             return { ...oldValues, token: data.token };
           });
+          setSuccssed(true); // later 🕔// now it's the time ⌛
         }
       })
       .catch((error) => {
