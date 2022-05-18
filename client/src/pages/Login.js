@@ -1,14 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; //no
-// import Header from "../components/Header"; // moved to Layout.js
+import { useNavigate } from "react-router-dom";
 import "./Style/styles.min.css";
 
 import { UserContext } from "../context/UserContext";
 import { errorAlert, infoAlert } from "../helper/Options";
-import { toast } from "react-toastify";
 
 export default function Login() {
-  // const [succssed, setSuccssed] = useState(false); // later 🕔
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(undefined);
   const [succssed, setSuccssed] = useState(false);
@@ -58,6 +55,7 @@ export default function Login() {
           setUserContext((oldValues) => {
             return { ...oldValues, token: data.token };
           });
+
           setSuccssed(true); // later 🕔// now it's the time ⌛
           //the bleow was removed to show an alert ⬇
           // if (data?.token) {

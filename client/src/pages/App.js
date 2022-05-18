@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback, useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RequireAuth from "../context/RequireAuth";
+import IsLogged from "../context/IsLogged";
 
 import { UserContext } from "../context/UserContext";
 
@@ -68,14 +69,20 @@ function App() {
         <Route path="/" element={<Layout />}>
           {/* public page */}
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signUp" element={<SignUp />} />
+          {/* <Route path="/login" element={<Login />} />
+          <Route path="/signUp" element={<SignUp />} /> */}
           <Route path="/stores" element={<Store />} />
           <Route path="/cart" element={<Cart />} />
           {/* for test */}
           <Route path="/createBusiness" element={<CreateForm />} />
           <Route path="/stores/:buzname/menu" element={<Menu />} />
           <Route path="/:buzname/menu/:itemName" element={<NewReq />} />
+
+          {/* ~this will protect the user from accessing login/signup page if he's logged in ⛔ */}
+          <Route element={<IsLogged />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signUp" element={<SignUp />} />
+          </Route>
 
           {/* privete page */}
           <Route element={<RequireAuth />}>

@@ -128,7 +128,7 @@ export default function Header(props) {
                   </a>
                 </li>
                 <li>
-                  <div className="dropdown text-end ">
+                  <div className="dropdown-center text-end ">
                     <a
                       href="#"
                       className="nav-link text-white dropdown-toggle"
