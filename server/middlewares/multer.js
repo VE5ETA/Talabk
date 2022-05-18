@@ -18,7 +18,7 @@ exports.LimitErrorHandler = (err, req, res, next) => {
 
 exports.pdf = multer({
   limits: {
-    fileSize: 12000000, // used to be {15 mb} // updated limit to 12 because base64 increase size by ~33% total size will be 133%.
+    fileSize: 15400000, //this was a missunderstanding the comment after this is wrong 👎😐 ====>  // used to be {15 mb} // updated limit to 12 because base64 increase size by ~33% total size will be 133%.
   },
   fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(pdf)$/))
@@ -31,7 +31,7 @@ exports.pdf = multer({
 exports.logo = multer({
   limits: {
     files: 1,
-    fileSize: 1500000, //1.5 mb // increased by 133% so it will be 2 mb after encoding with base64
+    fileSize: 1540000, //1.5 mb // increased by 133% so it will be 2 mb after encoding with base64
   },
   fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(jpg|jpeg|png)$/))
@@ -46,7 +46,7 @@ exports.logo = multer({
 exports.item = multer({
   limits: {
     files: 1,
-    fileSize: 500000, //this needs to be update 😲 => //0.12 mb == 120KB // ignore the comment after this // increased by 133% so it will be ~0.7 mb after encoding with base64
+    fileSize: 540000, //this needs to be update 😲 => //0.12 mb == 120KB // ignore the comment after this // increased by 133% so it will be ~0.7 mb after encoding with base64
   },
   fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(jpg|jpeg|png)$/))
