@@ -41,12 +41,15 @@ export default function MenuItem(props) {
         <div className="card-body d-flex flex-column align-items-start">
           <img
             src={props.img}
-            // src="https://thumbs.dreamstime.com/z/eat-sweet-dessert-cuisine-tart-food-cafe-menu-pastry-products-close-up-delicious-item-restaurant-enjoy-fresh-layered-ca-cake-142773107.jpg"
             className="flex-auto d-md-block menu-item-img mb-2"
             alt="Card image cap"
           />
           <h3 className="mb-0">
-            <div className="text-dark text-decoration-none" href="#">
+            <div
+              style={{ wordBreak: "break-all" }}
+              className="text-dark text-decoration-none"
+              href="#"
+            >
               {props.name}
             </div>
           </h3>
