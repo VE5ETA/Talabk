@@ -6,7 +6,7 @@ export default function BuzCard(props) {
     <div className="col-md-3 col-sm-6 mb-3">
       <NavLink
         className="text-decoration-none text-dark"
-        to={"@" + props.username}
+        to={"../@" + props.username}
       >
         <div className="card card-block p-3">
           <img src={props.img} alt="Photo of sunset" />

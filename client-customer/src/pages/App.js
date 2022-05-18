@@ -15,17 +15,17 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           {/* public page */}
-          <Route path="/" element={<Home />} />
+
           <Route path="/stores" element={<Store />} />
 
           {/* for test */}
 
-          <Route path="/stores/@:username" element={<Menu />} />
+          <Route path="/@:username" element={<Menu />} />
           <Route path="/cart" element={<Cart />} />
 
           {/* privete page */}
           {/* <Route element={<RequireAuth />}></Route> */}
-
+          <Route path="/" element={<Home />} />
           {/* if page not found */}
           <Route path="*" element={<NotFound />} />
         </Route>
