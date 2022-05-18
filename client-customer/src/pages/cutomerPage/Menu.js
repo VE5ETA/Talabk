@@ -41,9 +41,7 @@ export default function Menu() {
               key={index}
               id={item._id}
               menuID={item.MenuID}
-              img={`data:${item.imgMimetype};base64,${btoa(
-                String.fromCharCode(...new Uint8Array(item.img.data))
-              )}`}
+              img={`data:${item.imgMimetype};base64,${item.img}`}
               name={item.name}
               price={item.price}
             />
@@ -64,11 +62,7 @@ export default function Menu() {
                   <div className="col-md-4">
                     <img
                       style={{ maxWidth: "100%" }}
-                      src={`data:${menuData.head.logoMimetype};base64,${btoa(
-                        String.fromCharCode(
-                          ...new Uint8Array(menuData.head.logo.data)
-                        )
-                      )}`}
+                      src={`data:${menuData.head.logoMimetype};base64,${menuData.head.logo}`}
                       className="card-image"
                       alt={username + " logo"}
                     />

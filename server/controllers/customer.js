@@ -206,11 +206,23 @@ module.exports = {
           message: "username is required",
         });
       } else {
-        Menu.findOne({ username: req.params.username }).then((menu) => {
+        Menu.aggregate([
+          {
+            $match: {
+              username: req.params.username,
+            },
+          },
+        ]).then((menu) => {
           if (menu) {
-            Item.find({ MenuID: menu._id }).then((item) => {
-              if (item) {
-                let allMenuData = { head: menu, body: item };
+            Item.aggregate([
+              {
+                $match: {
+                  MenuID: menu._id,
+                },
+              },
+            ]).then((items) => {
+              if (items) {
+                let allMenuData = { head: menu, body: items };
                 res.status(200).send(allMenuData);
               } else {
                 res.status(201).send({
@@ -224,6 +236,28 @@ module.exports = {
             });
           }
         });
+        //this code below return images in buffer type , you will have bad times dealing with it in the  front-end 😞
+
+        //------------------------------------------------------------------------------------------------------\\
+        // Menu.findOne({ username: req.params.username }).then((menu) => {
+        //   if (menu) {
+        //     Item.find({ MenuID: menu._id }).then((item) => {
+        //       if (item) {
+        //         let allMenuData = { head: menu, body: item };
+        //         res.status(200).send(allMenuData);
+        //       } else {
+        //         res.status(201).send({
+        //           message: "this menu don't have items",
+        //         });
+        //       }
+        //     });
+        //   } else {
+        //     res.status(404).send({
+        //       message: "didn't found business with the given name",
+        //     });
+        //   }
+        // });
+        //------------------------------------------------------------------------------------------------------\\
       }
     } catch (error) {
       res.status(400).send({

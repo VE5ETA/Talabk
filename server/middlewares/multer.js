@@ -46,7 +46,7 @@ exports.logo = multer({
 exports.item = multer({
   limits: {
     files: 1,
-    fileSize: 123000, //this needs to be update => //0.12 mb == 120KB // ignore the comment after this // increased by 133% so it will be ~0.7 mb after encoding with base64
+    fileSize: 500000, //this needs to be update 😲 => //0.12 mb == 120KB // ignore the comment after this // increased by 133% so it will be ~0.7 mb after encoding with base64
   },
   fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(jpg|jpeg|png)$/))
