@@ -4,6 +4,7 @@ import { faAnglesLeft } from "@fortawesome/free-solid-svg-icons";
 import { orderInfo } from "../../helper/OrderInfo";
 import CartProduct from "../../components/CartProduct";
 import { itemCount } from "../../helper/OrderInfo";
+import { NavLink } from "react-router-dom";
 
 export default function Card() {
   // const [subTotal, setSubTotal] = useState(0);
@@ -191,6 +192,13 @@ export default function Card() {
               </div>
               <hr className="mb-4" />
 
+              <NavLink
+                to={"../"}
+                className="btn btn-primary btn-lg btn-block"
+                type="submit"
+              >
+                go back
+              </NavLink>
               <button
                 className="btn btn-primary btn-lg btn-block"
                 type="submit"

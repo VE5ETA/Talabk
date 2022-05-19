@@ -2,7 +2,10 @@ import React, { useState } from "react";
 
 const CustomerContext = React.createContext([{}, () => {}]);
 
-let initialState = {};
+let initialState = {
+  // businessID: "",
+  // items: [],
+};
 
 const CustomerProvider = (props) => {
   const [state, setState] = useState(initialState);

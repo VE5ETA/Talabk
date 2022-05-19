@@ -20,13 +20,12 @@ function App() {
 
           {/* for test */}
 
-          <Route path="/@:username" element={<Menu />} />
           <Route path="/cart" element={<Cart />} />
-
           {/* privete page */}
-          {/* <Route element={<RequireAuth />}></Route> */}
           <Route path="/" element={<Home />} />
+          <Route path="/:username" element={<Menu />} />
           {/* if page not found */}
+          <Route path="/notFound" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

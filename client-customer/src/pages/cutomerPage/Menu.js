@@ -1,36 +1,50 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import MenuItem from "../../components/MenuItem";
 import { CustomerContext } from "../../context/CustomerContext";
+// import NotFound from "../NotFound";
 
 export default function Menu() {
   const [customerContext, setCustomerContext] = useContext(CustomerContext);
 
   let { username } = useParams();
+  const navigate = useNavigate();
 
   let [menuData, setMenuData] = useState([]);
   useEffect(() => {
     getmenuData();
-    if (localStorage.getItem(username)) {
-      console.log(localStorage.getItem(username));
-      setCustomerContext((oldValues) => {
-        return { ...oldValues, username: localStorage.getItem(username) };
-      });
-    } else {
-      localStorage.setItem(username, {});
-    }
   }, []);
+
+  useEffect(() => {
+    setLocalStorage();
+  }, [customerContext]);
 
   useEffect(() => {
     data();
   }, [menuData]);
 
+  function setLocalStorage() {
+    if (localStorage.getItem(username)) {
+      localStorage.setItem(username, JSON.stringify(customerContext));
+    } else {
+      localStorage.setItem(username, JSON.stringify(customerContext));
+    }
+  }
+
   function getmenuData() {
     axios
       .get(process.env.REACT_APP_API_ENDPOINT + `customer/@${username}`)
-      .then((res) => {
-        setMenuData(res.data);
+      .then(async (res) => {
+        if (res.status === 200) {
+          setMenuData(res.data);
+          setCustomerContext((oldValues) => {
+            return { ...oldValues, businessID: res.data.head._id };
+          });
+        }
+      })
+      .catch((error) => {
+        navigate("/notFound");
       });
   }
 
@@ -89,6 +103,7 @@ export default function Menu() {
       <div className="container">
         <div className="row mb-2">
           {data()}
+          {/* {menuData} */}
 
           {/* <MenuItem price={99.99} id={1} name="item name 1" />
           <MenuItem price={25.99} id={2} name="item name 2" /> */}

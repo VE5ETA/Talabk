@@ -184,7 +184,7 @@ module.exports = {
           },
         },
       ]).then((menus) => {
-        if (menus) {
+        if (menus.length != 0) {
           res.status(200).send(menus);
         } else {
           res.status(404).send({
@@ -213,15 +213,15 @@ module.exports = {
             },
           },
         ]).then((menu) => {
-          if (menu) {
+          if (menu.length != 0) {
             Item.aggregate([
               {
                 $match: {
-                  MenuID: menu[0]._id,
+                  MenuID: menu[0]?._id,
                 },
               },
             ]).then((items) => {
-              if (items) {
+              if (items.length != 0) {
                 let allMenuData = { head: menu[0], body: items };
                 res.status(200).send(allMenuData);
               } else {
