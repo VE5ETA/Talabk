@@ -52,7 +52,7 @@ export default function MenuItem(props) {
   useEffect(() => {
     if (customerContext?.items[props.id]) {
       // console.log(customerContext.items[`${props.id}`]?.quantite);
-      console.log(customerContext.items[props.id].quantite);
+      // console.log(customerContext.items[props.id].quantite);
       setQuantite(customerContext.items[props.id].quantite);
       setIsClicked(true);
     }

@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import MenuItem from "../../components/MenuItem";
 import { CustomerContext } from "../../context/CustomerContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 // import NotFound from "../NotFound";
 
 export default function Menu() {
@@ -69,6 +71,21 @@ export default function Menu() {
       });
   }
 
+  function cartButton() {
+    if (customerContext?.items != undefined) {
+      if (Object.keys(customerContext?.items).length !== 0) {
+        return (
+          <NavLink
+            to={"../cart"}
+            className="menu-cart-btn btn btn-warning btn-lg"
+          >
+            process to checkout <FontAwesomeIcon icon={faShoppingCart} />
+          </NavLink>
+        );
+      }
+    }
+  }
+
   function data() {
     if (menuData.body) {
       return menuData.body.map((item, index) => {
@@ -97,7 +114,7 @@ export default function Menu() {
         <div className="container">
           <div className="card mb-3 max-width-540 ">
             <div className="row g-0 ">
-              {menuData.head ? (
+              {menuData?.head ? (
                 <>
                   <div className="col-md-4">
                     <img
@@ -125,9 +142,14 @@ export default function Menu() {
       </section>
 
       <div className="container">
-        <div className="row mb-2">
+        <div className="row ">
           {data()}
-
+          {cartButton()}
+          {/* {console.log(Object.keys(customerContext?.items).length === 0)} */}
+          {/* {customerContext?.items != undefined ||
+          Object.keys(customerContext?.items).length === 0 ? (
+            <button className="menu-cart-btn"> process to checkout </button>
+          ) : null} */}
           {/* <MenuItem price={99.99} id={1} name="item name 1" />
           <MenuItem price={25.99} id={2} name="item name 2" /> */}
         </div>

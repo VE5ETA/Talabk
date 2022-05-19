@@ -1,17 +1,77 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnglesLeft } from "@fortawesome/free-solid-svg-icons";
 import { orderInfo } from "../../helper/OrderInfo";
-import CartProduct from "../../components/CartProduct";
-import { itemCount } from "../../helper/OrderInfo";
 import { NavLink } from "react-router-dom";
+// import { CartProduct } from "../../components/CartProduct";
+import { CartProduct } from "../../components/CartProduct";
+import { CustomerContext } from "../../context/CustomerContext";
 
 export default function Card() {
   // const [subTotal, setSubTotal] = useState(0);
   // const [count, setCount] = useState(0);
-  const [orderType, setOrderType] = useState("inside");
-  let subTotal = 0;
-  let count = 0;
+  const [customerContext, setCustomerContext] = useContext(CustomerContext);
+  const [PN, setPN] = useState("");
+  const [orderType, setOrderType] = useState("");
+  let price = 0;
+  let itemsCount = 0;
+
+  function orderItems() {
+    if (customerContext?.items != undefined) {
+      if (Object.keys(customerContext?.items).length !== 0) {
+        return Object.values(customerContext?.items).map((item, index) => {
+          // customerContext?.subTotal
+          //   ? (price = item.price + customerContext.subTotal)
+          //   : (price = item.price);
+
+          price = price + item.price * item.quantite;
+          itemsCount = itemsCount + item.quantite;
+          return (
+            <CartProduct
+              key={item.id}
+              name={item.name}
+              quantite={item.quantite}
+              price={item.price}
+            />
+          );
+        });
+      }
+    } else {
+      return <CartProduct isEmpty={true} />;
+    }
+  }
+
+  useEffect(() => {
+    setCustomerContext((oldValues) => {
+      return {
+        ...oldValues,
+        customerNumber: PN,
+      };
+    });
+  }, [PN]);
+
+  useEffect(() => {
+    setCustomerContext((oldValues) => {
+      return {
+        ...oldValues,
+        orderType: orderType,
+      };
+    });
+    console.log(orderType);
+  }, [orderType]);
+
+  function setTotal() {
+    setCustomerContext((oldValues) => {
+      return {
+        ...oldValues,
+        subTotal: price,
+      };
+    });
+  }
+
+  useEffect(() => {
+    setTotal();
+  }, [price]);
 
   return (
     <div className="cart bg-light">
@@ -35,31 +95,93 @@ export default function Card() {
           <div className="col-md-4 order-md-2 mb-4">
             <h4 className="d-flex justify-content-between align-items-center mb-3">
               <span className="text-muted">Your cart</span>
-              <span className="badge bg-primary badge-pill">{count}</span>
+              <span className="badge bg-primary badge-pill">{itemsCount}</span>
             </h4>
             <ul className="list-group mb-3">
-              {orderInfo.items.length !== 0 ? (
-                orderInfo.items.map((item, index) => {
-                  subTotal += item.price * item.quantite;
-                  count += item.quantite;
-                  return (
-                    <CartProduct
-                      key={item.id}
-                      name={item.name}
-                      quantite={item.quantite}
-                      price={item.price}
-                    />
-                  );
-                })
-              ) : (
-                <CartProduct isEmpty={true} />
-              )}
+              {orderItems()}
               <li className="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                  <h6 className="my-0">Total: </h6>
-                  <small className="text-muted">items: {count}</small>
+                  <h6 className="my-0">Total </h6>
+                  <small className="text-muted">items: {itemsCount}</small>
                 </div>
-                <span className="text-muted">{subTotal}SAR</span>
+                <span className="text-muted">{price}SAR</span>
+              </li>
+              <li className=" list-group-item lh-condensed">
+                <h6 className="my-0 mb-2">Order type: </h6>
+                <div
+                  className="btn-group d-flex justify-content-center"
+                  role="group"
+                  aria-label="Basic radio toggle button group"
+                >
+                  <input
+                    onClick={(e) => setOrderType(e.target.value)}
+                    type="radio"
+                    className="btn-check"
+                    name="btnradio"
+                    id="btnradio1"
+                    autoComplete="off"
+                    defaultChecked
+                  />
+                  <label
+                    className="btn btn-outline-primary"
+                    htmlFor="btnradio1"
+                  >
+                    Radio 1
+                  </label>
+                  <input
+                    onClick={(e) => setOrderType(e.target.value)}
+                    type="radio"
+                    className="btn-check"
+                    name="btnradio"
+                    id="btnradio2"
+                    autoComplete="off"
+                  />
+                  <label
+                    className="btn btn-outline-primary"
+                    htmlFor="btnradio2"
+                  >
+                    Radio 2
+                  </label>
+                  <input
+                    onClick={(e) => setOrderType(e.target.value)}
+                    type="radio"
+                    className="btn-check"
+                    name="btnradio"
+                    id="btnradio3"
+                    autoComplete="off"
+                  />
+                  <label
+                    className="btn btn-outline-primary"
+                    htmlFor="btnradio3"
+                  >
+                    Radio 3
+                  </label>
+                </div>
+                {/* <div className="order-type">
+                  <details>
+                    <summary>Test Dropdown</summary>
+                    <ul>
+                      <li
+                        value={1}
+                        onClick={(e) => setOrderType(e.target.value)}
+                      >
+                        Item 1
+                      </li>
+                      <li
+                        value={2}
+                        onClick={(e) => setOrderType(e.target.value)}
+                      >
+                        Item 2
+                      </li>
+                      <li
+                        value={3}
+                        onClick={(e) => setOrderType(e.target.value)}
+                      >
+                        Item 3
+                      </li>
+                    </ul>
+                  </details>
+                </div> */}
               </li>
             </ul>
             <form className="card p-2">
@@ -84,6 +206,7 @@ export default function Card() {
                 <div className="col-md-6 mb-3">
                   <label htmlFor="firstName">Phone number</label>
                   <input
+                    onChange={(e) => setPN(e.target.value)}
                     type="text"
                     className="form-control"
                     id="PhoneNumber"
@@ -192,19 +315,20 @@ export default function Card() {
               </div>
               <hr className="mb-4" />
 
-              <NavLink
-                to={"../"}
-                className="btn btn-primary btn-lg btn-block"
-                type="submit"
-              >
-                go back
-              </NavLink>
-              <button
-                className="btn btn-primary btn-lg btn-block"
-                type="submit"
-              >
-                Continue to checkout
-              </button>
+              <div className="d-flex justify-content-center">
+                {customerContext?.username ? (
+                  <NavLink
+                    to={`../${customerContext?.username}`}
+                    className="btn btn-primary btn-lg"
+                    type="submit"
+                  >
+                    <FontAwesomeIcon icon={faAnglesLeft} />
+                  </NavLink>
+                ) : null}
+                <button className="btn btn-primary btn-lg" type="submit">
+                  Continue to checkout
+                </button>
+              </div>
             </form>
           </div>
         </div>
