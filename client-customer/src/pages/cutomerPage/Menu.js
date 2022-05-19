@@ -1,28 +1,53 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import MenuItem from "../../components/MenuItem";
-// import { CustomerContext } from "../../context/CustomerContext";
+import { CustomerContext } from "../../context/CustomerContext";
 // import NotFound from "../NotFound";
 
 export default function Menu() {
-  // const [customerContext, setCustomerContext] = useContext(CustomerContext);
-
+  const [customerContext, setCustomerContext] = useContext(CustomerContext);
+  //ls is short for localstorage
+  let isMounted = useRef(false);
   let { username } = useParams();
   const navigate = useNavigate();
 
+  const [ls, setLs] = useState(JSON.parse(localStorage.getItem(username)));
+  // console.log(ls);
+
   let [menuData, setMenuData] = useState([]);
   useEffect(() => {
+    if (isMounted.current) {
+      localStorage.setItem(username, JSON.stringify(customerContext));
+    }
+  }, [customerContext]);
+
+  useEffect(() => {
+    setCustomerContext(ls);
     getmenuData();
+    isMounted.current = true;
   }, []);
 
   // useEffect(() => {
   //   setLocalStorage();
-  // }, [customerContext]);
+  // }, [ls]);
 
   useEffect(() => {
     data();
   }, [menuData]);
+
+  // function setLocalStorage() {
+  //   console.log("im above first if");
+  //   if (ls.username) {
+  //     // if (username === ls?.username) {
+  //     // localStorage.setItem(username, JSON.stringify(customerContext));
+  //     // console.log("im after second if");
+  //     // setCustomerContext(ls);
+  //     // }
+  //   } else {
+  //     localStorage.setItem(username, JSON.stringify(customerContext));
+  //   }
+  // }
 
   function getmenuData() {
     axios
@@ -30,13 +55,13 @@ export default function Menu() {
       .then(async (res) => {
         if (res.status === 200) {
           setMenuData(res.data);
-          // setCustomerContext((oldValues) => {
-          //   return {
-          //     ...oldValues,
-          //     businessID: res.data.head.businessID,
-          //     username: username,
-          //   };
-          // });
+          setCustomerContext((oldValues) => {
+            return {
+              ...oldValues,
+              businessID: res.data.head.businessID,
+              username: username,
+            };
+          });
         }
       })
       .catch((error) => {

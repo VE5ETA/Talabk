@@ -2,14 +2,15 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus, faTags } from "@fortawesome/free-solid-svg-icons";
 // import { addItem } from "../helper/OrderInfo";
-// import { CustomerContext } from "../context/CustomerContext";
+import { CustomerContext } from "../context/CustomerContext";
 
 export default function MenuItem(props) {
-  // const [customerContext, setCustomerContext] = useContext(CustomerContext);
+  const [customerContext, setCustomerContext] = useContext(CustomerContext);
   const [isClicked, setIsClicked] = useState(false);
-  const [localRestaurant, setLocalRestaurant] = useState(
-    JSON.parse(localStorage.getItem(props.username))
-  );
+  // const [localRestaurant, setLocalRestaurant] = useState(
+  //   JSON.parse(localStorage.getItem(props.username))
+  // );
+  // console.log(customerContext);
   const [quantite, setQuantite] = useState(1);
   const [itemDetail, setItemDetail] = useState();
   let isMounted = useRef(false);
@@ -24,20 +25,38 @@ export default function MenuItem(props) {
       setQuantite(quantite - 1);
     } else {
       setIsClicked(false);
+      // console.log(customerContext);
+
+      setCustomerContext((oldValues) => {
+        return {
+          ...oldValues,
+          dd: delete oldValues.items[props.id],
+        };
+      });
+      localStorage.setItem(props.username, JSON.stringify(customerContext));
     }
   }
+
+  // useEffect(() => {
+  //   setLocalStorage();
+  // }, [localRestaurant]);
+
+  // function setLocalStorage() {
+  //   if (localStorage.getItem(props.username)) {
+  //     localStorage.setItem(props.username, JSON.stringify(localRestaurant));
+  //   } else {
+  //     localStorage.setItem(props.username, JSON.stringify(localRestaurant));
+  //   }
+  // }
 
   useEffect(() => {
-    setLocalStorage();
-  }, [localRestaurant]);
-
-  function setLocalStorage() {
-    if (localStorage.getItem(props.username)) {
-      localStorage.setItem(props.username, JSON.stringify(localRestaurant));
-    } else {
-      localStorage.setItem(props.username, JSON.stringify(localRestaurant));
+    if (customerContext?.items[props.id]) {
+      // console.log(customerContext.items[`${props.id}`]?.quantite);
+      console.log(customerContext.items[props.id].quantite);
+      setQuantite(customerContext.items[props.id].quantite);
+      setIsClicked(true);
     }
-  }
+  }, []);
 
   useEffect(() => {
     if (isMounted.current) {
@@ -54,21 +73,21 @@ export default function MenuItem(props) {
     });
   }
 
-  useEffect(() => {
-    setLocalRestaurant((oldValues) => {
-      return {
-        businessID: props.businessID,
-      };
-    });
-  }, []);
+  // useEffect(() => {
+  //   setLocalRestaurant((oldValues) => {
+  //     return {
+  //       businessID: props.businessID,
+  //     };
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (isMounted.current) {
-      setLocalRestaurant((oldValues) => {
+      setCustomerContext((oldValues) => {
         if (oldValues?.items) {
           return {
             ...oldValues,
-            businessID: props.businessID,
+            // businessID: props.businessID,
             items: {
               ...oldValues.items,
               [itemDetail.id]: itemDetail,
