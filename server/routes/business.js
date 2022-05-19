@@ -7,16 +7,22 @@ const order = require("./order");
 const menu = require("./menu");
 // business management
 
-router.post("/", businessController.create);
+router.post(
+  "/",
+  pdf.single("pdf"),
+  LimitErrorHandler,
+  businessController.create
+);
 router.get("/", businessController.info);
 router.put("/", businessController.update);
 router.delete("/", businessController.delete);
-router.post(
-  "/uploadDocs",
-  pdf.single("pdf"),
-  LimitErrorHandler,
-  businessController.uploadDocs
-);
+//this were used in old version
+// router.post(
+//   "/uploadDocs",
+//   pdf.single("pdf"),
+//   LimitErrorHandler,
+//   businessController.uploadDocs
+// );
 router.get("/downloadDocs", businessController.downloadDocs);
 
 // employees management

@@ -4,89 +4,90 @@ const { Business, BuzDocs } = require("../models/business");
 const { Menu } = require("../models/menu");
 
 module.exports = {
-  create: (req, res, next) => {
-    try {
-      if (!req.body.tradeName) {
-        res.statusCode = 500;
-        res.send({
-          name: "tradeNameError",
-          message: "business name is required",
-        });
-      }
-      // else if (!req.body.legalName) { // removed
-      //   res.statusCode = 500;
-      //   res.send({
-      //     name: "legalNameError",
-      //     message: "legal name is required",
-      //   });
-      // }
-      else if (!req.body.BranchID) {
-        res.statusCode = 500;
-        res.send({
-          name: "BranchIDError",
-          message: "Branch ID is required",
-        });
-      } else {
-        User.findById(req.user._id).then((user) => {
-          if (user.workIn) {
-            res.status(403).send({
-              message: "you already have a business",
-            });
-          } else {
-            //this was updated for the changes made in business model ⚠
-            //this will look for if Business BranchID exsit with ignoring letters case
-            Business.findOne({
-              tradeName: req.body.tradeName,
-              BranchID: { $regex: new RegExp(req.body.BranchID, "i") },
-            }).then((business) => {
-              if (business) {
-                res.send({
-                  message: " this business Branch ID already exist",
-                });
-              } else {
-                const newBusiness = new Business({
-                  ownerID: user._id,
-                  // username: req.body.username, // removed
-                  tradeName: req.body.tradeName,
-                  BranchID: req.body.BranchID,
-                  businessType: req.body.businessType,
-                });
+  //old create
+  // create: (req, res, next) => {
+  //   try {
+  //     if (!req.body.tradeName) {
+  //       res.statusCode = 500;
+  //       res.send({
+  //         name: "tradeNameError",
+  //         message: "business name is required",
+  //       });
+  //     }
+  //     // else if (!req.body.legalName) { // removed
+  //     //   res.statusCode = 500;
+  //     //   res.send({
+  //     //     name: "legalNameError",
+  //     //     message: "legal name is required",
+  //     //   });
+  //     // }
+  //     else if (!req.body.BranchID) {
+  //       res.statusCode = 500;
+  //       res.send({
+  //         name: "BranchIDError",
+  //         message: "Branch ID is required",
+  //       });
+  //     } else {
+  //       User.findById(req.user._id).then((user) => {
+  //         if (user.workIn) {
+  //           res.status(403).send({
+  //             message: "you already have a business",
+  //           });
+  //         } else {
+  //           //this was updated for the changes made in business model ⚠
+  //           //this will look for if Business BranchID exsit with ignoring letters case
+  //           Business.findOne({
+  //             tradeName: req.body.tradeName,
+  //             BranchID: { $regex: new RegExp(req.body.BranchID, "i") },
+  //           }).then((business) => {
+  //             if (business) {
+  //               res.send({
+  //                 message: " this business Branch ID already exist",
+  //               });
+  //             } else {
+  //               const newBusiness = new Business({
+  //                 ownerID: user._id,
+  //                 // username: req.body.username, // removed
+  //                 tradeName: req.body.tradeName,
+  //                 BranchID: req.body.BranchID,
+  //                 businessType: req.body.businessType,
+  //               });
 
-                newBusiness.save((err, business) => {
-                  if (err) {
-                    res.status(500).send({
-                      message: err,
-                      success: false,
-                    });
-                  } else {
-                    user.workIn = business._id;
-                    user.save((err, user) => {
-                      if (err) {
-                        res.status(500).send({
-                          message: err,
-                          success: false,
-                        });
-                      } else {
-                        res.status(200).send({
-                          message: "business was created",
-                          success: true,
-                        });
-                      }
-                    });
-                  }
-                });
-              }
-            });
-          }
-        });
-      }
-    } catch (error) {
-      res.status(400).send({
-        message: error,
-        success: false,
-      });
-    }
-  },
+  //               newBusiness.save((err, business) => {
+  //                 if (err) {
+  //                   res.status(500).send({
+  //                     message: err,
+  //                     success: false,
+  //                   });
+  //                 } else {
+  //                   user.workIn = business._id;
+  //                   user.save((err, user) => {
+  //                     if (err) {
+  //                       res.status(500).send({
+  //                         message: err,
+  //                         success: false,
+  //                       });
+  //                     } else {
+  //                       res.status(200).send({
+  //                         message: "business was created",
+  //                         success: true,
+  //                       });
+  //                     }
+  //                   });
+  //                 }
+  //               });
+  //             }
+  //           });
+  //         }
+  //       });
+  //     }
+  //   } catch (error) {
+  //     res.status(400).send({
+  //       message: error,
+  //       success: false,
+  //     });
+  //   }
+  // },
   info: (req, res, next) => {
     try {
       Business.findOne({ _id: req.user.workIn })
@@ -229,29 +230,124 @@ module.exports = {
       });
     }
   },
-  uploadDocs: (req, res, next) => {
-    Business.findOne({ ownerID: req.user._id }).then((business) => {
-      if (business) {
-        const buzDocs = new BuzDocs({
-          businessID: req.user.workIn,
-          pdf: req.file.buffer,
-        });
-
-        buzDocs.save();
-        business.LegalDocs = buzDocs._id;
-        business.save();
-        res.statusCode = 200;
-        res.send({
-          message: "document uploaded successfully",
-          success: true,
-        });
-      } else {
+  //this was uploadDocs perviously
+  create: (req, res, next) => {
+    try {
+      if (!req.body.tradeName) {
         res.statusCode = 500;
         res.send({
-          message: "you don't have business",
+          name: "tradeNameError",
+          message: "business name is required",
         });
       }
-    });
+      // else if (!req.body.legalName) { // removed
+      //   res.statusCode = 500;
+      //   res.send({
+      //     name: "legalNameError",
+      //     message: "legal name is required",
+      //   });
+      // }
+      else if (!req.body.BranchID) {
+        res.statusCode = 500;
+        res.send({
+          name: "BranchIDError",
+          message: "Branch ID is required",
+        });
+      } else {
+        User.findById(req.user._id).then((user) => {
+          if (user.workIn) {
+            res.status(403).send({
+              message: "you already have a business",
+            });
+          } else {
+            //this was updated for the changes made in business model ⚠
+            //this will look for if Business BranchID exsit with ignoring letters case
+            Business.findOne({
+              tradeName: req.body.tradeName,
+              BranchID: { $regex: new RegExp(req.body.BranchID, "i") },
+            }).then((business) => {
+              if (business) {
+                res.send({
+                  message: " this business Branch ID already exist",
+                });
+              } else {
+                const newBusiness = new Business({
+                  ownerID: user._id,
+                  // username: req.body.username, // removed
+                  tradeName: req.body.tradeName,
+                  BranchID: req.body.BranchID,
+                  businessType: req.body.businessType,
+                });
+
+                newBusiness.save((err, business) => {
+                  if (err) {
+                    res.status(500).send({
+                      message: err,
+                      success: false,
+                    });
+                  } else {
+                    user.workIn = business._id;
+                    user.save((err, user) => {
+                      if (err) {
+                        res.status(500).send({
+                          message: err,
+                          success: false,
+                        });
+                      } else {
+                        Business.findOne({ ownerID: req.user._id }).then(
+                          (business) => {
+                            if (business) {
+                              const buzDocs = new BuzDocs({
+                                businessID: req.user.workIn,
+                                pdf: req.file.buffer,
+                              });
+                              buzDocs.save((err, buzdoc) => {
+                                if (err) {
+                                  res.status(500).send({
+                                    message: err,
+                                    success: false,
+                                  });
+                                } else {
+                                  business.LegalDocs = buzdoc._id;
+                                  business.save((err, buz) => {
+                                    if (err) {
+                                      res.status(500).send({
+                                        message: err,
+                                        success: false,
+                                      });
+                                    } else {
+                                      res.status(200).send({
+                                        message:
+                                          "business created successfully ",
+                                        success: true,
+                                      });
+                                    }
+                                  });
+                                }
+                              });
+                            } else {
+                              res.status(500).send({
+                                message: "something want wrong 😟",
+                                success: false,
+                              });
+                            }
+                          }
+                        );
+                      }
+                    });
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+    } catch (error) {
+      res.status(400).send({
+        message: error,
+        success: false,
+      });
+    }
   },
   downloadDocs: (req, res, next) => {
     BuzDocs.findOne({ businessID: req.user.workIn }).then((buzDocs) => {
