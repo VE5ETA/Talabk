@@ -5,6 +5,16 @@ module.exports = {
   test: (req, res, next) => {
     res.send("hey you're an admin 😁");
   },
+  adminTest: (req, res, next) => {
+    try {
+      res.status(200).send(true);
+    } catch (error) {
+      res.status(404).send({
+        message: error,
+        success: false,
+      });
+    }
+  },
   // not working well 🔨
   showNewRequest: (req, res, next) => {
     Business.find({ businessStatus: false }).then((business) => {

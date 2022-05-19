@@ -23,7 +23,7 @@ export default function Login() {
     }
     if (succssed) {
       infoAlert("you have logged in successfuly 👋😁");
-      navigate("/");
+      navigate("/Dashboard");
     }
   }, [error, succssed]);
 

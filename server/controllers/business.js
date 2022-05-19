@@ -253,6 +253,12 @@ module.exports = {
           name: "BranchIDError",
           message: "Branch ID is required",
         });
+      } else if (!req.file) {
+        res.statusCode = 500;
+        res.send({
+          name: "BusinessDocumentError",
+          message: "business document is required",
+        });
       } else {
         User.findById(req.user._id).then((user) => {
           if (user.workIn) {
@@ -286,53 +292,41 @@ module.exports = {
                       success: false,
                     });
                   } else {
-                    user.workIn = business._id;
-                    user.save((err, user) => {
+                    const buzDocs = new BuzDocs({
+                      businessID: business._id,
+                      pdf: req.file.buffer,
+                    });
+                    buzDocs.save((err, buzdoc) => {
                       if (err) {
                         res.status(500).send({
                           message: err,
                           success: false,
                         });
                       } else {
-                        Business.findOne({ ownerID: req.user._id }).then(
-                          (business) => {
-                            if (business) {
-                              const buzDocs = new BuzDocs({
-                                businessID: business._id,
-                                pdf: req.file.buffer,
-                              });
-                              buzDocs.save((err, buzdoc) => {
-                                if (err) {
-                                  res.status(500).send({
-                                    message: err,
-                                    success: false,
-                                  });
-                                } else {
-                                  business.LegalDocs = buzdoc._id;
-                                  business.save((err, buz) => {
-                                    if (err) {
-                                      res.status(500).send({
-                                        message: err,
-                                        success: false,
-                                      });
-                                    } else {
-                                      res.status(200).send({
-                                        message:
-                                          "business created successfully ",
-                                        success: true,
-                                      });
-                                    }
-                                  });
-                                }
-                              });
-                            } else {
-                              res.status(500).send({
-                                message: "something want wrong 😟",
-                                success: false,
-                              });
-                            }
+                        business.LegalDocs = buzdoc._id;
+                        business.save((err, buz) => {
+                          if (err) {
+                            res.status(500).send({
+                              message: err,
+                              success: false,
+                            });
+                          } else {
+                            user.workIn = business._id;
+                            user.save((err, user) => {
+                              if (err) {
+                                res.status(500).send({
+                                  message: err,
+                                  success: false,
+                                });
+                              } else {
+                                res.status(200).send({
+                                  message: "business created successfully ",
+                                  success: true,
+                                });
+                              }
+                            });
                           }
-                        );
+                        });
                       }
                     });
                   }

@@ -61,7 +61,7 @@ export default function Footer() {
             </ul>
           </div>
           <div className="col-lg-4 col-md-6 ">
-            <h5 className="row justify-content-md-center text-white mb-3">
+            <h5 className="d-flex m-auto row justify-content-center text-white mb-3">
               Stay connected
             </h5>
             <ul className=" nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small ">

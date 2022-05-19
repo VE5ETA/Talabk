@@ -26,16 +26,22 @@ export default function CreateBuz() {
                 <input type="text" className="form-control" required />
               </div>
             </div>
+            <div className="mb-3">
+              <label htmlFor="formFile" className="form-label">
+                please upload your legal document to verify your business
+              </label>
+              <input className="form-control" type="file" id="formFile" />
+            </div>
             <div className=" my-md-2 my-3">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="form-group">
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="form-group">
                     <label>Description</label>
-                    <div class="form-group bmd-form-group">
-                      <label class="bmd-label-floating">
+                    <div className="form-group bmd-form-group">
+                      <label className="bmd-label-floating">
                         Enter a simple description for your business
                       </label>
-                      <textarea class="form-control" rows="5"></textarea>
+                      <textarea className="form-control" rows="5"></textarea>
                     </div>
                   </div>
                 </div>
@@ -46,22 +52,22 @@ export default function CreateBuz() {
         </div>
       </div>
     );
-  } else {
-    return (
-      <div className="create-form ">
-        <div className="wrapper rounded bg-white ">
-          <div className="h3">Add your document</div>
-          <div className="form">
-            <div className="mb-3">
-              <label htmlFor="formFile" className="form-label">
-                please upload your legal document to verify your business
-              </label>
-              <input className="form-control" type="file" id="formFile" />
-            </div>
-            <div className="btn btn-primary mt-3">Submit</div>
-          </div>
-        </div>
-      </div>
-    );
+    // } else {
+    //   return (
+    //     <div className="create-form ">
+    //       <div className="wrapper rounded bg-white ">
+    //         <div className="h3">Add your document</div>
+    //         <div className="form">
+    //           <div className="mb-3">
+    //             <label htmlFor="formFile" className="form-label">
+    //               please upload your legal document to verify your business
+    //             </label>
+    //             <input className="form-control" type="file" id="formFile" />
+    //           </div>
+    //           <div className="btn btn-primary mt-3">Submit</div>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   );
   }
 }

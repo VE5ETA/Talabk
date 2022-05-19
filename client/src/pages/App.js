@@ -10,6 +10,7 @@ import Login from "./Login";
 import Home from "./Home";
 import Layout from "./Layout";
 import NotFound from "./NotFound";
+import AdminDashboard from "./AdminDashboard";
 import NewReq from "./plateformPage/NewReq";
 // import Menu from "./cutomerPage/Menu"; deleted
 // import Cart from "./cutomerPage/Cart";
@@ -17,6 +18,8 @@ import NewReq from "./plateformPage/NewReq";
 import CreateForm from "./BusinessPage/CreateForm";
 
 import Logout from "./Logout";
+import AfterLog from "../context/AfterLog";
+import Dashboard from "./Dashboard";
 
 function App() {
   const [userContext, setUserContext] = useContext(UserContext);
@@ -68,13 +71,13 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           {/* public page */}
-          <Route path="/" element={<Home />} />
+          <Route exact path="/" element={<Home />} />
           {/* <Route path="/stores" element={<Store />} /> */}
           {/* <Route path="/cart" element={<Cart />} /> */}
           {/* for test */}
-          <Route path="/createBusiness" element={<CreateForm />} />
+
           {/* <Route path="/stores/:buzname/menu" element={<Menu />} /> */}
-          <Route path="/:buzname/menu/:itemName" element={<NewReq />} />
+          {/* <Route path="/:buzname/menu/:itemName" element={<NewReq />} /> */}
 
           {/* ~this will protect the user from accessing login/signup page if he's logged in ⛔ */}
           <Route element={<IsLogged />}>
@@ -84,9 +87,12 @@ function App() {
 
           {/* privete page */}
           <Route element={<RequireAuth />}>
-            <Route path="/dashboard" element={<SignUp />} />
-            <Route path="/logout" element={<Logout />} />
+          <Route path="/adminDashboard" element={<AdminDashboard />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
+          <Route path="/createBusiness" element={<CreateForm />} />
+          <Route path="/logout" element={<Logout />} />
           </Route>
+          {/* <Route element={<AfterLog />}></Route> */}
 
           {/* if page not found */}
           <Route path="*" element={<NotFound />} />
