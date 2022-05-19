@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import MenuItem from "../../components/MenuItem";
-import { CustomerContext } from "../../context/CustomerContext";
+// import { CustomerContext } from "../../context/CustomerContext";
 // import NotFound from "../NotFound";
 
 export default function Menu() {
-  const [customerContext, setCustomerContext] = useContext(CustomerContext);
+  // const [customerContext, setCustomerContext] = useContext(CustomerContext);
 
   let { username } = useParams();
   const navigate = useNavigate();
@@ -16,21 +16,13 @@ export default function Menu() {
     getmenuData();
   }, []);
 
-  useEffect(() => {
-    setLocalStorage();
-  }, [customerContext]);
+  // useEffect(() => {
+  //   setLocalStorage();
+  // }, [customerContext]);
 
   useEffect(() => {
     data();
   }, [menuData]);
-
-  function setLocalStorage() {
-    if (localStorage.getItem(username)) {
-      localStorage.setItem(username, JSON.stringify(customerContext));
-    } else {
-      localStorage.setItem(username, JSON.stringify(customerContext));
-    }
-  }
 
   function getmenuData() {
     axios
@@ -38,9 +30,13 @@ export default function Menu() {
       .then(async (res) => {
         if (res.status === 200) {
           setMenuData(res.data);
-          setCustomerContext((oldValues) => {
-            return { ...oldValues, businessID: res.data.head._id };
-          });
+          // setCustomerContext((oldValues) => {
+          //   return {
+          //     ...oldValues,
+          //     businessID: res.data.head.businessID,
+          //     username: username,
+          //   };
+          // });
         }
       })
       .catch((error) => {
@@ -52,10 +48,13 @@ export default function Menu() {
     if (menuData.body) {
       return menuData.body.map((item, index) => {
         if (item.status) {
+          // console.log(menuData.head.businessID);
           return (
             <MenuItem
               key={index}
               id={item._id}
+              businessID={menuData.head.businessID}
+              username={username}
               menuID={item.MenuID}
               img={`data:${item.imgMimetype};base64,${item.img}`}
               name={item.name}
@@ -103,7 +102,6 @@ export default function Menu() {
       <div className="container">
         <div className="row mb-2">
           {data()}
-          {/* {menuData} */}
 
           {/* <MenuItem price={99.99} id={1} name="item name 1" />
           <MenuItem price={25.99} id={2} name="item name 2" /> */}
