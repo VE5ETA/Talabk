@@ -61,8 +61,10 @@ export default function Footer() {
             </ul>
           </div>
           <div className="col-lg-4 col-md-6 ">
-            <h5 className="text-white mb-3">Stay connected</h5>
-            <ul className="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small ">
+            <h5 className="row justify-content-md-center text-white mb-3">
+              Stay connected
+            </h5>
+            <ul className=" nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small ">
               <li>
                 <a href="#" className="nav-link text-white">
                   <div className="bi d-block mx-auto mb-1 text-white mb-3">

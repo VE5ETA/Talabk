@@ -298,7 +298,7 @@ module.exports = {
                           (business) => {
                             if (business) {
                               const buzDocs = new BuzDocs({
-                                businessID: req.user.workIn,
+                                businessID: business._id,
                                 pdf: req.file.buffer,
                               });
                               buzDocs.save((err, buzdoc) => {

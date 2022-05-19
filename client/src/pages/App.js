@@ -11,9 +11,9 @@ import Home from "./Home";
 import Layout from "./Layout";
 import NotFound from "./NotFound";
 import NewReq from "./plateformPage/NewReq";
-import Menu from "./cutomerPage/Menu";
-import Cart from "./cutomerPage/Cart";
-import Store from "./Store";
+// import Menu from "./cutomerPage/Menu"; deleted
+// import Cart from "./cutomerPage/Cart";
+// import Store from "./Store";
 import CreateForm from "./BusinessPage/CreateForm";
 
 import Logout from "./Logout";
@@ -69,13 +69,11 @@ function App() {
         <Route path="/" element={<Layout />}>
           {/* public page */}
           <Route path="/" element={<Home />} />
-          {/* <Route path="/login" element={<Login />} />
-          <Route path="/signUp" element={<SignUp />} /> */}
-          <Route path="/stores" element={<Store />} />
-          <Route path="/cart" element={<Cart />} />
+          {/* <Route path="/stores" element={<Store />} /> */}
+          {/* <Route path="/cart" element={<Cart />} /> */}
           {/* for test */}
           <Route path="/createBusiness" element={<CreateForm />} />
-          <Route path="/stores/:buzname/menu" element={<Menu />} />
+          {/* <Route path="/stores/:buzname/menu" element={<Menu />} /> */}
           <Route path="/:buzname/menu/:itemName" element={<NewReq />} />
 
           {/* ~this will protect the user from accessing login/signup page if he's logged in ⛔ */}
