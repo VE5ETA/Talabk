@@ -49,12 +49,15 @@ export default function MenuItem(props) {
   //   }
   // }
 
+  // check item it is in cart if update quantite
   useEffect(() => {
-    if (customerContext?.items[props.id]) {
-      // console.log(customerContext.items[`${props.id}`]?.quantite);
-      // console.log(customerContext.items[props.id].quantite);
-      setQuantite(customerContext.items[props.id].quantite);
-      setIsClicked(true);
+    if (customerContext?.items !== undefined) {
+      if (customerContext?.items[props.id]) {
+        // console.log(customerContext.items[`${props.id}`]?.quantite);
+        // console.log(customerContext.items[props.id].quantite);
+        setQuantite(customerContext.items[props.id].quantite);
+        setIsClicked(true);
+      }
     }
   }, []);
 

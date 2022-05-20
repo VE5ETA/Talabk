@@ -32,7 +32,7 @@ const Order = new Schema({
     type: Number,
   },
   items: {
-    type: Array,
+    type: Object,
     required: true,
   },
   // quantity: {

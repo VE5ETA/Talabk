@@ -7,7 +7,7 @@ import axios from "axios";
 // import { CartProduct } from "../../components/CartProduct";
 import { CartProduct } from "../../components/CartProduct";
 import { CustomerContext } from "../../context/CustomerContext";
-import { errorAlert, infoAlert } from "../../helper/Options";
+import { errorAlert, successAlert } from "../../helper/Options";
 
 export default function Card() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,15 +26,17 @@ export default function Card() {
   let price = 0;
   let itemsCount = 0;
 
+  // this will display alert on error or success
   useEffect(() => {
     if (error) {
       errorAlert(error);
     }
     if (succssed) {
-      infoAlert(`your order is send to ${customerContext?.username}`);
+      successAlert(`your order is send to ${customerContext?.username}`);
     }
   }, [error, succssed]);
 
+  // send order to api
   function onClickHandler(e) {
     e.preventDefault();
     setIsSubmitting(true);
@@ -80,7 +82,6 @@ export default function Card() {
             setIsSubmitting(false);
           });
       } else {
-        console.log(customerContext);
         setError("you don't choise a business");
         setIsSubmitting(false);
       }
@@ -159,44 +160,31 @@ export default function Card() {
     });
   }, [reservationTime, date, time, personNumber]);
 
-  // update notes value on change
+  // delete reservationInfo if order type id not reservation
+  useEffect(() => {
+    if (orderType !== "reservation") {
+      setCustomerContext((oldValues) => {
+        return {
+          ...oldValues,
+          reservationInfo: null,
+        };
+      });
+    }
+  }, [orderType]);
+
+  // update notes, customerNumber and orderType value on change
   useEffect(() => {
     setCustomerContext((oldValues) => {
       return {
         ...oldValues,
         notes: orderNotes,
-      };
-    });
-  }, [orderNotes]);
-
-  useEffect(() => {
-    setCustomerContext((oldValues) => {
-      return {
-        ...oldValues,
         customerNumber: phoneNumber,
-      };
-    });
-    // console.log(customerContext);
-  }, [phoneNumber]);
-
-  useEffect(() => {
-    setCustomerContext((oldValues) => {
-      return {
-        ...oldValues,
         orderType: orderType,
       };
     });
-  }, [orderType]);
+  }, [orderNotes, phoneNumber, orderType]);
 
-  useEffect(() => {
-    setCustomerContext((oldValues) => {
-      return {
-        ...oldValues,
-        orderType: orderType,
-      };
-    });
-  }, [orderType]);
-
+  // change sub total value in context
   function setTotal() {
     setCustomerContext((oldValues) => {
       return {
@@ -206,6 +194,7 @@ export default function Card() {
     });
   }
 
+  // if price is updated will update value it context
   useEffect(() => {
     setTotal();
   }, [price]);
@@ -238,6 +227,7 @@ export default function Card() {
               <span className="badge bg-primary badge-pill">{itemsCount}</span>
             </h4>
             <ul className="list-group mb-3">
+              {/* render the cart items here */}
               {orderItems()}
               <li className="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
@@ -302,6 +292,7 @@ export default function Card() {
                 </div>
               </li>
             </ul>
+            {/* promo code not work in this version */}
             <form className="card p-2">
               <div className="input-group">
                 <input
@@ -386,12 +377,14 @@ export default function Card() {
                   <textarea
                     onChange={(e) => setOrderNotes(e.target.value)}
                     className="form-control"
-                    rows="3"
+                    rows="2"
                   ></textarea>
                 </div>
               </div>
 
               <hr className="mb-4" />
+
+              {/* payment not work in this version */}
               <h4 className="mb-3">Payment</h4>
               <div className="d-block my-3">
                 <div className="custom-control custom-radio">

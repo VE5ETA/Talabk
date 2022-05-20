@@ -95,7 +95,6 @@ export default function Menu() {
             <MenuItem
               key={index}
               id={item._id}
-              businessID={menuData.head.businessID}
               username={username}
               menuID={item.MenuID}
               img={`data:${item.imgMimetype};base64,${item.img}`}
