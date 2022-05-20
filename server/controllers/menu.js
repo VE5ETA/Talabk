@@ -16,7 +16,7 @@ module.exports = {
           name: "nameError",
           message: "name is required",
         });
-      } else if (!req.file.buffer) {
+      } else if (!req.file) {
         res.statusCode = 500;
         res.send({
           name: "logoError",
@@ -230,7 +230,7 @@ module.exports = {
           name: "nameError",
           message: "name is required",
         });
-      } else if (!req.file.buffer) {
+      } else if (!req.file) {
         res.statusCode = 500;
         res.send({
           name: "logoError",

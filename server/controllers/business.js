@@ -21,10 +21,10 @@ module.exports = {
   //     //     message: "legal name is required",
   //     //   });
   //     // }
-  //     else if (!req.body.BranchID) {
+  //     else if (!req.body.branchID) {
   //       res.statusCode = 500;
   //       res.send({
-  //         name: "BranchIDError",
+  //         name: "branchIDError",
   //         message: "Branch ID is required",
   //       });
   //     } else {
@@ -35,10 +35,10 @@ module.exports = {
   //           });
   //         } else {
   //           //this was updated for the changes made in business model ⚠
-  //           //this will look for if Business BranchID exsit with ignoring letters case
+  //           //this will look for if Business branchID exsit with ignoring letters case
   //           Business.findOne({
   //             tradeName: req.body.tradeName,
-  //             BranchID: { $regex: new RegExp(req.body.BranchID, "i") },
+  //             branchID: { $regex: new RegExp(req.body.branchID, "i") },
   //           }).then((business) => {
   //             if (business) {
   //               res.send({
@@ -49,7 +49,7 @@ module.exports = {
   //                 ownerID: user._id,
   //                 // username: req.body.username, // removed
   //                 tradeName: req.body.tradeName,
-  //                 BranchID: req.body.BranchID,
+  //                 branchID: req.body.branchID,
   //                 businessType: req.body.businessType,
   //               });
 
@@ -116,17 +116,17 @@ module.exports = {
           if (req.body.tradeName) {
             business.tradeName = req.body.tradeName;
           }
-          if (req.body.BranchID) {
+          if (req.body.branchID) {
             Business.findOne({
               tradeName: req.body.tradeName,
-              BranchID: { $regex: new RegExp(req.body.BranchID, "i") },
+              branchID: { $regex: new RegExp(req.body.branchID, "i") },
             }).then((businessBranchIDexists) => {
               if (businessBranchIDexists) {
                 res.send({
                   message: " this business Branch ID already exist",
                 });
               } else {
-                business.BranchID = req.body.BranchID;
+                business.branchID = req.body.branchID;
               }
             });
           }
@@ -237,7 +237,7 @@ module.exports = {
         res.statusCode = 500;
         res.send({
           name: "tradeNameError",
-          message: "business name is required",
+          message: "business trade Name is required",
         });
       }
       // else if (!req.body.legalName) { // removed
@@ -247,10 +247,10 @@ module.exports = {
       //     message: "legal name is required",
       //   });
       // }
-      else if (!req.body.BranchID) {
+      else if (!req.body.branchID) {
         res.statusCode = 500;
         res.send({
-          name: "BranchIDError",
+          name: "branchIDError",
           message: "Branch ID is required",
         });
       } else if (!req.file) {
@@ -267,10 +267,10 @@ module.exports = {
             });
           } else {
             //this was updated for the changes made in business model ⚠
-            //this will look for if Business BranchID exsit with ignoring letters case
+            //this will look for if Business branchID exsit with ignoring letters case
             Business.findOne({
               tradeName: req.body.tradeName,
-              BranchID: { $regex: new RegExp(req.body.BranchID, "i") },
+              branchID: { $regex: new RegExp(req.body.branchID, "i") },
             }).then((business) => {
               if (business) {
                 res.send({
@@ -281,7 +281,7 @@ module.exports = {
                   ownerID: user._id,
                   // username: req.body.username, // removed
                   tradeName: req.body.tradeName,
-                  BranchID: req.body.BranchID,
+                  branchID: req.body.branchID,
                   businessType: req.body.businessType,
                 });
 

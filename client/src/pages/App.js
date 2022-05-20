@@ -16,6 +16,7 @@ import NewReq from "./plateformPage/NewReq";
 // import Cart from "./cutomerPage/Cart";
 // import Store from "./Store";
 import CreateForm from "./BusinessPage/CreateForm";
+import CreateMenu from "./BusinessPage/CreateMenu";
 
 import Logout from "./Logout";
 import AfterLog from "../context/AfterLog";
@@ -85,7 +86,7 @@ function App() {
             <Route path="/signUp" element={<SignUp />} />
           </Route>
           {/* privete page */}
-            <Route path="/AfterLog" element={<AfterLog />} />
+          <Route path="/AfterLog" element={<AfterLog />} />
           <Route element={<RequireAuth />}>
             {/* <Route element={<AfterLog />}> */}
             {/* <Route path="/login" element={<Login />} />
@@ -93,6 +94,7 @@ function App() {
             <Route path="/adminDashboard" element={<AdminDashboard />} />
             <Route path="/Dashboard" element={<Dashboard />} />
             <Route path="/createBusiness" element={<CreateForm />} />
+            <Route path="/CreateMenu" element={<CreateMenu />} />
             <Route path="/logout" element={<Logout />} />
             {/* </Route> */}
           </Route>

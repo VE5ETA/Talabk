@@ -89,8 +89,81 @@ export default function Header(props) {
             </div>
             {userContext.token ? (
               <ul className="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
-                <li>
-                  <a href="#" className="nav-link text-white">
+                {userContext.isAdmin ? (
+                  <li>
+                    <NavLink
+                      to="/adminDashboard"
+                      className="nav-link text-white"
+                    >
+                      <svg
+                        className="bi d-block mx-auto mb-1"
+                        width={24}
+                        height={24}
+                      >
+                        <FontAwesomeIcon icon={faUtensils} />
+                      </svg>
+                      Admin Dashboard 🎫
+                    </NavLink>
+                  </li>
+                ) : userContext.details?.workIn ? (
+                  userContext.menu ? (
+                    <>
+                      <li>
+                        <NavLink
+                          to="/Dashboard"
+                          className="nav-link text-white"
+                        >
+                          <svg
+                            className="bi d-block mx-auto mb-1"
+                            width={24}
+                            height={24}
+                          >
+                            <FontAwesomeIcon icon={faUtensils} />
+                          </svg>
+                          Dashboard
+                        </NavLink>
+                      </li>
+                      <li>
+                        <a href="#" className="nav-link text-white">
+                          <svg
+                            className="bi d-block mx-auto mb-1"
+                            width={24}
+                            height={24}
+                          >
+                            <FontAwesomeIcon icon={faListSquares} />
+                          </svg>
+                          Orders
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#" className="nav-link text-white">
+                          <svg
+                            className="bi d-block mx-auto mb-1"
+                            width={24}
+                            height={24}
+                          >
+                            <FontAwesomeIcon icon={faGripHorizontal} />
+                          </svg>
+                          Menu
+                        </a>
+                      </li>
+                    </>
+                  ) : (
+                    <li>
+                      <NavLink to="/CreateMenu" className="nav-link text-white">
+                        <svg
+                          className="bi d-block mx-auto mb-1"
+                          width={24}
+                          height={24}
+                        >
+                          <FontAwesomeIcon icon={faGripHorizontal} />
+                        </svg>
+                        Create Menu 🍨
+                      </NavLink>
+                    </li>
+                  )
+                ) : (
+                  <NavLink to="/createBusiness" className="nav-link text-white">
                     <svg
                       className="bi d-block mx-auto mb-1"
                       width={24}
@@ -98,33 +171,10 @@ export default function Header(props) {
                     >
                       <FontAwesomeIcon icon={faUtensils} />
                     </svg>
-                    Dashboard
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="nav-link text-white">
-                    <svg
-                      className="bi d-block mx-auto mb-1"
-                      width={24}
-                      height={24}
-                    >
-                      <FontAwesomeIcon icon={faListSquares} />
-                    </svg>
-                    Orders
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="nav-link text-white">
-                    <svg
-                      className="bi d-block mx-auto mb-1"
-                      width={24}
-                      height={24}
-                    >
-                      <FontAwesomeIcon icon={faGripHorizontal} />
-                    </svg>
-                    Products
-                  </a>
-                </li>
+                    Create Business
+                  </NavLink>
+                )}
+
                 <li>
                   <div className="dropdown-center text-end ">
                     <a

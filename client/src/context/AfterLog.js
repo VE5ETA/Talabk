@@ -8,7 +8,7 @@ import React, {
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
-import { warningAlert, errorAlert } from "../helper/Options";
+import { infoAlert, errorAlert } from "../helper/Options";
 
 // this function is protect critical page
 // get user role from context and check if admin or not
@@ -25,30 +25,49 @@ export default function AfterLog() {
     if (error) {
       errorAlert(error);
     }
+    // else {
+    //   infoAlert("you have logged in successfuly 👋😁");
+    // }
   }, [error]);
 
   useEffect(() => {
     if (isDone.current) {
       navigateTheUser();
+      console.log(userContext);
     }
   }, [userContext]);
 
   function navigateTheUser() {
-    userContext.isAdmin
-      ? navigate("/adminDashboard")
-      : // <Navigate to="/adminDashboard" replace state={{ from: location }} />
-      userContext.details?.workIn && !userContext.isAdmin
-      ? navigate("/Dashboard")
-      : // <Navigate to="/Dashboard" replace state={{ from: location }} />
-      !userContext.isAdmin && !userContext.details?.workIn
-      ? navigate("/createBusiness")
-      : // <Navigate to="/createBusiness" replace state={{ from: location }} />
-        navigate("/");
-    // <Navigate to="/" replace state={{ from: location }} />
+    if (!userContext.details.workIn && !userContext.isAdmin) {
+      navigate("/createBusiness");
+    } else if (userContext.isAdmin) {
+      navigate("/adminDashboard");
+    } else if (
+      !userContext.isAdmin &&
+      userContext.details.workIn &&
+      userContext.menu
+    ) {
+      navigate("/Dashboard");
+    } else if (!userContext.menu && !userContext.isAdmin) {
+      navigate("/CreateMenu");
+    } else {
+      navigate("/");
+    }
+    // userContext.isAdmin
+    //   ? navigate("/adminDashboard")
+    //   : // <Navigate to="/adminDashboard" replace state={{ from: location }} />
+    //   userContext.details?.workIn && !userContext.isAdmin
+    //   ? navigate("/Dashboard")
+    //   : // <Navigate to="/Dashboard" replace state={{ from: location }} />
+    //   !userContext.isAdmin && !userContext.details?.workIn
+    //   ? navigate("/createBusiness")
+    //   : // <Navigate to="/createBusiness" replace state={{ from: location }} />
+    //     navigate("/");
+    // // <Navigate to="/" replace state={{ from: location }} />
   }
 
-  const fetchUserDetails = useCallback(() => {
-    fetch(process.env.REACT_APP_API_ENDPOINT + "user/me", {
+  const fetchUserDetails = useCallback(async () => {
+    await fetch(process.env.REACT_APP_API_ENDPOINT + "user/me", {
       method: "GET",
       credentials: "include",
       // Pass authentication token as bearer token in header
@@ -62,15 +81,18 @@ export default function AfterLog() {
         setUserContext((oldValues) => {
           return { ...oldValues, details: data };
         });
-        fetch(process.env.REACT_APP_API_ENDPOINT + "user/platform/adminTest", {
-          method: "GET",
-          credentials: "include",
-          // Pass authentication token as bearer token in header
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${userContext.token}`,
-          },
-        })
+        await fetch(
+          process.env.REACT_APP_API_ENDPOINT + "user/platform/adminTest",
+          {
+            method: "GET",
+            credentials: "include",
+            // Pass authentication token as bearer token in header
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userContext.token}`,
+            },
+          }
+        )
           .then(async (r) => {
             console.log(r);
             if (r.ok) {
@@ -82,6 +104,29 @@ export default function AfterLog() {
             } else {
               setUserContext((oldValues) => {
                 return { ...oldValues, isAdmin: false };
+              });
+              await fetch(
+                process.env.REACT_APP_API_ENDPOINT + "user/business/menu",
+                {
+                  method: "GET",
+                  credentials: "include",
+                  // Pass authentication token as bearer token in header
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${userContext.token}`,
+                  },
+                }
+              ).then(async (menuRes) => {
+                if (menuRes.ok) {
+                  const menuData = await menuRes.json();
+                  setUserContext((oldValues) => {
+                    return { ...oldValues, menu: menuData };
+                  });
+                } else {
+                  setUserContext((oldValues) => {
+                    return { ...oldValues, menu: null };
+                  });
+                }
               });
               isDone.current = true;
             }
@@ -106,12 +151,16 @@ export default function AfterLog() {
         }
       }
     });
-  }, []);
+  }, [setUserContext, userContext.token]);
   // }, [setUserContext, userContext.token]);
 
   useEffect(() => {
     // fetch only when user details are not present
-    if (!userContext.details) {
+    if (
+      !userContext.details?.workIn ||
+      !userContext.details ||
+      !userContext.menu
+    ) {
       fetchUserDetails();
     }
   }, [userContext.details, fetchUserDetails]);

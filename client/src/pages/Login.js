@@ -25,7 +25,7 @@ export default function Login() {
       infoAlert("you have logged in successfuly 👋😁");
       // setTimeout(() => {
       navigate("/AfterLog");
-      // }, 3000);
+      // }, 5000);
     }
   }, [error, succssed]);
 

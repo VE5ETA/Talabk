@@ -42,7 +42,7 @@ const Business = new Schema({
     type: String,
     require: true,
   },
-  BranchID: {
+  branchID: {
     type: String,
     require: true,
     // unique: true, // removed to use better option

@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import { errorAlert, successAlert } from "../../helper/Options";
 
-export default function CreateBuz() {
+export default function CreateMenu() {
   const [userContext, setUserContext] = useContext(UserContext);
-  const [tradeName, setTradeName] = useState();
-  const [branchID, setBranchID] = useState();
-  const [businessType, setBusinessType] = useState();
-  const [pdf, setPdf] = useState();
+  const [username, setUsername] = useState();
+  const [name, setName] = useState();
+  const [description, setDescription] = useState();
+  const [logo, setLogo] = useState();
 
   const navigate = useNavigate();
 
@@ -46,15 +46,15 @@ export default function CreateBuz() {
 
     const genericErrorMessage = "Something went wrong! Please try again.";
 
-    if (!tradeName) {
-      setError("trade Name is required!");
-    } else if (!branchID) {
-      setError("branch ID is required!");
-    } else if (!pdf) {
-      setError("business legel document required!");
+    if (!username) {
+      setError("menu username is required!");
+    } else if (!name) {
+      setError("menu name is required!");
+    } else if (!logo) {
+      setError("menu logo required!");
     } else {
       try {
-        fetch(process.env.REACT_APP_API_ENDPOINT + "user/business", {
+        fetch(process.env.REACT_APP_API_ENDPOINT + "user/business/menu", {
           // mode: "no-cors",
           method: "POST",
           credentials: "include",
@@ -100,37 +100,39 @@ export default function CreateBuz() {
     }
   };
 
-  if (!userContext.workIn) {
+  if (!userContext.menu) {
     return (
       <div className="create-form">
         <div className="wrapper rounded bg-white ">
-          <div className="h3">Create your business</div>
+          <div className="h3">
+            Complete your account by Creating your Menu 🍱
+          </div>
           <form className="form" onSubmit={formSubmitHandler} ref={formRef}>
             <div className="row">
               <div className="col-md-6 mt-md-0 mt-3">
-                <label>Trade name</label>
+                <label>username</label>
                 <input
-                  name="tradeName"
-                  id="tradeName"
+                  name="username"
+                  id="username"
                   type="text"
                   className="form-control"
                   required
-                  onChange={(e) => setTradeName(e.target.value)}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
               <div className="col-md-6 mt-md-0 mt-3">
-                <label>Branch number</label>
+                <label>name</label>
                 <input
-                  name="branchID"
-                  id="branchID"
+                  name="name"
+                  id="name"
                   type="text"
                   className="form-control"
                   required
-                  onChange={(e) => setBranchID(e.target.value)}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </div>
             </div>
-            <div className="row">
+            {/* <div className="row">
               <div className="col-md-6 mt-md-0 mt-3">
                 <label>Business type</label>
                 <input
@@ -142,41 +144,47 @@ export default function CreateBuz() {
                   onChange={(e) => setBusinessType(e.target.value)}
                 />
               </div>
-            </div>
+            </div> */}
             <div className="mb-3">
               <label htmlFor="formFile" className="form-label">
-                please upload your legal document to verify your business
+                please upload your Menu logo
               </label>
               <input
-                name="pdf"
-                id="pdf"
+                name="logo"
+                id="logo"
                 className="form-control"
                 type="file"
                 required
-                onChange={(e) => setPdf(e.target.files[0])}
+                onChange={(e) => setLogo(e.target.files[0])}
               />
             </div>
-            {/* <div className=" my-md-2 my-3">
+            <div className=" my-md-2 my-3">
               <div className="row">
                 <div className="col-md-12">
                   <div className="form-group">
                     <label>Description</label>
                     <div className="form-group bmd-form-group">
                       <label className="bmd-label-floating">
-                        Enter a simple description for your business
+                        Enter a simple description for your Menu
                       </label>
-                      <textarea className="form-control" rows="5"></textarea>
+                      <textarea
+                        name="description"
+                        id="description"
+                        onChange={(e) => setDescription(e.target.value)}
+                        className="form-control"
+                        rows="5"
+                      ></textarea>
                     </div>
                   </div>
                 </div>
               </div>
-            </div> */}
+            </div>
             <button
               onClick={formSubmitHandler}
               type="submit"
               className="btn btn-primary mt-3"
             >
-              Submit
+              Create
             </button>
           </form>
         </div>

@@ -1,10 +1,12 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { Navigate, NavLink } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 // import Header from "../components/Header"; moved to Layout.js
 // import Footer from "../components/Footer"; moved to Layout.js
 import "../pages/Style/styles.min.css";
 
 export default function Home() {
+  const [userContext, setUserContext] = useContext(UserContext);
   return (
     <div>
       <header className="bg-dark py-5">
@@ -34,13 +36,23 @@ export default function Home() {
             <p className="lead fw-normal text-dark mb-4">
               welecome to Talabk business gate 😁
             </p>
-            <NavLink
-              to="/createBusiness"
-              className="btn btn-warning btn-lg btn-block col-md-2"
-              type="button"
-            >
-              createBusiness
-            </NavLink>
+            {/* {userContext.details?.workIn ? (
+              <NavLink
+                to="/Dashboard"
+                className="btn btn-warning btn-lg btn-block col-md-2"
+                type="button"
+              >
+                go to Dashboard
+              </NavLink>
+            ) : (
+              <NavLink
+                to="/createBusiness"
+                className="btn btn-warning btn-lg btn-block col-md-2"
+                type="button"
+              >
+                createBusiness
+              </NavLink>
+            )} */}
           </div>
         </div>
       </header>
