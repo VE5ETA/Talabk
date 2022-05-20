@@ -8,6 +8,9 @@ const Order = new Schema({
     required: true,
     ref: "Business",
   },
+  reservationInfo: {
+    type: Object,
+  },
   orderDate: {
     type: Date,
     default: () => Date.now(),

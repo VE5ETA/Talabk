@@ -3,27 +3,130 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnglesLeft } from "@fortawesome/free-solid-svg-icons";
 import { orderInfo } from "../../helper/OrderInfo";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
 // import { CartProduct } from "../../components/CartProduct";
 import { CartProduct } from "../../components/CartProduct";
 import { CustomerContext } from "../../context/CustomerContext";
+import { errorAlert, infoAlert } from "../../helper/Options";
 
 export default function Card() {
-  // const [subTotal, setSubTotal] = useState(0);
-  // const [count, setCount] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(undefined);
+  const [succssed, setSuccssed] = useState(false);
   const [customerContext, setCustomerContext] = useContext(CustomerContext);
-  const [PN, setPN] = useState("");
-  const [orderType, setOrderType] = useState("");
+
+  // order info
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [orderType, setOrderType] = useState("dining in");
+  const [orderNotes, setOrderNotes] = useState("");
+  const [personNumber, setPersonNumber] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [reservationTime, setReservationTime] = useState("30m");
   let price = 0;
   let itemsCount = 0;
 
+  useEffect(() => {
+    if (error) {
+      errorAlert(error);
+    }
+    if (succssed) {
+      infoAlert(`your order is send to ${customerContext?.username}`);
+    }
+  }, [error, succssed]);
+
+  function onClickHandler(e) {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError("");
+
+    const genericErrorMessage = "Something went wrong! Please try again later.";
+
+    if (customerContext?.orderType === "reservation") {
+      if (customerContext?.reservationInfo.personNumber === "") {
+        setError("person number is invalid");
+        setIsSubmitting(false);
+      } else if (customerContext?.reservationInfo.date === "") {
+        setError("date is invalid");
+        setIsSubmitting(false);
+      } else if (customerContext?.reservationInfo.time === "") {
+        setError("time is invalid");
+        setIsSubmitting(false);
+      } else if (customerContext?.ID !== undefined) {
+        fetch(process.env.REACT_APP_API_ENDPOINT + "customer/", {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(customerContext),
+        })
+          .then(async (res) => {
+            const resJson = await res.json();
+            if (!res.ok) {
+              setIsSubmitting(false);
+              if (res.status === 500) {
+                setError(resJson.message);
+              } else if (res.status === 404) {
+                setError("business not found");
+              } else {
+                setError(genericErrorMessage);
+              }
+            } else {
+              setIsSubmitting(false);
+              setSuccssed(true);
+            }
+          })
+          .catch((error) => {
+            setError(genericErrorMessage);
+            setIsSubmitting(false);
+          });
+      } else {
+        console.log(customerContext);
+        setError("you don't choise a business");
+        setIsSubmitting(false);
+      }
+    }
+    if (
+      Object.keys(customerContext).length != 0 &&
+      customerContext?.ID !== undefined &&
+      customerContext?.orderType !== "reservation"
+    ) {
+      fetch(process.env.REACT_APP_API_ENDPOINT + "customer/", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(customerContext),
+      })
+        .then(async (res) => {
+          const resJson = await res.json();
+          if (!res.ok) {
+            setIsSubmitting(false);
+            if (res.status === 500) {
+              setError(resJson.message);
+            } else if (res.status === 404) {
+              setError("business not found");
+            } else {
+              setError(genericErrorMessage);
+            }
+          } else {
+            setIsSubmitting(false);
+            setSuccssed(true);
+          }
+        })
+        .catch((error) => {
+          setError(genericErrorMessage);
+          setIsSubmitting(false);
+        });
+    } else if (customerContext?.orderType !== "reservation") {
+      setError("you can't create order without items");
+      setIsSubmitting(false);
+    }
+  }
+
+  // show cart product it right side
   function orderItems() {
     if (customerContext?.items != undefined) {
       if (Object.keys(customerContext?.items).length !== 0) {
         return Object.values(customerContext?.items).map((item, index) => {
-          // customerContext?.subTotal
-          //   ? (price = item.price + customerContext.subTotal)
-          //   : (price = item.price);
-
           price = price + item.price * item.quantite;
           itemsCount = itemsCount + item.quantite;
           return (
@@ -41,14 +144,40 @@ export default function Card() {
     }
   }
 
+  // update reservationTime value on change
   useEffect(() => {
     setCustomerContext((oldValues) => {
       return {
         ...oldValues,
-        customerNumber: PN,
+        reservationInfo: {
+          reservationTime: reservationTime,
+          date: date,
+          time: time,
+          personNumber: personNumber,
+        },
       };
     });
-  }, [PN]);
+  }, [reservationTime, date, time, personNumber]);
+
+  // update notes value on change
+  useEffect(() => {
+    setCustomerContext((oldValues) => {
+      return {
+        ...oldValues,
+        notes: orderNotes,
+      };
+    });
+  }, [orderNotes]);
+
+  useEffect(() => {
+    setCustomerContext((oldValues) => {
+      return {
+        ...oldValues,
+        customerNumber: phoneNumber,
+      };
+    });
+    // console.log(customerContext);
+  }, [phoneNumber]);
 
   useEffect(() => {
     setCustomerContext((oldValues) => {
@@ -57,7 +186,15 @@ export default function Card() {
         orderType: orderType,
       };
     });
-    console.log(orderType);
+  }, [orderType]);
+
+  useEffect(() => {
+    setCustomerContext((oldValues) => {
+      return {
+        ...oldValues,
+        orderType: orderType,
+      };
+    });
   }, [orderType]);
 
   function setTotal() {
@@ -73,6 +210,9 @@ export default function Card() {
     setTotal();
   }, [price]);
 
+  ////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
   return (
     <div className="cart bg-light">
       <div className="container">
@@ -115,6 +255,7 @@ export default function Card() {
                 >
                   <input
                     onClick={(e) => setOrderType(e.target.value)}
+                    value="dining in"
                     type="radio"
                     className="btn-check"
                     name="btnradio"
@@ -126,10 +267,11 @@ export default function Card() {
                     className="btn btn-outline-primary"
                     htmlFor="btnradio1"
                   >
-                    Radio 1
+                    dining in
                   </label>
                   <input
                     onClick={(e) => setOrderType(e.target.value)}
+                    value="pickup"
                     type="radio"
                     className="btn-check"
                     name="btnradio"
@@ -140,10 +282,11 @@ export default function Card() {
                     className="btn btn-outline-primary"
                     htmlFor="btnradio2"
                   >
-                    Radio 2
+                    pickup
                   </label>
                   <input
                     onClick={(e) => setOrderType(e.target.value)}
+                    value="reservation"
                     type="radio"
                     className="btn-check"
                     name="btnradio"
@@ -154,34 +297,9 @@ export default function Card() {
                     className="btn btn-outline-primary"
                     htmlFor="btnradio3"
                   >
-                    Radio 3
+                    reservation
                   </label>
                 </div>
-                {/* <div className="order-type">
-                  <details>
-                    <summary>Test Dropdown</summary>
-                    <ul>
-                      <li
-                        value={1}
-                        onClick={(e) => setOrderType(e.target.value)}
-                      >
-                        Item 1
-                      </li>
-                      <li
-                        value={2}
-                        onClick={(e) => setOrderType(e.target.value)}
-                      >
-                        Item 2
-                      </li>
-                      <li
-                        value={3}
-                        onClick={(e) => setOrderType(e.target.value)}
-                      >
-                        Item 3
-                      </li>
-                    </ul>
-                  </details>
-                </div> */}
               </li>
             </ul>
             <form className="card p-2">
@@ -200,22 +318,76 @@ export default function Card() {
             </form>
           </div>
           <div className="col-md-8 order-md-1">
-            {/* <h4 className="mb-3">Billing address</h4> */}
             <form className="needs-validation">
               <div className="row">
                 <div className="col-md-6 mb-3">
                   <label htmlFor="firstName">Phone number</label>
                   <input
-                    onChange={(e) => setPN(e.target.value)}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
                     type="text"
                     className="form-control"
-                    id="PhoneNumber"
+                    id="phoneNumber"
                     placeholder="Enter your number"
                     required
                   />
-                  <div className="invalid-feedback">
-                    Valid first name is required.
-                  </div>
+                </div>
+
+                {orderType === "reservation" ? (
+                  <>
+                    <div className="col-md-6 mb-3">
+                      <label htmlFor="firstName">number of person</label>
+                      <input
+                        onChange={(e) => setPersonNumber(e.target.value)}
+                        type="text"
+                        className="form-control"
+                        id="phoneNumber"
+                        required
+                      />
+                    </div>
+                    <div className="col-md-6 mb-3">
+                      <label htmlFor="firstName">date</label>
+                      <input
+                        onChange={(e) => setDate(e.target.value)}
+                        type="date"
+                        className="form-control"
+                        id="time"
+                        required
+                      />
+                    </div>
+                    <div className="col-md-6 mb-3">
+                      <label htmlFor="firstName">time</label>
+                      <input
+                        onChange={(e) => setTime(e.target.value)}
+                        type="time"
+                        className="form-control"
+                        id="time"
+                        required
+                      />
+                    </div>
+                    <div className="col-md-6 mb-3">
+                      <label htmlFor="firstName">reservation time</label>
+                      <select
+                        onChange={(e) => setReservationTime(e.target.value)}
+                        className="form-select"
+                      >
+                        <option value="30m">half an hour</option>
+                        <option value="1 hour">One hour</option>
+                        <option value="2 hour">Two hour</option>
+                        <option value="3 hour">Three hour</option>
+                        <option value="more than 3 hour">
+                          more than 3 hour
+                        </option>
+                      </select>
+                    </div>
+                  </>
+                ) : null}
+                <div className="col-md-6 mb-3">
+                  <label htmlFor="firstName">Note</label>
+                  <textarea
+                    onChange={(e) => setOrderNotes(e.target.value)}
+                    className="form-control"
+                    rows="3"
+                  ></textarea>
                 </div>
               </div>
 
@@ -325,7 +497,11 @@ export default function Card() {
                     <FontAwesomeIcon icon={faAnglesLeft} />
                   </NavLink>
                 ) : null}
-                <button className="btn btn-primary btn-lg" type="submit">
+                <button
+                  onClick={onClickHandler}
+                  className="btn btn-primary btn-lg"
+                  type="submit"
+                >
                   Continue to checkout
                 </button>
               </div>

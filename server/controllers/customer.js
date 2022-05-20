@@ -49,6 +49,7 @@ module.exports = {
             subTotal: req.body.subTotal,
             items: req.body.items,
             notes: req.body.notes,
+            reservationInfo: req.body.reservationInfo,
           });
 
           newOrder.save((err, result) => {
