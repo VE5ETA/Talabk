@@ -23,7 +23,9 @@ export default function Login() {
     }
     if (succssed) {
       infoAlert("you have logged in successfuly 👋😁");
-      navigate("/Dashboard");
+      // setTimeout(() => {
+      navigate("/AfterLog");
+      // }, 3000);
     }
   }, [error, succssed]);
 
@@ -71,14 +73,14 @@ export default function Login() {
 
   return (
     <div>
-      <div className="container" style={{ marginTop: "111px" }}>
+      <div className="container">
         <div className="row register-form">
           <div className="col">
             <div />
           </div>
           <div
             className="col-md-8 col-xl-7 offset-md-2"
-            style={{ marginRight: "0px", marginTop: "0px", marginLeft: 0 }}
+            style={{ margin: "100px 0 " }}
           >
             <form onSubmit={formSubmitHandler} className="custom-form">
               <h1>LOGIN</h1>

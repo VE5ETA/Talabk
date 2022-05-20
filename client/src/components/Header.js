@@ -55,9 +55,7 @@ export default function Header(props) {
             setError(genericErrorMessage);
           }
         } else {
-          setUserContext((oldValues) => {
-            return { ...oldValues, details: undefined, token: null };
-          });
+          setUserContext({});
           setSuccssed(true);
         }
       })

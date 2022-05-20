@@ -6,7 +6,7 @@ export default function CreateBuz() {
 
   if (!userContext.workIn) {
     return (
-      <div className="create-form ">
+      <div className="create-form">
         <div className="wrapper rounded bg-white ">
           <div className="h3">Create your business</div>
           <div className="form">
@@ -32,7 +32,7 @@ export default function CreateBuz() {
               </label>
               <input className="form-control" type="file" id="formFile" />
             </div>
-            <div className=" my-md-2 my-3">
+            {/* <div className=" my-md-2 my-3">
               <div className="row">
                 <div className="col-md-12">
                   <div className="form-group">
@@ -46,7 +46,7 @@ export default function CreateBuz() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="btn btn-primary mt-3">Submit</div>
           </div>
         </div>

@@ -6,12 +6,12 @@ import { warningAlert } from "../helper/Options";
 
 // this function is protect critical page
 // get user role from context and check if admin or not
-export default function RequireAuth() {
+export default function IsLogged() {
   const [userContext, setUserContext] = useContext(UserContext);
   const location = useLocation();
   //this needs to be fixed ❗
   return userContext.token ? (
-    <Navigate to="/" replace state={{ from: location }} />
+    <Navigate to="/AfterLog" replace state={{ from: location }} />
   ) : (
     <Outlet />
   );

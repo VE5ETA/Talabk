@@ -34,13 +34,13 @@ export default function Home() {
             <p className="lead fw-normal text-dark mb-4">
               welecome to Talabk business gate 😁
             </p>
-            {/* <NavLink
-              to="/stores"
+            <NavLink
+              to="/createBusiness"
               className="btn btn-warning btn-lg btn-block col-md-2"
               type="button"
             >
-              Browse Store List
-            </NavLink> */}
+              createBusiness
+            </NavLink>
           </div>
         </div>
       </header>

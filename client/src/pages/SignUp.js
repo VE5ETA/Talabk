@@ -23,7 +23,7 @@ export default function SignUp() {
     }
     if (succssed) {
       successAlert("your account has been created successfuly 👋😁");
-      navigate("/Dashboard");
+      navigate("/AfterLog");
     }
   }, [error, succssed]);
 

@@ -84,14 +84,19 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signUp" element={<SignUp />} />
           </Route>
-
           {/* privete page */}
+            <Route path="/AfterLog" element={<AfterLog />} />
           <Route element={<RequireAuth />}>
-          <Route path="/adminDashboard" element={<AdminDashboard />} />
-          <Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/createBusiness" element={<CreateForm />} />
-          <Route path="/logout" element={<Logout />} />
+            {/* <Route element={<AfterLog />}> */}
+            {/* <Route path="/login" element={<Login />} />
+              <Route path="/signUp" element={<SignUp />} /> */}
+            <Route path="/adminDashboard" element={<AdminDashboard />} />
+            <Route path="/Dashboard" element={<Dashboard />} />
+            <Route path="/createBusiness" element={<CreateForm />} />
+            <Route path="/logout" element={<Logout />} />
+            {/* </Route> */}
           </Route>
+
           {/* <Route element={<AfterLog />}></Route> */}
 
           {/* if page not found */}

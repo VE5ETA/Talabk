@@ -1,4 +1,10 @@
-import React, { useContext, useState, useCallback, useEffect } from "react";
+import React, {
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+} from "react";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
@@ -10,7 +16,9 @@ export default function AfterLog() {
   const [userContext, setUserContext] = useContext(UserContext);
   const [error, setError] = useState(undefined);
 
-  // const navigate = useNavigate();
+  let isDone = useRef(false);
+
+  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
@@ -18,6 +26,26 @@ export default function AfterLog() {
       errorAlert(error);
     }
   }, [error]);
+
+  useEffect(() => {
+    if (isDone.current) {
+      navigateTheUser();
+    }
+  }, [userContext]);
+
+  function navigateTheUser() {
+    userContext.isAdmin
+      ? navigate("/adminDashboard")
+      : // <Navigate to="/adminDashboard" replace state={{ from: location }} />
+      userContext.details?.workIn && !userContext.isAdmin
+      ? navigate("/Dashboard")
+      : // <Navigate to="/Dashboard" replace state={{ from: location }} />
+      !userContext.isAdmin && !userContext.details?.workIn
+      ? navigate("/createBusiness")
+      : // <Navigate to="/createBusiness" replace state={{ from: location }} />
+        navigate("/");
+    // <Navigate to="/" replace state={{ from: location }} />
+  }
 
   const fetchUserDetails = useCallback(() => {
     fetch(process.env.REACT_APP_API_ENDPOINT + "user/me", {
@@ -42,15 +70,27 @@ export default function AfterLog() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userContext.token}`,
           },
-        }).then(async (r) => {
-          if (r.ok) {
+        })
+          .then(async (r) => {
+            console.log(r);
+            if (r.ok) {
+              setUserContext((oldValues) => {
+                return { ...oldValues, isAdmin: true };
+              });
+              isDone.current = true;
+              // navigate("/AdminDashboard"); //this needs to be complete
+            } else {
+              setUserContext((oldValues) => {
+                return { ...oldValues, isAdmin: false };
+              });
+              isDone.current = true;
+            }
+          })
+          .catch((err) => {
             setUserContext((oldValues) => {
-              return { ...oldValues, isAdmin: true };
+              return { ...oldValues, isAdmin: false };
             });
-            // navigate("/AdminDashboard"); //this needs to be complete
-          } else {
-          }
-        });
+          });
       } else {
         if (response.status === 401) {
           setError("something want wrong ❗");
@@ -77,11 +117,16 @@ export default function AfterLog() {
   }, [userContext.details, fetchUserDetails]);
 
   //this needs to be fixed ❗
-  return userContext?.isAdmin ? (
-    <Navigate to="/adminDashboard" replace state={{ from: location }} />
-  ) : userContext.details?.workIn ? (
-    <Navigate to="/Dashboard" replace state={{ from: location }} />
-  ) : (
-    <Navigate to="/createBusiness" replace state={{ from: location }} />
-  );
+  console.log(userContext.isAdmin);
+  return null;
+
+  // if (userContext.isAdmin) {
+  //   return <Navigate to="/adminDashboard" replace state={{ from: location }} />;
+  // } else if (userContext.details.workIn && !userContext.isAdmin) {
+  //   return <Navigate to="/Dashboard" replace state={{ from: location }} />;
+  // } else if (userContext.details.workIn && !userContext.isAdmin) {
+  //   return <Navigate to="/Dashboard" replace state={{ from: location }} />;
+  // } else {
+  //   return <Navigate to="/createBusiness" replace state={{ from: location }} />;
+  // }
 }
