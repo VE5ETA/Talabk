@@ -10,11 +10,11 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 export default function Menu() {
   const url =
-    process.env.NODE_ENV === "live"
+    process.env.REACT_APP_NODE_ENV === "live"
       ? "https://" +
         process.env.CODESPACE_NAME +
         "-" +
-        process.env.SERVER_PORT +
+        process.env.PORT +
         ".githubpreview.dev/"
       : process.env.REACT_APP_API_ENDPOINT;
 

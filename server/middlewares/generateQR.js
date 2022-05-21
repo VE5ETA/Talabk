@@ -4,22 +4,15 @@ const opts = {
   scale: 50,
   type: "image/png",
 };
+const qrURL =
+  process.env.NODE_ENV === "live"
+    ? "https://" +
+      process.env.CODESPACE_NAME +
+      "-" +
+      process.env.CUSTOMER_PORT +
+      ".githubpreview.dev/"
+    : process.env.DOMAIN_NAME_LOCAL + process.env.CUSTOMER_PORT + "/";
+
 exports.generateQR = async (username) => {
-  return process.env.NODE_ENV !== "live"
-    ? await qrcode.toDataURL(
-        process.env.DOMAIN_NAME_LOCAL +
-          process.env.CUSTOMER_PORT +
-          "/" +
-          username,
-        opts
-      )
-    : await qrcode.toDataURL(
-        "https://" +
-          process.env.CODESPACE_NAME +
-          "-" +
-          process.env.CUSTOMER_PORT +
-          ".githubpreview.dev/" +
-          username,
-        opts
-      );
+  return await qrcode.toDataURL(qrURL + username, opts);
 };

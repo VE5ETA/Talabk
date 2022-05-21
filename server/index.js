@@ -30,12 +30,12 @@ const whitelist =
         "http://" +
           process.env.CODESPACE_NAME +
           "-" +
-          process.env.SERVER_PORT +
+          process.env.PORT +
           ".githubpreview.dev",
         "https://" +
           process.env.CODESPACE_NAME +
           "-" +
-          process.env.SERVER_PORT +
+          process.env.PORT +
           ".githubpreview.dev",
         "http://" +
           process.env.CODESPACE_NAME +

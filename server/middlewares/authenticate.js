@@ -1,7 +1,7 @@
 "use strict";
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
-const dev = process.env.NODE_ENV !== "live";
+const dev = process.env.NODE_ENV === "live";
 
 exports.COOKIE_OPTIONS = {
   httpOnly: true,
