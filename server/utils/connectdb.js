@@ -1,6 +1,9 @@
 "use strict";
 const mongoose = require("mongoose");
-const url = process.env.MONGO_DB_CONNECTION_STRING; //changed the db name for validation issues 🧰
+const url =
+  process.env.NODE_ENV === "live"
+    ? process.env.ONLAIN_MONGO_DB_CONNECTION_STRING
+    : process.env.MONGO_DB_CONNECTION_STRING; //changed the db name for validation issues 🧰
 const connect = mongoose.connect(
   url
   //     ,{
@@ -9,6 +12,7 @@ const connect = mongoose.connect(
   //         useCreateIndex: true,
   //     }
 );
+
 connect
   .then((db) => {
     console.log("connected to db");
