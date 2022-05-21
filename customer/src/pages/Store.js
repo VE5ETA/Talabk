@@ -5,6 +5,15 @@ import axios from "axios";
 export default function Store() {
   let [MenusData, setMenusData] = useState([]);
 
+  const url =
+    process.env.NODE_ENV === "live"
+      ? "https://" +
+        process.env.CODESPACE_NAME +
+        "-" +
+        process.env.SERVER_PORT +
+        ".githubpreview.dev/"
+      : process.env.REACT_APP_API_ENDPOINT;
+
   useEffect(() => {
     getMenusData();
   }, []);
@@ -14,9 +23,7 @@ export default function Store() {
   }, [MenusData]);
 
   function getMenusData() {
-    axios
-      .get(process.env.REACT_APP_API_ENDPOINT + "customer/stores")
-      .then((res) => setMenusData(res.data));
+    axios.get(url + "customer/stores").then((res) => setMenusData(res.data));
   }
 
   function data() {

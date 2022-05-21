@@ -9,6 +9,15 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 // import NotFound from "../NotFound";
 
 export default function Menu() {
+  const url =
+    process.env.NODE_ENV === "live"
+      ? "https://" +
+        process.env.CODESPACE_NAME +
+        "-" +
+        process.env.SERVER_PORT +
+        ".githubpreview.dev/"
+      : process.env.REACT_APP_API_ENDPOINT;
+
   // const [customerContext, setCustomerContext] = useContext(CustomerContext);
   const [userContext, setUserContext] = useContext(UserContext);
   //ls is short for localstorage
@@ -55,7 +64,7 @@ export default function Menu() {
 
   function getmenuData() {
     axios
-      .get(process.env.REACT_APP_API_ENDPOINT + `customer/@${username}`)
+      .get(url + `customer/@${username}`)
       .then(async (res) => {
         if (res.status === 200) {
           setMenuData(res.data);

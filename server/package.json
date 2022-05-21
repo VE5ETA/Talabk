@@ -23,20 +23,20 @@
   "dependencies": {
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.0",
-    "express": "^4.17.3",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.2.4",
+    "mongoose": "^6.3.4",
     "mongoose-unique-validator": "^3.0.0",
     "multer": "^1.4.4",
-    "passport": "^0.5.2",
+    "passport": "^0.5.3",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^6.1.0",
+    "passport-local-mongoose": "^7.1.1",
     "qrcode": "^1.5.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15",
+    "nodemon": "^2.0.16",
     "patch-package": "^6.4.7"
   }
 }

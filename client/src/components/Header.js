@@ -14,6 +14,15 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function Header(props) {
+  const url =
+    process.env.NODE_ENV === "live"
+      ? "https://" +
+        process.env.CODESPACE_NAME +
+        "-" +
+        process.env.SERVER_PORT +
+        ".githubpreview.dev/"
+      : process.env.REACT_APP_API_ENDPOINT;
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(undefined);
   const [succssed, setSuccssed] = useState(false);
@@ -37,7 +46,7 @@ export default function Header(props) {
     setError("");
 
     const genericErrorMessage = "Something went wrong! Please try again later.";
-    fetch(process.env.REACT_APP_API_ENDPOINT + "user/logout", {
+    fetch(url + "user/logout", {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",

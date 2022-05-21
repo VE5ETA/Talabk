@@ -23,10 +23,19 @@ import AfterLog from "../context/AfterLog";
 import Dashboard from "./Dashboard";
 
 function App() {
+  const url =
+    process.env.NODE_ENV === "live"
+      ? "https://" +
+        process.env.CODESPACE_NAME +
+        "-" +
+        process.env.SERVER_PORT +
+        ".githubpreview.dev/"
+      : process.env.REACT_APP_API_ENDPOINT;
+
   const [userContext, setUserContext] = useContext(UserContext);
 
   const verifyUser = useCallback(() => {
-    fetch(process.env.REACT_APP_API_ENDPOINT + "user/refreshToken", {
+    fetch(url + "user/refreshToken", {
       method: "POST",
       credentials: "include",
       headers: {

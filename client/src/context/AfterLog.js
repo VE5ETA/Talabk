@@ -13,6 +13,15 @@ import { infoAlert, errorAlert } from "../helper/Options";
 // this function is protect critical page
 // get user role from context and check if admin or not
 export default function AfterLog() {
+  const url =
+    process.env.NODE_ENV === "live"
+      ? "https://" +
+        process.env.CODESPACE_NAME +
+        "-" +
+        process.env.SERVER_PORT +
+        ".githubpreview.dev/"
+      : process.env.REACT_APP_API_ENDPOINT;
+
   const [userContext, setUserContext] = useContext(UserContext);
   const [error, setError] = useState(undefined);
 
@@ -67,7 +76,7 @@ export default function AfterLog() {
   }
 
   const fetchUserDetails = useCallback(async () => {
-    await fetch(process.env.REACT_APP_API_ENDPOINT + "user/me", {
+    await fetch(url + "user/me", {
       method: "GET",
       credentials: "include",
       // Pass authentication token as bearer token in header
@@ -81,18 +90,15 @@ export default function AfterLog() {
         setUserContext((oldValues) => {
           return { ...oldValues, details: data };
         });
-        await fetch(
-          process.env.REACT_APP_API_ENDPOINT + "user/platform/adminTest",
-          {
-            method: "GET",
-            credentials: "include",
-            // Pass authentication token as bearer token in header
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userContext.token}`,
-            },
-          }
-        )
+        await fetch(url + "user/platform/adminTest", {
+          method: "GET",
+          credentials: "include",
+          // Pass authentication token as bearer token in header
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userContext.token}`,
+          },
+        })
           .then(async (r) => {
             console.log(r);
             if (r.ok) {
@@ -105,18 +111,15 @@ export default function AfterLog() {
               setUserContext((oldValues) => {
                 return { ...oldValues, isAdmin: false };
               });
-              await fetch(
-                process.env.REACT_APP_API_ENDPOINT + "user/business/menu",
-                {
-                  method: "GET",
-                  credentials: "include",
-                  // Pass authentication token as bearer token in header
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${userContext.token}`,
-                  },
-                }
-              ).then(async (menuRes) => {
+              await fetch(url + "user/business/menu", {
+                method: "GET",
+                credentials: "include",
+                // Pass authentication token as bearer token in header
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${userContext.token}`,
+                },
+              }).then(async (menuRes) => {
                 if (menuRes.ok) {
                   const menuData = await menuRes.json();
                   setUserContext((oldValues) => {

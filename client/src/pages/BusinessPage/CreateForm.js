@@ -4,6 +4,15 @@ import { UserContext } from "../../context/UserContext";
 import { errorAlert, successAlert } from "../../helper/Options";
 
 export default function CreateBuz() {
+  const url =
+    process.env.NODE_ENV === "live"
+      ? "https://" +
+        process.env.CODESPACE_NAME +
+        "-" +
+        process.env.SERVER_PORT +
+        ".githubpreview.dev/"
+      : process.env.REACT_APP_API_ENDPOINT;
+
   const [userContext, setUserContext] = useContext(UserContext);
   const [tradeName, setTradeName] = useState();
   const [branchID, setBranchID] = useState();
@@ -54,7 +63,7 @@ export default function CreateBuz() {
       setError("business legel document required!");
     } else {
       try {
-        fetch(process.env.REACT_APP_API_ENDPOINT + "user/business", {
+        fetch(url + "user/business", {
           // mode: "no-cors",
           method: "POST",
           credentials: "include",

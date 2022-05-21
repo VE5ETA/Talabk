@@ -5,5 +5,21 @@ const opts = {
   type: "image/png",
 };
 exports.generateQR = async (username) => {
-  return await qrcode.toDataURL("http://127.0.0.1:8081/@" + username, opts);
+  return process.env.NODE_ENV !== "live"
+    ? await qrcode.toDataURL(
+        process.env.DOMAIN_NAME_LOCAL +
+          process.env.CUSTOMER_PORT +
+          "/" +
+          username,
+        opts
+      )
+    : await qrcode.toDataURL(
+        "https://" +
+          process.env.CODESPACE_NAME +
+          "-" +
+          process.env.CUSTOMER_PORT +
+          ".githubpreview.dev/" +
+          username,
+        opts
+      );
 };

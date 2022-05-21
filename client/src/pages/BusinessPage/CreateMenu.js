@@ -4,6 +4,15 @@ import { UserContext } from "../../context/UserContext";
 import { errorAlert, successAlert } from "../../helper/Options";
 
 export default function CreateMenu() {
+  const url =
+    process.env.NODE_ENV === "live"
+      ? "https://" +
+        process.env.CODESPACE_NAME +
+        "-" +
+        process.env.SERVER_PORT +
+        ".githubpreview.dev/"
+      : process.env.REACT_APP_API_ENDPOINT;
+
   const [userContext, setUserContext] = useContext(UserContext);
   const [username, setUsername] = useState();
   const [name, setName] = useState();
@@ -54,7 +63,7 @@ export default function CreateMenu() {
       setError("menu logo required!");
     } else {
       try {
-        fetch(process.env.REACT_APP_API_ENDPOINT + "user/business/menu", {
+        fetch(url + "user/business/menu", {
           // mode: "no-cors",
           method: "POST",
           credentials: "include",

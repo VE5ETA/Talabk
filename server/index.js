@@ -4,11 +4,11 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 
-if (process.env.NODE_ENV !== "production") {
-  //this will run by defualt
-  // Load environment variables from .env file in non prod environments
-  require("dotenv").config();
-}
+// if (process.env.NODE_ENV !== "production") {
+//this will run by defualt
+// Load environment variables from .env file in non prod environments
+require("dotenv").config();
+// }
 require("./utils/connectdb");
 require("./middlewares/JwtStrategy");
 require("./middlewares/LocalStrategy");
@@ -23,9 +23,43 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 
 //Add the client URL to the CORS policy
 
-const whitelist = process.env.WHITELISTED_DOMAINS
-  ? process.env.WHITELISTED_DOMAINS.split(" ")
-  : [];
+const whitelist =
+  process.env.NODE_ENV !== "live"
+    ? process.env.WHITELISTED_DOMAINS.split(" ")
+    : [
+        "http://" +
+          process.env.CODESPACE_NAME +
+          "-" +
+          process.env.SERVER_PORT +
+          ".githubpreview.dev",
+        "https://" +
+          process.env.CODESPACE_NAME +
+          "-" +
+          process.env.SERVER_PORT +
+          ".githubpreview.dev",
+        "http://" +
+          process.env.CODESPACE_NAME +
+          "-" +
+          process.env.CLIENT_PORT +
+          ".githubpreview.dev",
+        "https://" +
+          process.env.CODESPACE_NAME +
+          "-" +
+          process.env.CLIENT_PORT +
+          ".githubpreview.dev",
+        "http://" +
+          process.env.CODESPACE_NAME +
+          "-" +
+          process.env.CUSTOMER_PORT +
+          ".githubpreview.dev",
+        "https://" +
+          process.env.CODESPACE_NAME +
+          "-" +
+          process.env.CUSTOMER_PORT +
+          ".githubpreview.dev",
+      ];
+
+console.log(whitelist);
 
 const corsOptions = {
   origin(origin, callback) {
@@ -39,6 +73,10 @@ const corsOptions = {
 
   credentials: true,
 };
+app.use(cors(corsOptions));
+
+app.use(passport.initialize());
+app.use("/", router);
 
 app.use(cors(corsOptions));
 

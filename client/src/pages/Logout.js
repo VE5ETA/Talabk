@@ -10,6 +10,15 @@ import { errorAlert, successAlert } from "../helper/Options";
 import { ToastContainer } from "react-toastify";
 
 export default function Logout() {
+  const url =
+    process.env.NODE_ENV === "live"
+      ? "https://" +
+        process.env.CODESPACE_NAME +
+        "-" +
+        process.env.SERVER_PORT +
+        ".githubpreview.dev/"
+      : process.env.REACT_APP_API_ENDPOINT;
+
   const [error, setError] = useState("");
   const [succssed, setSuccssed] = useState(false);
   const [userContext, setUserContext] = useContext(UserContext);
@@ -32,7 +41,7 @@ export default function Logout() {
 
     const genericErrorMessage = "Something went wrong! Please try again later.";
 
-    fetch(process.env.REACT_APP_API_ENDPOINT + "user/logout", {
+    fetch(url + "user/logout", {
       method: "GET",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

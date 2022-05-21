@@ -6,6 +6,15 @@ import { UserContext } from "../context/UserContext";
 import { errorAlert, infoAlert } from "../helper/Options";
 
 export default function Login() {
+  const url =
+    process.env.NODE_ENV === "live"
+      ? "https://" +
+        process.env.CODESPACE_NAME +
+        "-" +
+        process.env.SERVER_PORT +
+        ".githubpreview.dev/"
+      : process.env.REACT_APP_API_ENDPOINT;
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(undefined);
   const [succssed, setSuccssed] = useState(false);
@@ -36,7 +45,7 @@ export default function Login() {
 
     const genericErrorMessage = "Something went wrong! Please try again later.";
 
-    fetch(process.env.REACT_APP_API_ENDPOINT + "user/login", {
+    fetch(url + "user/login", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

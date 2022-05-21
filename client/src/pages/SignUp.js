@@ -5,6 +5,15 @@ import { UserContext } from "../context/UserContext";
 import { errorAlert, successAlert } from "../helper/Options";
 
 export default function SignUp() {
+  const url =
+    process.env.NODE_ENV === "live"
+      ? "https://" +
+        process.env.CODESPACE_NAME +
+        "-" +
+        process.env.SERVER_PORT +
+        ".githubpreview.dev/"
+      : process.env.REACT_APP_API_ENDPOINT;
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [succssed, setSuccssed] = useState(false);
@@ -34,7 +43,7 @@ export default function SignUp() {
 
     const genericErrorMessage = "Something went wrong! Please try again later.";
 
-    fetch(process.env.REACT_APP_API_ENDPOINT + "user/signup", {
+    fetch(url + "user/signup", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

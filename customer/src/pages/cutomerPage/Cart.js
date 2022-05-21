@@ -10,6 +10,15 @@ import { CustomerContext } from "../../context/CustomerContext";
 import { errorAlert, successAlert } from "../../helper/Options";
 
 export default function Card() {
+  const url =
+    process.env.NODE_ENV === "live"
+      ? "https://" +
+        process.env.CODESPACE_NAME +
+        "-" +
+        process.env.SERVER_PORT +
+        ".githubpreview.dev/"
+      : process.env.REACT_APP_API_ENDPOINT;
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(undefined);
   const [succssed, setSuccssed] = useState(false);
@@ -55,7 +64,7 @@ export default function Card() {
         setError("time is invalid");
         setIsSubmitting(false);
       } else if (customerContext?.ID !== undefined) {
-        fetch(process.env.REACT_APP_API_ENDPOINT + "customer/", {
+        fetch(url + "customer/", {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },
@@ -91,7 +100,7 @@ export default function Card() {
       customerContext?.ID !== undefined &&
       customerContext?.orderType !== "reservation"
     ) {
-      fetch(process.env.REACT_APP_API_ENDPOINT + "customer/", {
+      fetch(url + "customer/", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

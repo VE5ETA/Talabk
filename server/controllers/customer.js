@@ -1,6 +1,6 @@
 "use strict";
 const { Business } = require("../models/business");
-const { Order } = require("../models/Order");
+const { Order } = require("../models/order");
 const { Menu } = require("../models/menu");
 const { Item } = require("../models/menu");
 
