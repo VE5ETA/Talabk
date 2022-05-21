@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useContext } from "react";
+import React, { useEffect, useCallback, useContext, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RequireAuth from "../context/RequireAuth";
 import IsLogged from "../context/IsLogged";
@@ -21,6 +21,7 @@ import CreateMenu from "./BusinessPage/CreateMenu";
 import Logout from "./Logout";
 import AfterLog from "../context/AfterLog";
 import Dashboard from "./Dashboard";
+import Spinner from "../components/Spinner";
 
 function App() {
   const url =
@@ -78,6 +79,7 @@ function App() {
   // ---------------------------\\
   return (
     <BrowserRouter>
+      {/* <Suspense fallback={<Spinner />}> */}
       <Routes>
         <Route path="/" element={<Layout />}>
           {/* public page */}
@@ -114,6 +116,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
+      {/* </Suspense> */}
     </BrowserRouter>
   );
 }

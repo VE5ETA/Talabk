@@ -11,6 +11,9 @@ const Order = new Schema({
   reservationInfo: {
     type: Object,
   },
+  BusinessName: {
+    type: String,
+  },
   orderDate: {
     type: Date,
     default: () => Date.now(),

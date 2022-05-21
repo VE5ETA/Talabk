@@ -50,6 +50,7 @@ module.exports = {
             items: req.body.items,
             notes: req.body.notes,
             reservationInfo: req.body.reservationInfo,
+            BusinessName: req.body.username,
           });
 
           newOrder.save((err, result) => {

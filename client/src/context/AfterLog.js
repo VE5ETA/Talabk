@@ -47,21 +47,23 @@ export default function AfterLog() {
   }, [userContext]);
 
   function navigateTheUser() {
-    if (!userContext.details.workIn && !userContext.isAdmin) {
-      navigate("/createBusiness");
-    } else if (userContext.isAdmin) {
-      navigate("/adminDashboard");
-    } else if (
-      !userContext.isAdmin &&
-      userContext.details.workIn &&
-      userContext.menu
-    ) {
-      navigate("/Dashboard");
-    } else if (!userContext.menu && !userContext.isAdmin) {
-      navigate("/CreateMenu");
-    } else {
-      navigate("/");
-    }
+    setTimeout(() => {
+      if (!userContext.details.workIn && !userContext.isAdmin) {
+        navigate("/createBusiness");
+      } else if (userContext.isAdmin) {
+        navigate("/adminDashboard");
+      } else if (
+        !userContext.isAdmin &&
+        userContext.details.workIn &&
+        userContext.menu
+      ) {
+        navigate("/Dashboard");
+      } else if (!userContext.menu && !userContext.isAdmin) {
+        navigate("/CreateMenu");
+      } else {
+        navigate("/");
+      }
+    }, 5000);
     // userContext.isAdmin
     //   ? navigate("/adminDashboard")
     //   : // <Navigate to="/adminDashboard" replace state={{ from: location }} />

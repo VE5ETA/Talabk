@@ -8,6 +8,7 @@ import NotFound from "./NotFound";
 import Menu from "./cutomerPage/Menu";
 import Cart from "./cutomerPage/Cart";
 import Store from "./Store";
+import Orders from "./Orders";
 
 function App() {
   return (
@@ -16,13 +17,14 @@ function App() {
         <Route path="/" element={<Layout />}>
           {/* public page */}
 
+          <Route path="/" element={<Home />} />
           <Route path="/stores" element={<Store />} />
 
           {/* for test */}
 
           <Route path="/cart" element={<Cart />} />
           {/* privete page */}
-          <Route path="/" element={<Home />} />
+          <Route path="/orders" element={<Orders />} />
           <Route path="/:username" element={<Menu />} />
           {/* if page not found */}
           <Route path="/notFound" element={<NotFound />} />

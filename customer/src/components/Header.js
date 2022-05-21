@@ -6,7 +6,7 @@ export default function Header(props) {
     <header>
       <div className="px-3 py-2 bg-dark text-white">
         <div className="container">
-          <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-3">
+          <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-5">
             <div
               style={{
                 fontFamily: "'Anton', sans-serif",
@@ -14,7 +14,7 @@ export default function Header(props) {
                 fontFamily: "'Lobster', cursive",
                 fontSize: 55,
               }}
-              className="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none"
+              className="m-4 d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none"
             >
               <NavLink
                 style={{ fontSize: 50 }}
@@ -22,6 +22,14 @@ export default function Header(props) {
                 to="/"
               >
                 Talabk
+              </NavLink>
+            </div>
+
+            <div className="text-end">
+              <NavLink to="/orders">
+                <button type="button" className="btn btn-warning">
+                  orders
+                </button>
               </NavLink>
             </div>
           </div>
