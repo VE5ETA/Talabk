@@ -13,9 +13,9 @@ export default function Card() {
   const url =
     process.env.REACT_APP_NODE_ENV === "live"
       ? "https://" +
-        process.env.CODESPACE_NAME +
+        process.env.REACT_APP_CODESPACE_NAME +
         "-" +
-        process.env.PORT +
+        process.env.REACT_APP_SERVER_PORT +
         ".githubpreview.dev/"
       : process.env.REACT_APP_API_ENDPOINT;
 
