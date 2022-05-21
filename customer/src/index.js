@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import App from "./pages/App";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
@@ -7,11 +7,10 @@ import "bootstrap/dist/js/bootstrap.js";
 import "react-toastify/dist/ReactToastify.css"; //alert lib
 import { CustomerProvider } from "./context/CustomerContext"; // use CustomerProvider only on
 
-ReactDOM.render(
+createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <CustomerProvider>
       <App />
     </CustomerProvider>
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );
