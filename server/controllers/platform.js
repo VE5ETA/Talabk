@@ -72,7 +72,7 @@ module.exports = {
     }
   },
   showActiveBuz: (req, res, next) => {
-    Business.find({ businessState: "active" }).then((business) => {
+    Business.find({ businessStatus: true }).then((business) => {
       if (business) {
         res.status(200).send(business);
       } else {

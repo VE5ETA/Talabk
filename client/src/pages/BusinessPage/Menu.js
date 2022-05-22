@@ -54,6 +54,7 @@ export default function Menu() {
       },
     })
       .then(async (res) => {
+        console.log(res);
         if (res.status === 200) {
           const resJson = await res.json();
 
@@ -72,11 +73,13 @@ export default function Menu() {
           return (
             <MenuItem
               key={index}
+              status={item.status}
               id={item._id}
               menuID={item.MenuID}
               img={`data:${item.imgMimetype};base64,${item.img}`}
               name={item.name}
               price={item.price}
+              itemDone={getmenuData}
             />
           );
         }

@@ -12,6 +12,19 @@ import { errorAlert, successAlert } from "../helper/Options";
 export default function MenuItem(props) {
   const [userContext, setUserContext] = useContext(UserContext);
   const [isClicked, setIsClicked] = useState(false);
+  const [updateMode, setUpdateMode] = useState(false);
+  const [itemStatus, setItemStatus] = useState(props.status);
+
+  const [name, setName] = useState(props.name);
+  const [price, setPrice] = useState(props.price);
+  const [item, setItem] = useState(props.item);
+  const [itemPreview, setItemPreview] = useState(props.img);
+
+  useEffect(() => {
+    if (item) {
+      setItemPreview(URL.createObjectURL(item));
+    }
+  }, [item]);
 
   const url =
     process.env.REACT_APP_NODE_ENV === "live"
@@ -21,19 +34,10 @@ export default function MenuItem(props) {
         process.env.REACT_APP_SERVER_PORT +
         ".githubpreview.dev/"
       : process.env.REACT_APP_API_ENDPOINT;
-  // const [localRestaurant, setLocalRestaurant] = useState(
-  //   JSON.parse(localStorage.getItem(props.username))
-  // );
-  // console.log(customerContext);
-  const [quantite, setQuantite] = useState(1);
-  const [itemDetail, setItemDetail] = useState();
-  let isMounted = useRef(false);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [succss, setSuccss] = useState("");
-  const [clicked, setClicked] = useState(false);
-  const dRef = useRef(false);
   const formRef = useRef();
   useEffect(() => {
     if (error) {
@@ -46,152 +50,83 @@ export default function MenuItem(props) {
     }
   }, [error, succss]);
 
-  useEffect(() => {
-    if (dRef.current) {
-    }
-  }, [dRef.current]);
-
-  // function plus() {
-  //   if (quantite != 30) {
-  //     setQuantite(quantite + 1);
-  //   }
-  // }
-  // function min() {
-  //   if (quantite > 1) {
-  //     setQuantite(quantite - 1);
-  //   } else {
-  //     setIsClicked(false);
-  //     // console.log(customerContext);
-
-  //     setCustomerContext((oldValues) => {
-  //       return {
-  //         ...oldValues,
-  //         dd: delete oldValues.items[props.id],
-  //       };
-  //     });
-  //     localStorage.setItem(props.username, JSON.stringify(customerContext));
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   setLocalStorage();
-  // }, [localRestaurant]);
-
-  // function setLocalStorage() {
-  //   if (localStorage.getItem(props.username)) {
-  //     localStorage.setItem(props.username, JSON.stringify(localRestaurant));
-  //   } else {
-  //     localStorage.setItem(props.username, JSON.stringify(localRestaurant));
-  //   }
-  // }
-
-  // check item it is in cart if update quantite
-  // useEffect(() => {
-  //   if (customerContext?.items !== undefined) {
-  //     if (customerContext?.items[props.id]) {
-  //       // console.log(customerContext.items[`${props.id}`]?.quantite);
-  //       // console.log(customerContext.items[props.id].quantite);
-  //       setQuantite(customerContext.items[props.id].quantite);
-  //       setIsClicked(true);
-  //     }
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   if (isMounted.current) {
-  //     updateItem();
-  //   }
-  // }, [quantite]);
-
-  // function updateItem() {
-  //   setItemDetail({
-  //     id: props.id,
-  //     price: props.price,
-  //     name: props.name,
-  //     quantite: quantite,
-  //   });
-  // }
-
-  // useEffect(() => {
-  //   setLocalRestaurant((oldValues) => {
-  //     return {
-  //       businessID: props.businessID,
-  //     };
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   if (isMounted.current) {
-  //     setCustomerContext((oldValues) => {
-  //       if (oldValues?.items) {
-  //         return {
-  //           ...oldValues,
-  //           // businessID: props.businessID,
-  //           items: {
-  //             ...oldValues.items,
-  //             [itemDetail.id]: itemDetail,
-  //           },
-  //         };
-  //       } else {
-  //         return {
-  //           ...oldValues,
-  //           items: { [itemDetail.id]: itemDetail },
-  //         };
-  //       }
-  //     });
-  //   } else {
-  //     isMounted.current = true;
-  //   }
-  // }, [itemDetail]);
-
-  // function editItem() {
-  //   setIsClicked(true);
-  //   updateItem();
-  // }
-
-  function deleteItem(e) {
+  const editItem = (e) => {
     try {
-      if (clicked) {
-        e.preventDefault();
-        setIsSubmitting(true);
-        setError("");
-        setSuccss("");
+      e.preventDefault();
+      setIsSubmitting(true);
+      setError("");
+      setSuccss("");
 
-        // const formData = new FormData(formRef.current);
-        // if (!name) {
-        //   setError("item name is required!");
-        // } else if (!price) {
-        //   setError("item price is required!");
-        // } else if (!item) {
-        //   setError("item logo required!");
-        // } else {
-        fetch(url + "user/business/menu/Item", {
-          method: "DELETE",
-          credentials: "include",
-          body: JSON.stringify({
-            ID: props.id,
-          }),
-          headers: { Authorization: `Bearer ${userContext.token}` },
-        })
-          .then(async (response) => {
-            setIsSubmitting(false);
-            const resJson = await response.json();
-            if (!response.ok) {
-              if (response.status === 403) {
-                setError(resJson.message);
-              } else {
-                setError(resJson.message.message);
-              }
+      const formData = new FormData(formRef.current);
+      formData.append("ID", props.id);
+      fetch(url + "user/business/menu/Item", {
+        method: "PUT",
+        credentials: "include",
+        body: formData,
+        headers: { Authorization: `Bearer ${userContext.token}` },
+      })
+        .then(async (response) => {
+          setIsSubmitting(false);
+          const resJson = await response.json();
+          if (!response.ok) {
+            if (response.status === 403) {
+              setError(resJson.message);
             } else {
-              setSuccss(resJson.message);
+              setError(resJson.message.message);
             }
-          })
-          .catch((error) => {
-            setIsSubmitting(false);
-            setError(error);
-          });
-        // }
-      }
+          } else {
+            setSuccss(resJson.message);
+            setUpdateMode(false);
+          }
+        })
+        .catch((error) => {
+          setIsSubmitting(false);
+          setError(error);
+        });
+    } catch (error) {
+      console.error(error);
+      setError(error);
+    }
+  };
+
+  function deleteItem() {
+    try {
+      // if (clicked) {
+      // e.preventDefault();
+      setIsSubmitting(true);
+      setError("");
+      setSuccss("");
+
+      fetch(url + "user/business/menu/Item", {
+        method: "DELETE",
+        credentials: "include",
+        body: JSON.stringify({
+          ID: props.id,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userContext.token}`,
+        },
+      })
+        .then(async (response) => {
+          setIsSubmitting(false);
+          const resJson = await response.json();
+          if (!response.ok) {
+            if (response.status === 403) {
+              setError(resJson.message);
+            } else {
+              setError(resJson.message.message);
+            }
+          } else {
+            setSuccss(resJson.message);
+          }
+        })
+        .catch((error) => {
+          setIsSubmitting(false);
+          setError(error);
+        });
+      // }
+      // }
     } catch (error) {
       console.error(error);
       setError(error);
@@ -202,52 +137,183 @@ export default function MenuItem(props) {
     <div className="col-md-4 menu-item-card">
       <div className="card flex-md-row mb-4 box-shadow h-md-200 shadow p-2 mb-5 bg-body rounded">
         <div className="card-body d-flex flex-column ">
-          <img
-            src={props.img}
-            className="flex-auto d-md-block menu-item-img mb-2"
-            alt="Card cap"
-          />
-          <h3 className="mb-0">
-            <div
-              style={{ wordBreak: "break-all" }}
-              className="text-dark text-decoration-none"
-              href="#"
-            >
-              {props.name}
-            </div>
-          </h3>
-          {/* <div className="mb-1 text-muted">Description</div>
-          <p className="card-text mb-auto ">
-            This is a wider card with supporting text below as a natural lead-in
-            to additional content.
-          </p> */}
-          <div className="d-flex align-items-center d-inline-block mt-2">
-            <div className="align-items-center ">
-              <h5 className="mr-1">
-                {props.price} SAR <FontAwesomeIcon icon={faTags} />
-              </h5>
-            </div>
-          </div>
-          <div className="row ">
-            <div className="col-md-6 d-flex align-items-center justify-content-center">
-              <button
-                className="btn btn-outline-danger btn-lg mt-2"
-                type="button"
-                onClick={() => (dRef.current = true)}
-              >
-                Delete <FontAwesomeIcon icon={faTrashCan} />
-              </button>
-            </div>
-            <div className="col-md-6 d-flex align-items-center justify-content-center">
-              <button
-                className=" btn btn-outline-primary btn-lg mt-2"
-                type="button"
-                // onClick={editItem}
-              >
-                Edit <FontAwesomeIcon icon={faRotate} />
-              </button>
-            </div>
-          </div>
+          {updateMode ? (
+            <form className="form" onSubmit={editItem} ref={formRef}>
+              <img
+                id="frame"
+                src={itemPreview}
+                className="flex-auto d-md-block menu-item-img mb-3"
+                alt="Card cap"
+              />
+              <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text">Name</span>
+                </div>
+                <input
+                  name="name"
+                  id="name"
+                  type="text"
+                  className="form-control"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+              <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text">Price</span>
+                </div>
+                <input
+                  name="price"
+                  id="price"
+                  type="number"
+                  className="form-control"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                />
+                <div className="input-group-append">
+                  <span className="input-group-text">
+                    SAR <FontAwesomeIcon icon={faTags} />
+                  </span>
+                </div>
+              </div>
+
+              <div className="form-check form-switch">
+                {itemStatus ? (
+                  <>
+                    <input
+                      name="status"
+                      className="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="status"
+                      value={itemStatus}
+                      onChange={() => setItemStatus(!itemStatus)}
+                    />
+                    <label
+                      className="form-check-label text-success "
+                      htmlFor="flexSwitchCheckDefault"
+                    >
+                      Active
+                    </label>
+                  </>
+                ) : (
+                  <>
+                    <input
+                      name="status"
+                      className="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="status"
+                      value={itemStatus}
+                      onChange={() => setItemStatus(!itemStatus)}
+                    />
+                    <label
+                      className="form-check-label text-danger"
+                      htmlFor="flexSwitchCheckDefault"
+                    >
+                      disabled
+                    </label>
+                  </>
+                )}
+              </div>
+
+              <div className="d-flex align-items-center d-inline-block mt-2">
+                <div className="align-items-center ">
+                  <h5 className="mr-1">
+                    {/* <label>item logo</label> */}
+                    <input
+                      name="item"
+                      id="item"
+                      className="form-control"
+                      type="file"
+                      onChange={(e) => setItem(e.target.files[0])}
+                    />
+                  </h5>
+                </div>
+              </div>
+              <div className="row ">
+                <div className="col-md-6 d-flex align-items-center justify-content-center">
+                  <button
+                    className="btn btn-outline-danger btn-sm mt-2"
+                    type="button"
+                    onClick={() => setUpdateMode(false)}
+                  >
+                    Cancel <FontAwesomeIcon icon={faTrashCan} />
+                  </button>
+                </div>
+                <div className="col-md-6 d-flex align-items-center justify-content-center">
+                  <button
+                    className=" btn btn-outline-primary btn-sm mt-2"
+                    type="submit"
+                    disabled={isSubmitting}
+                    text={`${isSubmitting ? "..." : "Done"}`}
+                    // onClick={() => editItem()}
+                  >
+                    Done <FontAwesomeIcon icon={faRotate} />
+                  </button>
+                </div>
+              </div>
+            </form>
+          ) : (
+            <>
+              <img
+                src={props.img}
+                className="flex-auto d-md-block menu-item-img mb-2"
+                alt="Card cap"
+              />
+
+              <h3 className="mb-0">
+                <div
+                  style={{ wordBreak: "break-all" }}
+                  className="text-dark text-decoration-none"
+                  href="#"
+                >
+                  {props.name}
+                </div>
+              </h3>
+              {props.status ? (
+                <strong className="d-inline-block mb-2 text-success">
+                  Active
+                </strong>
+              ) : (
+                <strong className="d-inline-block mb-2 text-danger">
+                  Disabled
+                </strong>
+              )}
+
+              <div className="d-flex align-items-center d-inline-block mt-2">
+                <div className="align-items-center ">
+                  <h5 className="mr-1">
+                    {props.price} SAR <FontAwesomeIcon icon={faTags} />
+                  </h5>
+                </div>
+              </div>
+
+              <div className="row ">
+                <div className="col-md-6 d-flex align-items-center justify-content-center">
+                  <button
+                    className="btn btn-outline-danger btn-sm mt-2"
+                    type="button"
+                    onClick={() => {
+                      deleteItem();
+                    }}
+                  >
+                    Delete <FontAwesomeIcon icon={faTrashCan} />
+                  </button>
+                </div>
+
+                <div className="col-md-6 d-flex align-items-center justify-content-center">
+                  <button
+                    className=" btn btn-outline-primary btn-sm mt-2"
+                    type="button"
+                    onClick={() => setUpdateMode(true)}
+                  >
+                    Edit <FontAwesomeIcon icon={faRotate} />
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

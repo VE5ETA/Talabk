@@ -23,6 +23,7 @@ import AfterLog from "../context/AfterLog";
 import Dashboard from "./BusinessPage/Dashboard";
 import Spinner from "../components/Spinner";
 import Menu from "../pages/BusinessPage/Menu";
+import EditMenu from "./BusinessPage/EditMenu";
 
 function App() {
   const url =
@@ -107,6 +108,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/createBusiness" element={<CreateForm />} />
             <Route path="/createMenu" element={<CreateMenu />} />
+            <Route path="/EditMenu" element={<EditMenu />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/logout" element={<Logout />} />
             {/* </Route> */}

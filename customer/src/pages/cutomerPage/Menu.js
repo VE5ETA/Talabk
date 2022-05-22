@@ -77,6 +77,7 @@ export default function Menu() {
         }
       })
       .catch((error) => {
+        console.log(error);
         navigate("/notFound");
       });
   }

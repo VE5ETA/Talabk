@@ -212,9 +212,12 @@ export default function Header(props) {
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item text-white" href="#">
+                        <NavLink
+                          to={"../EditMenu"}
+                          className="dropdown-item text-white"
+                        >
                           Settings
-                        </a>
+                        </NavLink>
                       </li>
                       <li>
                         <a className="dropdown-item text-white" href="#">

@@ -159,7 +159,7 @@ module.exports = {
       Business.aggregate([
         {
           $match: {
-            businessState: "active",
+            businessStatus: true,
           },
         },
         {
@@ -183,6 +183,11 @@ module.exports = {
         {
           $replaceRoot: {
             newRoot: "$_id",
+          },
+        },
+        {
+          $match: {
+            status: true,
           },
         },
       ]).then((menus) => {
@@ -212,29 +217,40 @@ module.exports = {
           {
             $match: {
               username: req.params.username,
+              // status: true,
             },
           },
         ]).then((menu) => {
-          if (menu.length != 0) {
-            Item.aggregate([
-              {
-                $match: {
-                  MenuID: menu[0]?._id,
+          // this will check if business is close or not
+          if (menu.status) {
+            if (menu.length != 0) {
+              Item.aggregate([
+                {
+                  $match: {
+                    MenuID: menu[0]?._id,
+                  },
                 },
-              },
-            ]).then((items) => {
-              if (items.length != 0) {
-                let allMenuData = { head: menu[0], body: items };
-                res.status(200).send(allMenuData);
-              } else {
-                res.status(201).send({
-                  message: "this menu don't have items",
-                });
-              }
-            });
+              ]).then((items) => {
+                if (items.length != 0) {
+                  let allMenuData = { head: menu[0], body: items };
+                  res.status(200).send(allMenuData);
+                } else {
+                  res.status(404).send({
+                    message: "this menu don't have items",
+                    success: false,
+                  });
+                }
+              });
+            } else {
+              res.status(404).send({
+                message: "didn't found business with the given name",
+                success: false,
+              });
+            }
           } else {
             res.status(404).send({
-              message: "didn't found business with the given name",
+              message: menu.state,
+              success: false,
             });
           }
         });
