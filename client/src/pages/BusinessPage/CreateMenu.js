@@ -25,6 +25,15 @@ export default function CreateMenu() {
   const [error, setError] = useState("");
   const [succss, setSuccss] = useState("");
 
+  const [itemPreview, setItemPreview] = useState(
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9E-EVCmmhLN51ydEr1uFEgcur-yGtBNOaT83DaRj4-O_eAYWW8gaGsLad35PJTVPD8l0&usqp=CAU"
+  );
+  useEffect(() => {
+    if (logo) {
+      setItemPreview(URL.createObjectURL(logo));
+    }
+  }, [logo]);
+
   useEffect(() => {
     if (error) {
       errorAlert(error);
@@ -47,22 +56,22 @@ export default function CreateMenu() {
 
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setError("");
-    setSuccss("");
+    try {
+      setIsSubmitting(true);
+      setError("");
+      setSuccss("");
 
-    const formData = new FormData(formRef.current);
+      const formData = new FormData(formRef.current);
 
-    const genericErrorMessage = "Something went wrong! Please try again.";
+      // const genericErrorMessage = "Something went wrong! Please try again.";
 
-    if (!username) {
-      setError("menu username is required!");
-    } else if (!name) {
-      setError("menu name is required!");
-    } else if (!logo) {
-      setError("menu logo required!");
-    } else {
-      try {
+      if (!username) {
+        setError("menu username is required!");
+      } else if (!name) {
+        setError("menu name is required!");
+      } else if (!logo) {
+        setError("menu logo required!");
+      } else {
         fetch(url + "user/business/menu", {
           // mode: "no-cors",
           method: "POST",
@@ -71,13 +80,19 @@ export default function CreateMenu() {
           body: formData,
           headers: { Authorization: `Bearer ${userContext.token}` },
         })
-          .then(async (res) => res.json()) // you might need to change this
+          // .then(async (res) => res.json()) // you might need to change this
           .then(async (response) => {
             setIsSubmitting(false);
-            if (response) {
-              setSuccss(response.message);
+            // console.log(response);
+            const resJson = await response.json();
+            if (!response.ok) {
+              if (response.status === 403) {
+                setError(resJson.message);
+              } else {
+                setError(resJson.message.message);
+              }
             } else {
-              setError(error);
+              setSuccss(resJson.message);
             }
             // if (!response.ok) {
             //   console.log(response.message);
@@ -103,9 +118,10 @@ export default function CreateMenu() {
             setIsSubmitting(false);
             setError(error);
           });
-      } catch (error) {
-        console.error(error);
       }
+    } catch (error) {
+      console.error(error);
+      setError(error);
     }
   };
 
@@ -166,6 +182,13 @@ export default function CreateMenu() {
                 required
                 onChange={(e) => setLogo(e.target.files[0])}
               />
+              <img
+                id="frame"
+                src={itemPreview}
+                className="flex-auto d-md-block menu-item-img mb-3"
+                required
+                alt="Card cap"
+              />
             </div>
             <div className=" my-md-2 my-3">
               <div className="row">
@@ -189,9 +212,10 @@ export default function CreateMenu() {
               </div>
             </div>
             <button
-              onClick={formSubmitHandler}
               type="submit"
               className="btn btn-primary mt-3"
+              disabled={isSubmitting}
+              text={`${isSubmitting ? "..." : "Create"}`}
             >
               Create
             </button>

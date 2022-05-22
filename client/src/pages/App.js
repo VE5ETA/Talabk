@@ -10,7 +10,7 @@ import Login from "./Login";
 import Home from "./Home";
 import Layout from "./Layout";
 import NotFound from "./NotFound";
-import AdminDashboard from "./AdminDashboard";
+import AdminDashboard from "./plateformPage/AdminDashboard";
 import NewReq from "./plateformPage/NewReq";
 // import Menu from "./cutomerPage/Menu"; deleted
 // import Cart from "./cutomerPage/Cart";
@@ -20,8 +20,9 @@ import CreateMenu from "./BusinessPage/CreateMenu";
 
 import Logout from "./Logout";
 import AfterLog from "../context/AfterLog";
-import Dashboard from "./Dashboard";
+import Dashboard from "./BusinessPage/Dashboard";
 import Spinner from "../components/Spinner";
+import Menu from "../pages/BusinessPage/Menu";
 
 function App() {
   const url =
@@ -103,9 +104,10 @@ function App() {
             {/* <Route path="/login" element={<Login />} />
               <Route path="/signUp" element={<SignUp />} /> */}
             <Route path="/adminDashboard" element={<AdminDashboard />} />
-            <Route path="/Dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/createBusiness" element={<CreateForm />} />
-            <Route path="/CreateMenu" element={<CreateMenu />} />
+            <Route path="/createMenu" element={<CreateMenu />} />
+            <Route path="/menu" element={<Menu />} />
             <Route path="/logout" element={<Logout />} />
             {/* </Route> */}
           </Route>

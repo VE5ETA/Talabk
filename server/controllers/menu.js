@@ -74,15 +74,39 @@ module.exports = {
   },
   info: (req, res, next) => {
     try {
-      Menu.findOne({ businessID: req.user.workIn }).then((menu) => {
-        if (menu) {
-          res.status(200).send(menu);
-        } else {
-          res.status(404).send({
-            message: "you don't even have a menu 🙂",
-          });
-        }
-      });
+      Menu.aggregate([
+        {
+          $match: {
+            businessID: req.user.workIn,
+          },
+        },
+        // ,
+        // {
+        //   $replaceRoot: {
+        //     newRoot: "",
+        //   },
+        // },
+      ])
+
+        // Menu.findOne({ businessID: req.user.workIn })
+        // .then((menu) => {
+        //   // menu.logo = await menu.logo.toString("base64");
+        //   // menu.logo = await menu.qrImg.toString("base64");
+        //   menu.logo = "jello";
+        //   menu.qrImg = "hello";
+        //   return menu;
+        // })
+        .then((menu) => {
+          // menu.logo = await Buffer.from(menu.logo.data).toString("base64");
+          // menu.qrImg = await Buffer.from(menu.qrImg.data).toString("base64");
+          if (menu) {
+            res.status(200).send(menu[0]);
+          } else {
+            res.status(404).send({
+              message: "you don't even have a menu 🙂",
+            });
+          }
+        });
     } catch (error) {
       res.status(400).send({
         message: error,
@@ -687,6 +711,45 @@ module.exports = {
               });
             }
           });
+        } else {
+          res.status(404).send({
+            message: "you don't even have a menu 🙂",
+          });
+        }
+      });
+    } catch (error) {
+      res.status(400).send({
+        message: error,
+        success: false,
+      });
+    }
+  },
+  menu: (req, res, next) => {
+    try {
+      Menu.findOne({ businessID: req.user.workIn }).then((menu) => {
+        if (menu) {
+          Item.aggregate([
+            {
+              $match: {
+                MenuID: menu._id,
+              },
+            },
+          ])
+            // Item.find({ MenuID: menu._id })
+            .then((item) => {
+              if (item[0]) {
+                // let m2i = { head: menu, body: item };
+                // menu.items = item;
+                // let x = { meow: "meow!🐱" };
+                // x.items = item;
+                // res.status(200).send(x.items[0]);
+                res.status(200).send(item);
+              } else {
+                res.status(404).send({
+                  message: "this menu don't have items",
+                });
+              }
+            });
         } else {
           res.status(404).send({
             message: "you don't even have a menu 🙂",

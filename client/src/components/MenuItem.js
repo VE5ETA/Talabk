@@ -1,12 +1,26 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faMinus, faTags } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTrashCan,
+  faRotate,
+  faTags,
+} from "@fortawesome/free-solid-svg-icons";
 // import { addItem } from "../helper/OrderInfo";
-import { CustomerContext } from "../context/CustomerContext";
+import { UserContext } from "../context/UserContext";
+import { errorAlert, successAlert } from "../helper/Options";
 
 export default function MenuItem(props) {
-  const [customerContext, setCustomerContext] = useContext(CustomerContext);
+  const [userContext, setUserContext] = useContext(UserContext);
   const [isClicked, setIsClicked] = useState(false);
+
+  const url =
+    process.env.REACT_APP_NODE_ENV === "live"
+      ? "https://" +
+        process.env.REACT_APP_CODESPACE_NAME +
+        "-" +
+        process.env.REACT_APP_SERVER_PORT +
+        ".githubpreview.dev/"
+      : process.env.REACT_APP_API_ENDPOINT;
   // const [localRestaurant, setLocalRestaurant] = useState(
   //   JSON.parse(localStorage.getItem(props.username))
   // );
@@ -15,27 +29,49 @@ export default function MenuItem(props) {
   const [itemDetail, setItemDetail] = useState();
   let isMounted = useRef(false);
 
-  function plus() {
-    if (quantite != 30) {
-      setQuantite(quantite + 1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [succss, setSuccss] = useState("");
+  const [clicked, setClicked] = useState(false);
+  const dRef = useRef(false);
+  const formRef = useRef();
+  useEffect(() => {
+    if (error) {
+      errorAlert(error);
     }
-  }
-  function min() {
-    if (quantite > 1) {
-      setQuantite(quantite - 1);
-    } else {
-      setIsClicked(false);
-      // console.log(customerContext);
+    if (succss) {
+      successAlert(succss);
 
-      setCustomerContext((oldValues) => {
-        return {
-          ...oldValues,
-          dd: delete oldValues.items[props.id],
-        };
-      });
-      localStorage.setItem(props.username, JSON.stringify(customerContext));
+      props.itemDone();
     }
-  }
+  }, [error, succss]);
+
+  useEffect(() => {
+    if (dRef.current) {
+    }
+  }, [dRef.current]);
+
+  // function plus() {
+  //   if (quantite != 30) {
+  //     setQuantite(quantite + 1);
+  //   }
+  // }
+  // function min() {
+  //   if (quantite > 1) {
+  //     setQuantite(quantite - 1);
+  //   } else {
+  //     setIsClicked(false);
+  //     // console.log(customerContext);
+
+  //     setCustomerContext((oldValues) => {
+  //       return {
+  //         ...oldValues,
+  //         dd: delete oldValues.items[props.id],
+  //       };
+  //     });
+  //     localStorage.setItem(props.username, JSON.stringify(customerContext));
+  //   }
+  // }
 
   // useEffect(() => {
   //   setLocalStorage();
@@ -50,31 +86,31 @@ export default function MenuItem(props) {
   // }
 
   // check item it is in cart if update quantite
-  useEffect(() => {
-    if (customerContext?.items !== undefined) {
-      if (customerContext?.items[props.id]) {
-        // console.log(customerContext.items[`${props.id}`]?.quantite);
-        // console.log(customerContext.items[props.id].quantite);
-        setQuantite(customerContext.items[props.id].quantite);
-        setIsClicked(true);
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (customerContext?.items !== undefined) {
+  //     if (customerContext?.items[props.id]) {
+  //       // console.log(customerContext.items[`${props.id}`]?.quantite);
+  //       // console.log(customerContext.items[props.id].quantite);
+  //       setQuantite(customerContext.items[props.id].quantite);
+  //       setIsClicked(true);
+  //     }
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    if (isMounted.current) {
-      updateItem();
-    }
-  }, [quantite]);
+  // useEffect(() => {
+  //   if (isMounted.current) {
+  //     updateItem();
+  //   }
+  // }, [quantite]);
 
-  function updateItem() {
-    setItemDetail({
-      id: props.id,
-      price: props.price,
-      name: props.name,
-      quantite: quantite,
-    });
-  }
+  // function updateItem() {
+  //   setItemDetail({
+  //     id: props.id,
+  //     price: props.price,
+  //     name: props.name,
+  //     quantite: quantite,
+  //   });
+  // }
 
   // useEffect(() => {
   //   setLocalRestaurant((oldValues) => {
@@ -84,43 +120,92 @@ export default function MenuItem(props) {
   //   });
   // }, []);
 
-  useEffect(() => {
-    if (isMounted.current) {
-      setCustomerContext((oldValues) => {
-        if (oldValues?.items) {
-          return {
-            ...oldValues,
-            // businessID: props.businessID,
-            items: {
-              ...oldValues.items,
-              [itemDetail.id]: itemDetail,
-            },
-          };
-        } else {
-          return {
-            ...oldValues,
-            items: { [itemDetail.id]: itemDetail },
-          };
-        }
-      });
-    } else {
-      isMounted.current = true;
-    }
-  }, [itemDetail]);
+  // useEffect(() => {
+  //   if (isMounted.current) {
+  //     setCustomerContext((oldValues) => {
+  //       if (oldValues?.items) {
+  //         return {
+  //           ...oldValues,
+  //           // businessID: props.businessID,
+  //           items: {
+  //             ...oldValues.items,
+  //             [itemDetail.id]: itemDetail,
+  //           },
+  //         };
+  //       } else {
+  //         return {
+  //           ...oldValues,
+  //           items: { [itemDetail.id]: itemDetail },
+  //         };
+  //       }
+  //     });
+  //   } else {
+  //     isMounted.current = true;
+  //   }
+  // }, [itemDetail]);
 
-  function addToCart() {
-    setIsClicked(true);
-    updateItem();
+  // function editItem() {
+  //   setIsClicked(true);
+  //   updateItem();
+  // }
+
+  function deleteItem(e) {
+    try {
+      if (clicked) {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setError("");
+        setSuccss("");
+
+        // const formData = new FormData(formRef.current);
+        // if (!name) {
+        //   setError("item name is required!");
+        // } else if (!price) {
+        //   setError("item price is required!");
+        // } else if (!item) {
+        //   setError("item logo required!");
+        // } else {
+        fetch(url + "user/business/menu/Item", {
+          method: "DELETE",
+          credentials: "include",
+          body: JSON.stringify({
+            ID: props.id,
+          }),
+          headers: { Authorization: `Bearer ${userContext.token}` },
+        })
+          .then(async (response) => {
+            setIsSubmitting(false);
+            const resJson = await response.json();
+            if (!response.ok) {
+              if (response.status === 403) {
+                setError(resJson.message);
+              } else {
+                setError(resJson.message.message);
+              }
+            } else {
+              setSuccss(resJson.message);
+            }
+          })
+          .catch((error) => {
+            setIsSubmitting(false);
+            setError(error);
+          });
+        // }
+      }
+    } catch (error) {
+      console.error(error);
+      setError(error);
+    }
   }
 
   return (
     <div className="col-md-4 menu-item-card">
       <div className="card flex-md-row mb-4 box-shadow h-md-200 shadow p-2 mb-5 bg-body rounded">
-        <div className="card-body d-flex flex-column align-items-start">
+        <div className="card-body d-flex flex-column ">
           <img
             src={props.img}
             className="flex-auto d-md-block menu-item-img mb-2"
-            alt="Card image cap"
+            alt="Card cap"
           />
           <h3 className="mb-0">
             <div
@@ -143,40 +228,26 @@ export default function MenuItem(props) {
               </h5>
             </div>
           </div>
-
-          {!isClicked ? (
-            <button
-              className="container btn btn-outline-primary btn-sm mt-2"
-              type="button"
-              onClick={addToCart}
-            >
-              Add to Card
-            </button>
-          ) : (
-            <div className="d-flex gap-1 align-items-center d-inline-block mt-2 mb-2">
+          <div className="row ">
+            <div className="col-md-6 d-flex align-items-center justify-content-center">
               <button
-                onClick={min}
-                className="btn btn-outline-danger ml-2"
+                className="btn btn-outline-danger btn-lg mt-2"
                 type="button"
+                onClick={() => (dRef.current = true)}
               >
-                <FontAwesomeIcon icon={faMinus} />
-              </button>
-              <label
-                id="quan"
-                style={{ width: "auto" }}
-                className="form-control"
-              >
-                {quantite}
-              </label>
-              <button
-                onClick={plus}
-                className="btn btn-outline-success"
-                type="button"
-              >
-                <FontAwesomeIcon icon={faPlus} />
+                Delete <FontAwesomeIcon icon={faTrashCan} />
               </button>
             </div>
-          )}
+            <div className="col-md-6 d-flex align-items-center justify-content-center">
+              <button
+                className=" btn btn-outline-primary btn-lg mt-2"
+                type="button"
+                // onClick={editItem}
+              >
+                Edit <FontAwesomeIcon icon={faRotate} />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

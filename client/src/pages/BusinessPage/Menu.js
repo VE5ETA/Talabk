@@ -1,14 +1,16 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import { NavLink, useNavigate } from "react-router-dom";
+
 import MenuItem from "../../components/MenuItem";
-// import { CustomerContext } from "../../context/CustomerContext";
+import AddItem from "../../components/AddItem";
 import { UserContext } from "../../context/UserContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 // import NotFound from "../NotFound";
 
 export default function Menu() {
+  const [userContext, setUserContext] = useContext(UserContext);
+
   const url =
     process.env.REACT_APP_NODE_ENV === "live"
       ? "https://" +
@@ -18,63 +20,44 @@ export default function Menu() {
         ".githubpreview.dev/"
       : process.env.REACT_APP_API_ENDPOINT;
 
-  // const [customerContext, setCustomerContext] = useContext(CustomerContext);
-  const [userContext, setUserContext] = useContext(UserContext);
-  //ls is short for localstorage
   let isMounted = useRef(false);
-  // let { username } = useParams();
+  let clkref = useRef(false);
+
   const navigate = useNavigate();
 
-  // const [ls, setLs] = useState(JSON.parse(localStorage.getItem(username)));
-  // console.log(ls);
-
   let [menuData, setMenuData] = useState([]);
+  let [clicked, setClicked] = useState(false);
+
+  useEffect(() => {
+    getmenuData();
+    isMounted.current = true;
+  }, []);
+
   // useEffect(() => {
-  //   if (isMounted.current) {
-  //     localStorage.setItem(username, JSON.stringify(customerContext));
+  //   if (clkref.current) {
+  //     clkref.current = false;
   //   }
-  // }, [customerContext]);
-
-  // useEffect(() => {
-  //   setCustomerContext(ls);
-  //   getmenuData();
-  //   isMounted.current = true;
-  // }, []);
-
-  // useEffect(() => {
-  //   setLocalStorage();
-  // }, [ls]);
+  // }, [clkref.current]);
 
   useEffect(() => {
     data();
   }, [menuData]);
 
-  // function setLocalStorage() {
-  //   console.log("im above first if");
-  //   if (ls.username) {
-  //     // if (username === ls?.username) {
-  //     // localStorage.setItem(username, JSON.stringify(customerContext));
-  //     // console.log("im after second if");
-  //     // setCustomerContext(ls);
-  //     // }
-  //   } else {
-  //     localStorage.setItem(username, JSON.stringify(customerContext));
-  //   }
-  // }
+  async function getmenuData() {
+    await fetch(url + "user/business/menu/menu", {
+      method: "GET",
+      credentials: "include",
 
-  function getmenuData() {
-    axios
-      .get(url + `customer/@${username}`)
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userContext.token}`,
+      },
+    })
       .then(async (res) => {
         if (res.status === 200) {
-          setMenuData(res.data);
-          setCustomerContext((oldValues) => {
-            return {
-              ...oldValues,
-              ID: res.data.head.businessID,
-              username: username,
-            };
-          });
+          const resJson = await res.json();
+
+          setMenuData(resJson);
         }
       })
       .catch((error) => {
@@ -82,31 +65,14 @@ export default function Menu() {
       });
   }
 
-  function cartButton() {
-    if (customerContext?.items != undefined) {
-      if (Object.keys(customerContext?.items).length !== 0) {
-        return (
-          <NavLink
-            to={"../cart"}
-            className="menu-cart-btn btn btn-warning btn-lg"
-          >
-            process to checkout <FontAwesomeIcon icon={faShoppingCart} />
-          </NavLink>
-        );
-      }
-    }
-  }
-
   function data() {
-    if (menuData.body) {
-      return menuData.body.map((item, index) => {
-        if (item.status) {
-          // console.log(menuData.head.businessID);
+    if (menuData[0]) {
+      return menuData.map((item, index) => {
+        if (item) {
           return (
             <MenuItem
               key={index}
               id={item._id}
-              username={username}
               menuID={item.MenuID}
               img={`data:${item.imgMimetype};base64,${item.img}`}
               name={item.name}
@@ -118,31 +84,70 @@ export default function Menu() {
     }
   }
 
+  function addItem() {
+    return (
+      <>
+        <a
+          className="btn btn-primary"
+          data-bs-toggle="collapse"
+          href="#multiCollapseExample1"
+          role="button"
+          aria-expanded="false"
+          aria-controls="multiCollapseExample1"
+          onClick={() => (clkref.current = true)}
+        >
+          Add new Item
+        </a>
+        <div className="collapse multi-collapse" id="multiCollapseExample1">
+          <div className="card card-body">
+            <AddItem itemDone={getmenuData} />
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // function add() {
+  //   return <AddItem itemDone={getmenuData} />;
+  // }
+
   return (
     <>
       <section className="py-5">
         <div className="container">
-          <div className="card mb-3 max-width-540 ">
+          <div className="card mb-3 max-width-880 ">
             <div className="row g-0 ">
-              {menuData?.head ? (
+              {userContext?.menu ? (
                 <>
                   <div className="col-md-4">
                     <img
                       style={{ maxWidth: "100%" }}
-                      src={`data:${menuData.head.logoMimetype};base64,${menuData.head.logo}`}
+                      src={`data:${userContext.menu.logoMimetype};base64,${userContext.menu.logo}`}
                       className="card-image"
-                      alt={menuData.head.name + " logo"}
+                      alt={useContext.menu?.name + " logo"}
                     />
+                    {/* <img
+                            style={{ maxWidth: "50% " }}
+                            src={`data:${userContext.menu.qrMimetype};base64,${userContext.menu.qrImg}`}
+                            className="card-image"
+                            alt={useContext.menu?.name + " logo"}
+                          /> */}
                   </div>
-                  <div className="col-md-8">
+                  <div className="col-md-5">
                     <div className="card-body">
-                      <h5 className="card-title">{menuData.head.name}</h5>
-                      <p className="card-text">{menuData.head.description}</p>
-                      {/* if business have contact info */}
-                      {/* <a className="text-decoration-none" href="#">
-                        www.website-link.com
-                      </a> */}
+                      <h5 className="card-title">{userContext.menu.name}</h5>
+                      <p className="card-text">
+                        {userContext.menu.description}
+                      </p>
                     </div>
+                  </div>
+                  <div className="col-md-3">
+                    <img
+                      style={{ maxWidth: "70% " }}
+                      src={`data:${userContext.menu.qrMimetype};base64,${userContext.menu.qrImg}`}
+                      className="card-image"
+                      alt={useContext.menu?.name + " logo"}
+                    />
                   </div>
                 </>
               ) : null}
@@ -150,11 +155,20 @@ export default function Menu() {
           </div>
         </div>
       </section>
+      <div className="container">
+        <div className="row ">
+          {/* {addItem()} */}
+          {/* {cartButton()} */}
+        </div>
+      </div>
 
       <div className="container">
         <div className="row ">
+          {/* {addItem()} */}
+          {/* {clkref.current ? add : null} */}
+          <AddItem itemDone={getmenuData} />
           {data()}
-          {cartButton()}
+          {/* {cartButton()} */}
           {/* {console.log(Object.keys(customerContext?.items).length === 0)} */}
           {/* {customerContext?.items != undefined ||
           Object.keys(customerContext?.items).length === 0 ? (

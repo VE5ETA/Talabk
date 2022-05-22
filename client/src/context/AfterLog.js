@@ -47,23 +47,23 @@ export default function AfterLog() {
   }, [userContext]);
 
   function navigateTheUser() {
-    setTimeout(() => {
-      if (!userContext.details.workIn && !userContext.isAdmin) {
-        navigate("/createBusiness");
-      } else if (userContext.isAdmin) {
-        navigate("/adminDashboard");
-      } else if (
-        !userContext.isAdmin &&
-        userContext.details.workIn &&
-        userContext.menu
-      ) {
-        navigate("/Dashboard");
-      } else if (!userContext.menu && !userContext.isAdmin) {
-        navigate("/CreateMenu");
-      } else {
-        navigate("/");
-      }
-    }, 5000);
+    // setTimeout(() => {
+    if (!userContext.details.workIn && !userContext.isAdmin) {
+      navigate("/createBusiness");
+    } else if (!userContext.menu && !userContext.isAdmin) {
+      navigate("/CreateMenu");
+    } else if (userContext.isAdmin) {
+      navigate("/adminDashboard");
+    } else if (
+      !userContext.isAdmin &&
+      userContext.details.workIn &&
+      userContext.menu
+    ) {
+      navigate("/Dashboard");
+    } else {
+      navigate("/");
+    }
+    // }, 5000);
     // userContext.isAdmin
     //   ? navigate("/adminDashboard")
     //   : // <Navigate to="/adminDashboard" replace state={{ from: location }} />
@@ -127,13 +127,15 @@ export default function AfterLog() {
                   setUserContext((oldValues) => {
                     return { ...oldValues, menu: menuData };
                   });
+                  isDone.current = true;
                 } else {
                   setUserContext((oldValues) => {
                     return { ...oldValues, menu: null };
                   });
+                  isDone.current = true;
                 }
               });
-              isDone.current = true;
+              // isDone.current = true;
             }
           })
           .catch((err) => {
@@ -158,9 +160,11 @@ export default function AfterLog() {
     });
   }, [setUserContext, userContext.token]);
   // }, [setUserContext, userContext.token]);
-
+  let i = 1;
   useEffect(() => {
     // fetch only when user details are not present
+
+    console.log(i++);
     if (
       !userContext.details?.workIn ||
       !userContext.details ||
@@ -168,7 +172,7 @@ export default function AfterLog() {
     ) {
       fetchUserDetails();
     }
-  }, [userContext.details, fetchUserDetails]);
+  }, []);
 
   //this needs to be fixed ❗
   console.log(userContext.isAdmin);

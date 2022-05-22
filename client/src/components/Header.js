@@ -145,7 +145,7 @@ export default function Header(props) {
                         </a>
                       </li>
                       <li>
-                        <a href="#" className="nav-link text-white">
+                        <NavLink to="/menu" className="nav-link text-white">
                           <svg
                             className="bi d-block mx-auto mb-1"
                             width={24}
@@ -154,7 +154,7 @@ export default function Header(props) {
                             <FontAwesomeIcon icon={faGripHorizontal} />
                           </svg>
                           Menu
-                        </a>
+                        </NavLink>
                       </li>
                     </>
                   ) : (

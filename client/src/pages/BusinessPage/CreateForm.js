@@ -28,6 +28,7 @@ export default function CreateBuz() {
   useEffect(() => {
     if (error) {
       errorAlert(error);
+      setIsSubmitting(false);
     }
     if (succss) {
       successAlert(succss);
@@ -57,10 +58,13 @@ export default function CreateBuz() {
 
     if (!tradeName) {
       setError("trade Name is required!");
+      setIsSubmitting(false);
     } else if (!branchID) {
       setError("branch ID is required!");
+      setIsSubmitting(false);
     } else if (!pdf) {
       setError("business legel document required!");
+      setIsSubmitting(false);
     } else {
       try {
         fetch(url + "user/business", {
@@ -77,6 +81,7 @@ export default function CreateBuz() {
             if (response) {
               setSuccss(response.message);
             } else {
+              setIsSubmitting(false);
               setError(error);
             }
             // if (!response.ok) {
@@ -104,6 +109,7 @@ export default function CreateBuz() {
             setError(error);
           });
       } catch (error) {
+        setIsSubmitting(false);
         console.error(error);
       }
     }
@@ -184,6 +190,8 @@ export default function CreateBuz() {
               onClick={formSubmitHandler}
               type="submit"
               className="btn btn-primary mt-3"
+              disabled={isSubmitting}
+              text={`${isSubmitting ? "..." : "Submit"}`}
             >
               Submit
             </button>

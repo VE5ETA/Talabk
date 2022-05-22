@@ -3,6 +3,10 @@ const opts = {
   errorCorrectionLevel: "H",
   scale: 50,
   type: "image/png",
+  color: {
+    // dark: "#00F", // Blue dots
+    light: "#0000", // Transparent background
+  },
 };
 const qrURL =
   process.env.NODE_ENV === "live"

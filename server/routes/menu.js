@@ -38,5 +38,6 @@ router.delete("/table", isValidObjID, menuController.deleteTable);
 router.get("/menuLogo", menuController.menuLogo); //temp -- only for testing 🧪
 router.get("/menuQR", menuController.menuQR); //temp -- only for testing 🧪
 router.get("/fullmenu", menuController.fullmenu); //full menu with items 🌝
+router.get("/menu", menuController.menu); //full menu with items without head 🌝
 
 module.exports = router;
