@@ -46,7 +46,7 @@ module.exports = {
                   success: false,
                 });
               } else {
-                generateQR(req.body.username).then((qr) => {
+                generateQR(req.body.username).then(async (qr) => {
                   // const x = qr.split(","); original code
                   // const base64string = x[1]; original code
                   // const buffer = Buffer.from(base64string, "base64"); original code
@@ -54,7 +54,7 @@ module.exports = {
                   const buffer = Buffer.from(x[3], x[2]);
                   newMenu.qrImg = buffer;
                   newMenu.qrMimetype = x[1];
-                  newMenu.save();
+                  await newMenu.save();
                 });
                 res.status(200).send({
                   message: "Menu created successfully",
@@ -116,17 +116,17 @@ module.exports = {
   },
   update: (req, res, next) => {
     try {
-      Menu.findOne({ businessID: req.user.workIn }).then((menu) => {
+      Menu.findOne({ businessID: req.user.workIn }).then(async (menu) => {
         if (menu) {
           if (req.body.username) {
             menu.username = req.body.username;
             //this will remake QR with the updated username
-            generateQR(req.body.username).then((qr) => {
+            await generateQR(req.body.username).then(async (qr) => {
               const x = qr.split(/[:;,]/);
               const buffer = Buffer.from(x[3], x[2]);
               menu.qrImg = buffer;
               menu.qrMimetype = x[1];
-              menu.save();
+              await menu.save();
             });
           }
           if (req.body.name) {
