@@ -196,7 +196,7 @@ export default function NewOrders(props) {
             <button
               className=" btn btn-outline-primary btn-sm mt-2"
               type="button"
-              onClick={() => setRejected(true)}
+              onClick={(e) => sendState(e, "reject", props.id)}
               disabled={isSubmitting}
               text={`${isSubmitting ? "..." : "Reject"}`}
             >
@@ -209,7 +209,7 @@ export default function NewOrders(props) {
             <button
               className=" btn btn-outline-primary btn-sm mt-2"
               type="button"
-              onClick={() => setDone(true)}
+              onClick={(e) => sendState(e, "done", props.id)}
               disabled={isSubmitting}
               text={`${isSubmitting ? "..." : "Done"}`}
             >
@@ -219,7 +219,7 @@ export default function NewOrders(props) {
             <button
               className=" btn btn-outline-primary btn-sm mt-2"
               type="button"
-              onClick={() => setCanceled(true)}
+              onClick={(e) => sendState(e, "cancel", props.id)}
               disabled={isSubmitting}
               text={`${isSubmitting ? "..." : "Cancel"}`}
             >
