@@ -160,19 +160,24 @@ export default function AfterLog() {
     });
   }, [setUserContext, userContext.token]);
   // }, [setUserContext, userContext.token]);
-  let i = 1;
+  // let i = 1;
+
+  let isfetchUserDetailsDone = useRef(true);
   useEffect(() => {
     // fetch only when user details are not present
 
-    console.log(i++);
-    if (
-      !userContext.details?.workIn ||
-      !userContext.details ||
-      !userContext.menu
-    ) {
-      fetchUserDetails();
+    // console.log(i++);
+    if (isfetchUserDetailsDone.current) {
+      isfetchUserDetailsDone.current = false;
+      if (
+        !userContext.details?.workIn ||
+        !userContext.details ||
+        !userContext.menu
+      ) {
+        fetchUserDetails();
+      }
     }
-  }, []);
+  }, [userContext.details, userContext.menu, fetchUserDetails]);
 
   //this needs to be fixed ❗
   console.log(userContext.isAdmin);

@@ -87,28 +87,28 @@ export default function Menu() {
     }
   }
 
-  function addItem() {
-    return (
-      <>
-        <a
-          className="btn btn-primary"
-          data-bs-toggle="collapse"
-          href="#multiCollapseExample1"
-          role="button"
-          aria-expanded="false"
-          aria-controls="multiCollapseExample1"
-          onClick={() => (clkref.current = true)}
-        >
-          Add new Item
-        </a>
-        <div className="collapse multi-collapse" id="multiCollapseExample1">
-          <div className="card card-body">
-            <AddItem itemDone={getmenuData} />
-          </div>
-        </div>
-      </>
-    );
-  }
+  // function addItem() {
+  //   return (
+  //     <>
+  //       <a
+  //         className="btn btn-primary"
+  //         data-bs-toggle="collapse"
+  //         href="#multiCollapseExample1"
+  //         role="button"
+  //         aria-expanded="false"
+  //         aria-controls="multiCollapseExample1"
+  //         onClick={() => (clkref.current = true)}
+  //       >
+  //         Add new Item
+  //       </a>
+  //       <div className="collapse multi-collapse" id="multiCollapseExample1">
+  //         <div className="card card-body">
+  //           <AddItem itemDone={getmenuData} />
+  //         </div>
+  //       </div>
+  //     </>
+  //   );
+  // }
 
   // function add() {
   //   return <AddItem itemDone={getmenuData} />;

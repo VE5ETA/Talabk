@@ -1,4 +1,10 @@
-import React, { useEffect, useCallback, useContext, Suspense } from "react";
+import React, {
+  useEffect,
+  useCallback,
+  useContext,
+  Suspense,
+  useRef,
+} from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RequireAuth from "../context/RequireAuth";
 import IsLogged from "../context/IsLogged";
@@ -24,8 +30,9 @@ import Dashboard from "./BusinessPage/Dashboard";
 import Spinner from "../components/Spinner";
 import Menu from "../pages/BusinessPage/Menu";
 import EditMenu from "./BusinessPage/EditMenu";
-
 function App() {
+  // let isDoneForNavigate = useRef(false);
+
   const url =
     process.env.REACT_APP_NODE_ENV === "live"
       ? "https://" +
@@ -37,8 +44,8 @@ function App() {
 
   const [userContext, setUserContext] = useContext(UserContext);
 
-  const verifyUser = useCallback(() => {
-    fetch(url + "user/refreshToken", {
+  const verifyUser = useCallback(async () => {
+    await fetch(url + "user/refreshToken", {
       method: "POST",
       credentials: "include",
       headers: {
@@ -48,9 +55,10 @@ function App() {
     }).then(async (response) => {
       if (response.ok) {
         const data = await response.json();
-        setUserContext((oldValues) => {
+        await setUserContext((oldValues) => {
           return { ...oldValues, token: data.token };
         });
+        isDDone.current = true; //✅ return and fix this 🍰
       } else {
         setUserContext((oldValues) => {
           return { ...oldValues, token: null };
@@ -58,13 +66,111 @@ function App() {
       }
       // call refreshToken every 5 minutes to renew the authentication token.
       setTimeout(verifyUser, 5 * 60 * 1000);
+      // setTimeout(verifyUser, 10 * 1000); // this was for testing 🧪
     });
   }, [setUserContext]);
 
-  useEffect(() => {
-    verifyUser();
-  }, [verifyUser]);
+  let isverifyUserDone = useRef(true);
 
+  useEffect(() => {
+    if (isverifyUserDone.current) {
+      isverifyUserDone.current = false;
+      verifyUser();
+    }
+  }, [verifyUser]);
+  // }, []);
+
+  let isDDone = useRef(false);
+
+  useEffect(() => {
+    if (isDDone.current) {
+      isDDone.current = false;
+      callData();
+      console.log(" helllo ");
+    }
+  }, [userContext]);
+
+  async function callData() {
+    if (userContext.token) {
+      console.log("im in calldata");
+      await fetch(url + "user/me", {
+        method: "GET",
+        credentials: "include",
+        // Pass authentication token as bearer token in header
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userContext.token}`,
+        },
+      }).then(async (response) => {
+        if (response.ok) {
+          const data = await response.json();
+          setUserContext((oldValues) => {
+            return { ...oldValues, details: data };
+          });
+          await fetch(url + "user/platform/adminTest", {
+            method: "GET",
+            credentials: "include",
+            // Pass authentication token as bearer token in header
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userContext.token}`,
+            },
+          })
+            .then(async (r) => {
+              console.log(r);
+              if (r.ok) {
+                setUserContext((oldValues) => {
+                  return { ...oldValues, isAdmin: true };
+                });
+                // isDoneForNavigate.current = true;
+                // isDone.current = true;
+                // navigate("/AdminDashboard"); //this needs to be complete
+              } else {
+                setUserContext((oldValues) => {
+                  return { ...oldValues, isAdmin: false };
+                });
+                await fetch(url + "user/business/menu", {
+                  method: "GET",
+                  credentials: "include",
+                  // Pass authentication token as bearer token in header
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${userContext.token}`,
+                  },
+                }).then(async (menuRes) => {
+                  if (menuRes.ok) {
+                    const menuData = await menuRes.json();
+                    setUserContext((oldValues) => {
+                      return { ...oldValues, menu: menuData };
+                    });
+                    // isDoneForNavigate.current = true;
+                    // isDone.current = true;
+                  } else {
+                    setUserContext((oldValues) => {
+                      return { ...oldValues, menu: null };
+                    });
+                    // isDoneForNavigate.current = true;
+                    // isDone.current = true;
+                  }
+                });
+                //  // isDone.current = true;
+              }
+            })
+            .catch((err) => {
+              console.log("this wont work anyway 😯");
+              setUserContext((oldValues) => {
+                return { ...oldValues, isAdmin: false };
+              });
+            });
+        } else {
+          setUserContext((oldValues) => {
+            return { ...oldValues, details: null };
+          });
+          // isDoneForNavigate.current = true;
+        }
+      });
+    }
+  }
   // ---------------------------\\
   // ---------------------------\\
   // ---------------------------\\
@@ -99,7 +205,10 @@ function App() {
             <Route path="/signUp" element={<SignUp />} />
           </Route>
           {/* privete page */}
-          <Route path="/AfterLog" element={<AfterLog />} />
+          <Route element={<RequireAuth />}>
+            <Route path="/AfterLog" element={<AfterLog />} />
+          </Route>
+
           <Route element={<RequireAuth />}>
             {/* <Route element={<AfterLog />}> */}
             {/* <Route path="/login" element={<Login />} />
@@ -113,8 +222,6 @@ function App() {
             <Route path="/logout" element={<Logout />} />
             {/* </Route> */}
           </Route>
-
-          {/* <Route element={<AfterLog />}></Route> */}
 
           {/* if page not found */}
           <Route path="*" element={<NotFound />} />

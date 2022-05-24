@@ -222,8 +222,8 @@ module.exports = {
           },
         ]).then((menu) => {
           // this will check if business is close or not
-          if (menu.status) {
-            if (menu.length != 0) {
+          if (menu[0].status) {
+            if (menu[0]) {
               Item.aggregate([
                 {
                   $match: {

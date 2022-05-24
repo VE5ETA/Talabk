@@ -1,4 +1,5 @@
 const { Order } = require("../models/order");
+const { Business } = require("../models/business");
 const mongoose = require("mongoose");
 
 module.exports = {
@@ -30,12 +31,6 @@ module.exports = {
             order.orderState = "accepted";
             order.businessNotes = req.body.businessNotes;
             order.save();
-            Business.findOne({ _id: req.user.workIn }).then((business) => {
-              if (business) {
-                business.balance = business.balance + order.subTotal;
-                business.save();
-              }
-            });
             res.status(200).send({
               message: "order accepted",
               success: true,
@@ -75,6 +70,12 @@ module.exports = {
               order.orderState = "done";
               order.businessNotes = req.body.businessNotes;
               order.save();
+              Business.findOne({ _id: req.user.workIn }).then((business) => {
+                if (business) {
+                  business.balance = business.balance + order.subTotal;
+                  business.save();
+                }
+              });
               res.status(200).send({
                 message: "order done",
                 success: true,
@@ -103,6 +104,37 @@ module.exports = {
       res.status(400).send({
         message: error, // && "not valid order", // the && will send the value if the error was null
         success: false,
+      });
+    }
+  },
+  cancel: (req, res, next) => {
+    if (req.user.workIn) {
+      // if (ID.test(req.body.ID)) {
+      Order.findOne({ _id: req.body.ID, orderState: "accepted" }).then(
+        (order) => {
+          if (order) {
+            order.orderState = "cenceled";
+            order.businessNotes = req.body.businessNotes;
+            order.save();
+            res.status(200).send({
+              message: "order cenceled",
+              success: true,
+            });
+          } else {
+            res.status(404).send({
+              message: "order not found or rejected",
+            });
+          }
+        }
+      );
+      // } else {
+      //   res.status(500).send({
+      //     message: "ID invalid",
+      //   });
+      // }
+    } else {
+      res.status(500).send({
+        message: "you don't have business",
       });
     }
   },
