@@ -37,6 +37,7 @@ export default function Orders() {
             subTotal={order.subTotal}
             items={order.items}
             businessName={order.BusinessName}
+            getOrdersInfo={getOrdersInfo}
           />
         );
       });

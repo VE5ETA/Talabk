@@ -38,8 +38,8 @@ export default function OrderDone(props) {
                   </span>
                 </div>
                 <div className="text-center mt-5">
-                  <NavLink to={"/"} className="btn btn-primary">
-                    Go To Home
+                  <NavLink to={"../orders"} className="btn btn-primary">
+                    Track your order
                   </NavLink>
                 </div>
               </div>
