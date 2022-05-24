@@ -42,6 +42,25 @@ export default function Dashboard() {
             errorAlert("Something went wrong! Please try again later.");
           }
         })
+        .then(() => {
+          fetch(url + "user/business/order/showActiveOrder", {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userContext.token}`,
+            },
+          }).then(async (res) => {
+            let xx = await res.json();
+            if (res.ok) {
+              setActiveOrder(xx);
+              // setSuccssed(true);
+              setTimeout(getNewOrders, 10000);
+            } else {
+              errorAlert("Something went wrong! Please try again later.");
+            }
+          });
+        })
         .catch((error) => {
           errorAlert(error);
         });
@@ -83,6 +102,29 @@ export default function Dashboard() {
           );
         })
         .reverse();
+    }
+  }
+  function handleOrders() {
+    if (activeOrder) {
+      return activeOrder.map((order, index) => {
+        return (
+          <>
+            <NewOrders
+              updateOrders={getNewOrders}
+              key={index}
+              id={order._id}
+              orderType={order.orderType}
+              orderState={order.orderState}
+              customerNumber={order.customerNumber}
+              items={order.items}
+              subTotal={order.subTotal}
+              notes={order.notes}
+              orderDate={order.orderDate}
+              businessName={order.BusinessName}
+            />
+          </>
+        );
+      });
     }
   }
   return (
@@ -148,26 +190,57 @@ export default function Dashboard() {
       {/* <a onClick={() => navigate("/")} className="btn btn-link">
         Back to Home
       </a> */}
-      {/* <div className="container py-5 "> use this inseted 👨‍🏫 */}
-      <div className="container py-5 ">
+      {/* <div className=" py-5 "> use this inseted 👨‍🏫 */}
+      <div className="">
         <div className="row g-0 ">
-          <div className="col-md-2"></div>
-          <div className="col-md-6"> complete Active Orders here 😀</div>
-          <div className="col-md-4">
+          <div className="col-md-8">
             <div className="list-group ">
               {/* <br /> */}
               <div className="m-5 rounded">
-                {newOrders ? (
+                {handleOrders ? (
                   <div
                     href="#"
                     // className="list-group-item list-group-item-action active"
                     className="list-group-item list-group-item-action text-center "
                     aria-current="true"
                   >
-                    <h3>New Orders</h3>
-                    {handleData()}
+                    <h3>Active Orders ⏲</h3>
+                    {handleOrders()}
                   </div>
-                ) : null}
+                ) : (
+                  <div
+                    href="#"
+                    // className="list-group-item list-group-item-action active"
+                    className="list-group-item list-group-item-action text-center "
+                    aria-current="true"
+                  >
+                    <h3>Active Orders ⏲</h3>
+
+                    {/* this isn't working need to fix  🔴 also do it for part below 😊 */}
+
+                    <div> No active orders yet</div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="container ">
+              <div className="list-group ">
+                {/* <br /> */}
+                <div className="m-5 rounded">
+                  {newOrders ? (
+                    <div
+                      href="#"
+                      // className="list-group-item list-group-item-action active"
+                      className="list-group-item list-group-item-action text-center "
+                      aria-current="true"
+                    >
+                      <h3>New Orders 🔥</h3>
+                      {handleData()}
+                    </div>
+                  ) : null}
+                </div>
               </div>
             </div>
           </div>

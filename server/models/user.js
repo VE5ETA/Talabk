@@ -54,10 +54,10 @@ const User = new Schema({
     type: String,
     default: "local",
   },
-  points: {
-    type: Number,
-    default: 50,
-  },
+  // points: {
+  //   type: Number,
+  //   default: 50,
+  // },
   refreshToken: {
     type: [Session],
   },
@@ -72,7 +72,7 @@ User.set("toJSON", {
 
 User.plugin(passportLocalMongoose, {
   usernameField: "username",
-  usernameCaseInsensitive:true,
+  usernameCaseInsensitive: true,
 });
 User.plugin(uniqueValidator, {
   message: "Error, expected {PATH} to be unique. {VALUE} is already used!",

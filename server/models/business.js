@@ -60,6 +60,10 @@ const Business = new Schema({
     type: Date,
     default: () => Date.now(),
   },
+  balance: {
+    type: Number,
+    default: 0,
+  },
   businessStatus: {
     type: Boolean,
     default: false,
