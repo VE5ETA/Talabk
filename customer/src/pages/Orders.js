@@ -32,6 +32,7 @@ export default function Orders() {
           <OrdersInfo
             key={index}
             id={order._id}
+            orderDate={order.orderDate}
             orderState={order.orderState}
             subTotal={order.subTotal}
             items={order.items}

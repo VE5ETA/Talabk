@@ -1,9 +1,16 @@
 import React from "react";
+import TimeAgo from "javascript-time-ago";
+import ReactTimeAgo from "react-time-ago";
+import en from "javascript-time-ago/locale/en.json";
+TimeAgo.addDefaultLocale(en);
 
 export default function OrdersInfo(props) {
   return (
     <div className="col-md-3 col-sm-6 mb-3">
       <div className="card card-block p-3">
+        <p className="card-title mb-3">
+          {<ReactTimeAgo date={props.orderDate} locale="en-US" />}
+        </p>
         <h5 className="card-title mb-3">Business: {props.businessName}</h5>
         <p className="card-title mb-3">order ID: {props.id}</p>
         <p>

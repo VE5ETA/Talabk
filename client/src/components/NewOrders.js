@@ -130,6 +130,10 @@ export default function NewOrders(props) {
         </strong>
       </p>
       <div>
+        <span className="theme-color">Order details</span>
+        <div className="mb-3">
+          <hr className="new1" />
+        </div>
         <ol className="list-group list-group-numbered">
           {Object.values(props.items).map((item, index) => {
             return (
@@ -155,6 +159,47 @@ export default function NewOrders(props) {
             );
           })}
         </ol>
+
+        {props.reservationInfo !== null ? (
+          <>
+            <br></br>
+            <span className="theme-color">
+              reservation details <FontAwesomeIcon icon={faCreditCard} />
+            </span>
+            <div className="mb-3">
+              <hr className="new1" />
+            </div>
+
+            <li className="list-group-item d-flex justify-content-between align-items-start">
+              <div className="ms-2 me-auto">
+                <div className="fw-bold">
+                  Person number: {props.reservationInfo.personNumber}
+                </div>
+              </div>
+            </li>
+            <li className="list-group-item d-flex justify-content-between align-items-start">
+              <div className="ms-2 me-auto">
+                <div className="fw-bold">
+                  Time: {props.reservationInfo.time}
+                </div>
+              </div>
+            </li>
+            <li className="list-group-item d-flex justify-content-between align-items-start">
+              <div className="ms-2 me-auto">
+                <div className="fw-bold">
+                  Date: {props.reservationInfo.date}
+                </div>
+              </div>
+            </li>
+            <li className="list-group-item d-flex justify-content-between align-items-start">
+              <div className="ms-2 me-auto">
+                <div className="fw-bold">
+                  Reservation time: {props.reservationInfo.reservationTime}
+                </div>
+              </div>
+            </li>
+          </>
+        ) : null}
         <br></br>
 
         <span className="theme-color">
