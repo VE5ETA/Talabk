@@ -112,7 +112,7 @@ export default function NewOrders(props) {
     <div
       href="#"
       // className="list-group-item list-group-item-action active"
-      className="list-group-item list-group-item-action rounded"
+      className="list-group-item list-group-item-action rounded mt-4 box-shadow h-md-200 shadow"
       aria-current="true"
     >
       <div className="d-flex w-100 justify-content-between">
@@ -201,6 +201,22 @@ export default function NewOrders(props) {
           </>
         ) : null}
         <br></br>
+
+        {props.notes ? (
+          <div className="mb-3">
+            <label htmlFor="exampleFormControlTextarea1" className="form-label">
+              Note
+            </label>
+            <textarea
+              className="form-control"
+              id="exampleFormControlTextarea1"
+              rows={3}
+              defaultValue={""}
+              value={props.notes}
+              disabled
+            />
+          </div>
+        ) : null}
 
         <span className="theme-color">
           Payment Summary <FontAwesomeIcon icon={faCreditCard} />

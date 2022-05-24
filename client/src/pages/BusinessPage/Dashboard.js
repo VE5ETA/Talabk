@@ -106,25 +106,28 @@ export default function Dashboard() {
   }
   function handleOrders() {
     if (activeOrder) {
-      return activeOrder.map((order, index) => {
-        return (
-          <>
-            <NewOrders
-              updateOrders={getNewOrders}
-              key={index}
-              id={order._id}
-              orderType={order.orderType}
-              orderState={order.orderState}
-              customerNumber={order.customerNumber}
-              items={order.items}
-              subTotal={order.subTotal}
-              notes={order.notes}
-              orderDate={order.orderDate}
-              businessName={order.BusinessName}
-            />
-          </>
-        );
-      });
+      return activeOrder
+        .map((order, index) => {
+          return (
+            <>
+              <NewOrders
+                updateOrders={getNewOrders}
+                key={index}
+                id={order._id}
+                reservationInfo={order.reservationInfo}
+                orderType={order.orderType}
+                orderState={order.orderState}
+                customerNumber={order.customerNumber}
+                items={order.items}
+                subTotal={order.subTotal}
+                notes={order.notes}
+                orderDate={order.orderDate}
+                businessName={order.BusinessName}
+              />
+            </>
+          );
+        })
+        .reverse();
     }
   }
   return (
