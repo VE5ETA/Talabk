@@ -125,9 +125,15 @@ export default function NewOrders(props) {
       <p className="card-title mb-3">order ID: {props.id}</p>
       <p>
         Order state:
-        <strong className="d-inline-block mb-2 text-primary">
-          &nbsp;{props.orderState}
-        </strong>
+        {neww ? (
+          <strong className="d-inline-block mb-2 text-warning">
+            &nbsp;{props.orderState}
+          </strong>
+        ) : accepted ? (
+          <strong className="d-inline-block mb-2 text-success">
+            &nbsp;{props.orderState}
+          </strong>
+        ) : null}
       </p>
       <div>
         <span className="theme-color">Order details</span>
@@ -234,60 +240,62 @@ export default function NewOrders(props) {
 
         <div className="d-flex justify-content-between mt-3">
           <span className="font-weight-bold">
-            Total <FontAwesomeIcon icon={faMoneyBill} />
+            Total 💰
+            {/* <FontAwesomeIcon icon={faMoneyBill} /> */}
           </span>
           <span className="font-weight-bold theme-color">
             {props.subTotal}SAR
           </span>
-          <div className="col-md-6 d-flex align-items-center justify-content-center"></div>
+          {/* <div className="col-md-6 d-flex align-items-center justify-content-center"></div> */}
         </div>
+
         <br />
         {neww ? (
-          <>
+          <div className="row ">
             <button
-              className=" btn btn-outline-primary btn-sm mt-2"
+              style={{ marginLeft: "6%" }}
+              className="col-md-5  btn btn-outline-success btn-sm mt-2"
               type="button"
               onClick={(e) => sendState(e, "accept", props.id)}
               disabled={isSubmitting}
               text={`${isSubmitting ? "..." : "Accept"}`}
             >
-              Accept
-              {/* <FontAwesomeIcon icon={faRotate} /> */}
+              Accept ✔{/* <FontAwesomeIcon icon={faRotate} /> */}
             </button>
             <button
-              className=" btn btn-outline-primary btn-sm mt-2"
+              style={{ marginLeft: "6%" }}
+              className="col-md-5 btn btn-outline-danger btn-sm mt-2"
               type="button"
               onClick={(e) => sendState(e, "reject", props.id)}
               disabled={isSubmitting}
               text={`${isSubmitting ? "..." : "Reject"}`}
             >
-              Reject
-              {/* <FontAwesomeIcon icon={faRotate} /> */}
+              Reject ❌{/* <FontAwesomeIcon icon={faRotate} /> */}
             </button>
-          </>
+          </div>
         ) : (
-          <>
+          <div className="row">
             <button
-              className=" btn btn-outline-primary btn-sm mt-2"
+              style={{ marginLeft: "6%" }}
+              className=" btn col-md-5 btn-outline-primary btn-sm mt-2"
               type="button"
               onClick={(e) => sendState(e, "done", props.id)}
               disabled={isSubmitting}
               text={`${isSubmitting ? "..." : "Done"}`}
             >
-              Done
-              {/* <FontAwesomeIcon icon={faRotate} /> */}
+              Done ☑{/* <FontAwesomeIcon icon={faRotate} /> */}
             </button>
             <button
-              className=" btn btn-outline-primary btn-sm mt-2"
+              style={{ marginLeft: "6%" }}
+              className=" btn col-md-5 btn-outline-danger btn-sm mt-2"
               type="button"
               onClick={(e) => sendState(e, "cancel", props.id)}
               disabled={isSubmitting}
               text={`${isSubmitting ? "..." : "Cancel"}`}
             >
-              Cancel
-              {/* <FontAwesomeIcon icon={faRotate} /> */}
+              Cancel ⛔{/* <FontAwesomeIcon icon={faRotate} /> */}
             </button>
-          </>
+          </div>
         )}
         <hr />
       </div>
