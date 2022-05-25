@@ -31,7 +31,7 @@ module.exports = {
     try {
       Business.updateOne(
         { _id: req.body.id },
-        { $set: { businessStatus: true, businessState: "active" } }
+        { $set: { businessStatus: true, businessState: "accepted" } }
       ).then((business) => {
         if (business) {
           res.status(200).send({
@@ -53,7 +53,7 @@ module.exports = {
     try {
       Business.updateOne(
         { _id: req.body.id },
-        { $set: { businessState: "reject" } }
+        { $set: { businessStatus: false, businessState: "rejected" } }
       ).then((business) => {
         if (business) {
           res.status(200).send({

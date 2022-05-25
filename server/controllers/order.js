@@ -72,7 +72,9 @@ module.exports = {
               order.save();
               Business.findOne({ _id: req.user.workIn }).then((business) => {
                 if (business) {
-                  business.balance = business.balance + order.subTotal;
+                  business.balance
+                    ? (business.balance = 1 * business.balance + order.subTotal)
+                    : (business.balance = 0 + order.subTotal);
                   business.save();
                 }
               });
