@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./Style/styles.min.css";
 
 import { UserContext } from "../context/UserContext";
@@ -81,72 +81,125 @@ export default function Login() {
   };
 
   return (
-    <div>
-      <div className="container">
-        <div className="row register-form">
-          <div className="col">
-            <div />
+    <div className="create-form">
+      <div className="wrapper rounded bg-white d-flex justify-content-center align-items-center">
+        <div
+          style={{ border: "none", width: "75%" }}
+          className="card  login-form m-4"
+        >
+          <div className="text-center intro">
+            <img src="https://i.imgur.com/uNiv4bD.png" width={160} />
           </div>
-          <div
-            className="col-md-8 col-xl-7 offset-md-2"
-            style={{ margin: "100px 0 " }}
-          >
-            <form onSubmit={formSubmitHandler} className="custom-form">
-              <h1>LOGIN</h1>
-              <div className="row form-group">
-                <div className="col-sm-4 label-column">
-                  <label className="col-form-label" htmlFor="text-input-field">
-                    user name
-                  </label>
-                </div>
-                <div className="col-sm-6 input-column">
-                  <input
-                    className="form-control"
-                    id="username"
-                    placeholder="username"
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                </div>
+          <form onSubmit={formSubmitHandler}>
+            <div className="mt-4 text-center">
+              <h4>Log In.</h4>
+
+              <div className="mt-3 inputbox">
+                <input
+                  className="form-control"
+                  id="username"
+                  placeholder="username"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
               </div>
-              <div className="row form-group">
-                <div className="col-sm-4 label-column">
-                  <label
-                    className="col-form-label"
-                    htmlFor="pawssword-input-field"
-                  >
-                    password
-                  </label>
-                </div>
-                <div className="col-sm-6 input-column">
-                  <input
-                    className="form-control"
-                    id="password"
-                    placeholder="Password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
+              <div className="inputbox">
+                <input
+                  className="form-control"
+                  id="password"
+                  placeholder="Password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <i className="fa fa-lock" />
               </div>
-              <button
-                className="btn btn-light submit-button"
-                intent="primary"
-                disabled={isSubmitting}
-                text={`${isSubmitting ? "Signing In" : "Sign In"}`}
-                // fill //for now
-                type="submit"
-              >
-                login
+            </div>
+            <div className="mt-2">
+              <button className="btn btn-warning btn-block login-btn">
+                Log In
               </button>
-            </form>
-          </div>
-          <div className="col">
-            <div />
-          </div>
+            </div>
+            <div className="col-lg-12 text-center mt-4">
+              <label className="form-label">
+                if you didn't have account create one?
+              </label>
+              <NavLink to="/signup"> signup here</NavLink>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   );
 }
+
+/// old login design
+
+// <div>
+//   <div className="container">
+//     <div className="row register-form">
+//       <div className="col">
+//         <div />
+//       </div>
+//       <div
+//         className="col-md-8 col-xl-7 offset-md-2"
+//         style={{ margin: "100px 0 " }}
+//       >
+//         <form onSubmit={formSubmitHandler} className="custom-form">
+//           <h1>LOGIN</h1>
+//           <div className="row form-group">
+//             <div className="col-sm-4 label-column">
+//               <label className="col-form-label" htmlFor="text-input-field">
+//                 user name
+//               </label>
+//             </div>
+//             <div className="col-sm-6 input-column">
+//               <input
+//                 className="form-control"
+//                 id="username"
+//                 placeholder="username"
+//                 type="text"
+//                 value={username}
+//                 onChange={(e) => setUsername(e.target.value)}
+//               />
+//             </div>
+//           </div>
+//           <div className="row form-group">
+//             <div className="col-sm-4 label-column">
+//               <label
+//                 className="col-form-label"
+//                 htmlFor="pawssword-input-field"
+//               >
+//                 password
+//               </label>
+//             </div>
+//             <div className="col-sm-6 input-column">
+//               <input
+//                 className="form-control"
+//                 id="password"
+//                 placeholder="Password"
+//                 type="password"
+//                 value={password}
+//                 onChange={(e) => setPassword(e.target.value)}
+//               />
+//             </div>
+//           </div>
+//           <button
+//             className="btn btn-light submit-button"
+//             intent="primary"
+//             disabled={isSubmitting}
+//             text={`${isSubmitting ? "Signing In" : "Sign In"}`}
+//             // fill //for now
+//             type="submit"
+//           >
+//             login
+//           </button>
+//         </form>
+//       </div>
+//       <div className="col">
+//         <div />
+//       </div>
+//     </div>
+//   </div>
+// </div>
