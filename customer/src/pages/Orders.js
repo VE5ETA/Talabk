@@ -27,20 +27,22 @@ export default function Orders() {
 
   function handleData() {
     if (ordersInfo) {
-      return ordersInfo.map((order, index) => {
-        return (
-          <OrdersInfo
-            key={index}
-            id={order._id}
-            orderDate={order.orderDate}
-            orderState={order.orderState}
-            subTotal={order.subTotal}
-            items={order.items}
-            businessName={order.BusinessName}
-            getOrdersInfo={getOrdersInfo}
-          />
-        );
-      });
+      return ordersInfo
+        .map((order, index) => {
+          return (
+            <OrdersInfo
+              key={index}
+              id={order._id}
+              orderDate={order.orderDate}
+              orderState={order.orderState}
+              subTotal={order.subTotal}
+              items={order.items}
+              businessName={order.BusinessName}
+              getOrdersInfo={getOrdersInfo}
+            />
+          );
+        })
+        .reverse();
     }
   }
 
