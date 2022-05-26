@@ -191,11 +191,12 @@ module.exports = {
           },
         },
       ]).then((menus) => {
-        if (menus.length != 0) {
+        if (menus[0]) {
           res.status(200).send(menus);
         } else {
           res.status(404).send({
             message: "no menu found",
+            success: false,
           });
         }
       });

@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 
 export default function OrderDone(props) {
   const info = props.data;
+  localStorage.setItem(info.username, null);
   return (
     <div className="create-form mt-5">
       <div className="wrapper rounded bg-white ">

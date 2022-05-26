@@ -31,7 +31,7 @@ export default function AdminDashboard() {
     if (!isWorking.current) {
       isWorking.current = true;
       if (userContext.details?.workIn) {
-        await fetch(url + "user/business/order/showNewOrder", {
+        await fetch(url + "user/platform/showNewRequest", {
           method: "GET",
           credentials: "include",
           headers: {
@@ -105,22 +105,22 @@ export default function AdminDashboard() {
 
   function handleData() {
     if (newBuz) {
-      return newBuz.map((order, index) => {
+      return newBuz.map((buz, index) => {
         return (
           <>
             <VerifyBuz
               updateBuz={getNewBuz}
               key={index}
-              id={order._id}
-              reservationInfo={order.reservationInfo}
-              orderType={order.orderType}
-              orderState={order.orderState}
-              customerNumber={order.customerNumber}
-              items={order.items}
-              subTotal={order.subTotal}
-              notes={order.notes}
-              orderDate={order.orderDate}
-              businessName={order.BusinessName}
+              id={buz._id}
+              ownerID={buz.ownerID}
+              tradeName={buz.tradeName}
+              branchID={buz.branchID}
+              businessType={buz.businessType}
+              businessStatus={buz.businessStatus}
+              businessState={buz.businessState}
+              createdAt={buz.createdAt}
+              updatedAt={buz.updatedAt}
+              // LegalDocs={buz.LegalDocs} // not needed removed with update v2.0 ⭕
             />
           </>
         );
@@ -195,19 +195,30 @@ export default function AdminDashboard() {
       <div className="">
         <div className="row g-0 ">
           {/* <div className="col-md-8"> */}
-          <div className="">
+          <div className="col-md-8">
             <div className="list-group ">
               {/* <br /> */}
               <div className="m-5 rounded ">
                 {newBuz[0] ? (
                   <div
-                    href="#"
                     // className="list-group-item list-group-item-action active"
-                    className="list-group-item list-group-item-action text-center "
+                    className="list-group-item text-center "
                     aria-current="true"
                   >
                     <h3>New Business Verify requests ⏲</h3>
-                    {handleData()}
+                    <table className="table table-hover">
+                      <thead className="">
+                        <tr>
+                          {/* <th scope="col">#</th> use it after fix 🤨 */}
+                          <th scope="col">Business Trade Name</th>
+                          <th scope="col">Business Branch Id</th>
+                          <th scope="col">Business owner</th>
+                          <th scope="col">At</th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>{handleData()}</tbody>
+                    </table>
                   </div>
                 ) : (
                   <div
