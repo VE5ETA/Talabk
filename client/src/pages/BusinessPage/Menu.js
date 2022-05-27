@@ -59,6 +59,8 @@ export default function Menu() {
           const resJson = await res.json();
 
           setMenuData(resJson);
+        } else {
+          setMenuData([]);
         }
       })
       .catch((error) => {

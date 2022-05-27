@@ -190,9 +190,21 @@ module.exports = {
             status: true,
           },
         },
+        {
+          $lookup: {
+            from: "items",
+            localField: "_id",
+            foreignField: "MenuID",
+            as: "items",
+          },
+        },
       ]).then((menus) => {
+        const x = menus.filter((m) => m.items[0]);
+        const z = x.filter((m) => delete m.items); 
+        // let z = menus.pop()
+
         if (menus[0]) {
-          res.status(200).send(menus);
+          res.status(200).send(z);
         } else {
           res.status(404).send({
             message: "no menu found",

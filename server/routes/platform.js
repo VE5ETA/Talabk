@@ -5,6 +5,7 @@ router.get("/adminAccountTest", platformController.test);
 router.get("/adminTest", platformController.adminTest); // for get all Active business
 router.get("/showNewRequest", platformController.showNewRequest);
 router.post("/acceptBuz", platformController.acceptBuz);
+router.post("/SuspenedBuz", platformController.SuspenedBuz);
 router.post("/rejectBuz", platformController.rejectBuz);
 router.post("/getLegalDoc", platformController.getLegalDoc);
 router.get("/showActiveBuz", platformController.showActiveBuz); // for get all Active business

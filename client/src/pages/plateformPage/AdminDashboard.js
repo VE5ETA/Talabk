@@ -195,7 +195,7 @@ export default function AdminDashboard() {
       <div className="">
         <div className="row g-0 ">
           {/* <div className="col-md-8"> */}
-          <div className="col-md-8">
+          <div className="">
             <div className="list-group ">
               {/* <br /> */}
               <div className="m-5 rounded ">

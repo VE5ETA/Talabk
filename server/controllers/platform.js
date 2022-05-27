@@ -198,6 +198,28 @@ module.exports = {
       res.status(500).send(err);
     }
   },
+  SuspenedBuz: (req, res, next) => {
+    try {
+      Business.updateOne(
+        { _id: req.body.id },
+        { $set: { businessStatus: false, businessState: "Suspened" } }
+      ).then((business) => {
+        if (business) {
+          res.status(200).send({
+            message: "business Suspened",
+            success: true,
+          });
+        } else {
+          res.status(404).send({
+            message: "business not found",
+            success: true,
+          });
+        }
+      });
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
   rejectBuz: (req, res, next) => {
     try {
       Business.updateOne(
