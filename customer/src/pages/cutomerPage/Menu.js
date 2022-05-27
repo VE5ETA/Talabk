@@ -128,7 +128,7 @@ export default function Menu() {
                 <>
                   <div className="col-md-4">
                     <img
-                      style={{ maxWidth: "100%" }}
+                      style={{ maxWidth: "100%", width: "100%" }}
                       src={`data:${menuData.head.logoMimetype};base64,${menuData.head.logo}`}
                       className="card-image"
                       alt={menuData.head.name + " logo"}

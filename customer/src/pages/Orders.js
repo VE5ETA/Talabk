@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import OrdersInfo from "../components/OrdersInfo";
 import { errorAlert, successAlert } from "../helper/Options";
 
 export default function Orders() {
-  const [customerNumber, setCustomerNumber] = useState("");
+  const [customerNumber, setCustomerNumber] = useState();
   const [ordersInfo, setOrdersInfo] = useState();
+  // const [number, setNumber] = useState();
 
   const [succssed, setSuccssed] = useState(false);
 
-  const phoneRegex = new RegExp(
-    /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/
-  );
+  // const phoneRegex = new RegExp(
+  //   /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/
+  // );
+
+  let haveNumber = useRef(localStorage.getItem("customerNumber"));
+  let isDone = useRef(false);
 
   const url =
     process.env.REACT_APP_NODE_ENV === "live"
@@ -20,6 +24,22 @@ export default function Orders() {
         process.env.REACT_APP_SERVER_PORT +
         ".githubpreview.dev/"
       : process.env.REACT_APP_API_ENDPOINT;
+
+  // useEffect(() => {
+
+  // }, [])
+
+  useEffect(() => {
+    // setCustomerNumber(localStorage.getItem("customerNumber"));
+    console.log(haveNumber.current);
+
+    if (haveNumber.current != null) {
+      setSuccssed(true);
+      getOrdersInfo();
+      localStorage.setItem("customerNumber", haveNumber.current);
+      setTimeout(getOrdersInfo, 5000);
+    }
+  }, [haveNumber.current]);
 
   useEffect(() => {
     handleData();
@@ -48,33 +68,35 @@ export default function Orders() {
 
   function getOrdersInfo(e) {
     // setError("");
-    if (phoneRegex.test(customerNumber)) {
-      fetch(url + "customer/orders", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          customerNumber: customerNumber,
-        }),
-      })
-        .then(async (res) => {
-          let aa = await res.json();
-          if (res.ok) {
-            setOrdersInfo(aa);
-            setSuccssed(true);
-            setTimeout(getOrdersInfo, 5000);
-          } else if (res.status === 404) {
-            errorAlert("you didn't have order");
-          } else {
-            errorAlert("Something went wrong! Please try again later.");
-          }
-        })
-        .catch((error) => {
+    // if (phoneRegex.test(customerNumber)) {
+    fetch(url + "customer/orders", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        customerNumber: haveNumber.current,
+      }),
+    })
+      .then(async (res) => {
+        let aa = await res.json();
+        if (res.ok) {
+          setOrdersInfo(aa);
+          setSuccssed(true);
+        } else if (res.status === 404) {
+          errorAlert("you didn't have order");
+          setSuccssed(false);
+        } else {
           errorAlert("Something went wrong! Please try again later.");
-        });
-    } else {
-      errorAlert("number is invalid");
-    }
+          setSuccssed(false);
+        }
+      })
+      .catch((error) => {
+        setSuccssed(false);
+        errorAlert("Something went wrong! Please try again later.");
+      });
+    // } else {
+    //   errorAlert("number is invalid");
+    // }
   }
 
   if (succssed) {
@@ -99,7 +121,8 @@ export default function Orders() {
                   id="tradeName"
                   type="text"
                   className="form-control"
-                  onChange={(e) => setCustomerNumber(e.target.value)}
+                  // onChange={(e) => setCustomerNumber(e.target.value)}
+                  onChange={(e) => (haveNumber.current = e.target.value)}
                 />
               </div>
             </div>

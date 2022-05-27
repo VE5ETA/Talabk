@@ -14,6 +14,9 @@ const Order = new Schema({
   BusinessName: {
     type: String,
   },
+  tableNumber: {
+    type: String,
+  },
   orderDate: {
     type: Date,
     default: () => Date.now(),

@@ -30,6 +30,7 @@ export default function Card() {
   const [orderType, setOrderType] = useState("dining in");
   const [orderNotes, setOrderNotes] = useState("");
   const [personNumber, setPersonNumber] = useState("");
+  const [tableNumber, setTableNumber] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [reservationTime, setReservationTime] = useState("30m");
@@ -190,9 +191,10 @@ export default function Card() {
         notes: orderNotes,
         customerNumber: phoneNumber,
         orderType: orderType,
+        tableNumber: tableNumber,
       };
     });
-  }, [orderNotes, phoneNumber, orderType]);
+  }, [orderNotes, phoneNumber, orderType, tableNumber]);
 
   // change sub total value in context
   function setTotal() {
@@ -213,7 +215,7 @@ export default function Card() {
   ////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////
   if (succssed) {
-    return <OrderDone data={customerContext} />;
+    return <OrderDone />;
   } else {
     return (
       <div className="cart bg-light">
@@ -338,6 +340,19 @@ export default function Card() {
                       required
                     />
                   </div>
+                  {orderType === "dining in" ? (
+                    <div className="col-md-6 mb-3">
+                      <label htmlFor="firstName">Table number</label>
+                      <input
+                        onChange={(e) => setTableNumber(e.target.value)}
+                        type="text"
+                        className="form-control"
+                        id="phoneNumber"
+                        placeholder="Enter table number"
+                        required
+                      />
+                    </div>
+                  ) : null}
 
                   {orderType === "reservation" ? (
                     <>

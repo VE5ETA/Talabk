@@ -39,6 +39,14 @@ module.exports = {
         name: "subTotalError",
         message: "subTotal is invalid",
       });
+    } else if (
+      req.body.tableNumber === "" &&
+      req.body.orderType === "dining in"
+    ) {
+      res.status(500).send({
+        name: "tableNumberError",
+        message: "table number is required",
+      });
     } else {
       Business.findById({ _id: req.body.ID }).then((business) => {
         if (business) {
@@ -200,7 +208,7 @@ module.exports = {
         },
       ]).then((menus) => {
         const x = menus.filter((m) => m.items[0]);
-        const z = x.filter((m) => delete m.items); 
+        const z = x.filter((m) => delete m.items);
         // let z = menus.pop()
 
         if (menus[0]) {
