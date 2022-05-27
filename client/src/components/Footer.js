@@ -10,8 +10,15 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="w-100 py-4 flex-shrink-0 d-flex flex-column h-100 bg-dark  ">
-      <div className="container py-4">
+    <footer
+      className="bg-dark mt-auto"
+      // style={{
+      //   width: "auto",
+      //   maxWidth: " 680px",
+      //   padding: "0 15px",
+      // }}
+    >
+      <div className="container py-4 bottom-0">
         <div className="row gy-4 gx-5">
           <div className="col-lg-4 col-md-6">
             <h5 className="h1 text-white">FB.</h5>

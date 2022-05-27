@@ -109,8 +109,8 @@ export default function AdminDashboard() {
         return (
           <>
             <VerifyBuz
-              updateBuz={getNewBuz}
               key={index}
+              updateBuz={getNewBuz}
               id={buz._id}
               ownerID={buz.ownerID}
               tradeName={buz.tradeName}
