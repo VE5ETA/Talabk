@@ -18,7 +18,7 @@ export default function Footer() {
       //   padding: "0 15px",
       // }}
     >
-      <div className="container py-4 bottom-0">
+      <div className="container py-4 ">
         <div className="row gy-4 gx-5">
           <div className="col-lg-4 col-md-6">
             <h5 className="h1 text-white">FB.</h5>

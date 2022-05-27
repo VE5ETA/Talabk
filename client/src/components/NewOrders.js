@@ -119,7 +119,7 @@ export default function NewOrders(props) {
         <h5 className="mb-1">{props.orderType}</h5>
         <small>
           {/* 3 days ago */}
-          {<ReactTimeAgo date={props.orderDate} locale="en-US" />}
+          {<ReactTimeAgo date={Date.parse(props.orderDate)} locale="en-US" />}
         </small>
       </div>
       <p className="card-title mb-3">order ID: {props.id}</p>

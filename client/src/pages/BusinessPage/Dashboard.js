@@ -79,10 +79,12 @@ export default function Dashboard() {
     isWorking.current = false;
   }, [setNewOrders]);
 
+  // let isGetNewOrders = useRef(true);
   useEffect(() => {
-    // if (isverifyUserDone.current) {
-    //   isverifyUserDone.current = false;
+    // if (isGetNewOrders.current) {
+    // isGetNewOrders.current = false;
     getNewOrders();
+    // setTimeout(getNewOrders, 10000);
     // }
   }, [getNewOrders]);
 

@@ -44,6 +44,7 @@ export default function AdminDashboard() {
             if (res.ok) {
               await setNewBuz(aa);
               // setSuccssed(true);
+              isWorking.current = false;
               setTimeout(getNewBuz, 10000);
             } else {
               errorAlert("Something went wrong! Please try again later.");
@@ -73,7 +74,6 @@ export default function AdminDashboard() {
           });
       }
     }
-    isWorking.current = false;
   }, [setNewBuz]);
 
   useEffect(() => {
@@ -107,22 +107,21 @@ export default function AdminDashboard() {
     if (newBuz) {
       return newBuz.map((buz, index) => {
         return (
-          <>
-            <VerifyBuz
-              key={index}
-              updateBuz={getNewBuz}
-              id={buz._id}
-              ownerID={buz.ownerID}
-              tradeName={buz.tradeName}
-              branchID={buz.branchID}
-              businessType={buz.businessType}
-              businessStatus={buz.businessStatus}
-              businessState={buz.businessState}
-              createdAt={buz.createdAt}
-              updatedAt={buz.updatedAt}
-              // LegalDocs={buz.LegalDocs} // not needed removed with update v2.0 ⭕
-            />
-          </>
+          <VerifyBuz
+            key={index}
+            xxx={index}
+            updateBuz={getNewBuz}
+            id={buz._id}
+            ownerID={buz.ownerID}
+            tradeName={buz.tradeName}
+            branchID={buz.branchID}
+            businessType={buz.businessType}
+            businessStatus={buz.businessStatus}
+            businessState={buz.businessState}
+            createdAt={buz.createdAt}
+            updatedAt={buz.updatedAt}
+            // LegalDocs={buz.LegalDocs} // not needed removed with update v2.0 ⭕
+          />
         );
       });
       // .reverse(); this is worng don't use this, you supposed to handle old orders first 📞
@@ -209,7 +208,8 @@ export default function AdminDashboard() {
                     <table className="table table-hover">
                       <thead className="">
                         <tr>
-                          {/* <th scope="col">#</th> use it after fix 🤨 */}
+                          <th scope="col">#</th>
+                          {/* use it after fix 🤨 */}
                           <th scope="col">Business Trade Name</th>
                           <th scope="col">Business Branch Id</th>
                           <th scope="col">Business owner</th>

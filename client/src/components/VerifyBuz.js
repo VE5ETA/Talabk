@@ -12,7 +12,7 @@ import ReactTimeAgo from "react-time-ago";
 import en from "javascript-time-ago/locale/en.json";
 import { errorAlert, successAlert } from "../helper/Options";
 import { UserContext } from "../context/UserContext";
-TimeAgo.addDefaultLocale(en);
+// TimeAgo.addDefaultLocale(en);
 
 export default function VerifyBuz(props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,11 +42,16 @@ export default function VerifyBuz(props) {
         // aria-labelledby="exampleModalLabel"
         // aria-hidden="true"
       >
-        <div className="modal-dialog modal-xl ">
-          <div className="modal-content " style={{ height: 800 }}>
+        <div className="modal-dialog modal-xl modal-dialog-scrollable">
+          <div className="modal-content " style={{ height: 1000 }}>
             <div className="modal-header ">
               <h5 className="modal-title" id="exampleModalLabel">
-                Modal title
+                Review of{" "}
+                <strong style={{ color: "firebrick" }}>
+                  {props.tradeName}{" "}
+                </strong>
+                with branch Id{" "}
+                <strong style={{ color: "MenuText" }}>{props.branchID}</strong>
               </h5>
               <button
                 type="button"
@@ -56,8 +61,113 @@ export default function VerifyBuz(props) {
               ></button>
             </div>
             <div className="modal-body">
+              {/* <div className="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm">
+                <div className="my-3 p-3 bg-body rounded shadow-sm">
+                  <div className="d-flex text-muted pt-3">
+                    <p className="pb-3 mb-0 small lh-sm border-bottom">
+                      <strong className="d-block text-gray-dark">@username</strong>
+                      Some representative placeholder content, with some
+                      information about this user. Imagine this being some sort
+                      of status update, perhaps?
+                    </p>
+                  </div>
+                </div>
+              </div> */}
+              <div className="card  text-bg-light">
+                <h5 className="card-title text-start mx-4 my-2">
+                  User owner of business
+                </h5>
+                <table className="table table-hover table-light">
+                  <thead>
+                    <tr>
+                      <th scope="col">Owner of</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Username</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Created at</th>
+                      <th scope="col">Latest update</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* <th scope="row">bb</th> */}
+                    <tr>
+                      <td>{props.tradeName}</td>
+                      {/* <td>{props.ownerID._id}</td> */}
+                      <td>{props.ownerID.name}</td>
+                      <td>@{props.ownerID.username}</td>
+                      <td>
+                        <a href={`mailto: ${props.ownerID.email}`}>
+                          {props.ownerID.email}
+                        </a>
+                      </td>
+                      <td>
+                        {
+                          <ReactTimeAgo
+                            date={Date.parse(props.ownerID.createdAt)}
+                            locale="en-US"
+                          />
+                        }
+                      </td>
+                      <td>
+                        {
+                          <ReactTimeAgo
+                            date={Date.parse(props.ownerID.updatedAt)}
+                            locale="en-US"
+                          />
+                        }
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
               ...
-              {props.ownerID.name}
+              <div className="card  text-bg-light">
+                <h5 className="card-title text-start mx-4 my-2">
+                  Business details
+                </h5>
+                <table className="table table-hover table-light">
+                  <thead>
+                    <tr>
+                      <th scope="col">Owned by</th>
+                      <th scope="col">Trade name</th>
+                      <th scope="col">Branch Id</th>
+                      <th scope="col">Type</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">State</th>
+                      <th scope="col">Created at</th>
+                      <th scope="col">Latest update</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* <th scope="row">bb</th> */}
+                    <tr>
+                      <td>@{props.ownerID.username}</td>
+                      <td>{props.tradeName}</td>
+                      <td>{props.branchID}</td>
+                      <td>{props.businessType}</td>
+                      <td>{props.businessStatus ? "true" : "false"}</td>
+                      <td>{props.businessState}</td>
+                      <td>
+                        {
+                          <ReactTimeAgo
+                            date={Date.parse(props.createdAt)}
+                            locale="en-US"
+                          />
+                        }
+                      </td>
+                      <td>
+                        {
+                          <ReactTimeAgo
+                            date={Date.parse(props.updatedAt)}
+                            locale="en-US"
+                          />
+                        }
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              {/* {props.ownerID.name} */}
               <embed
                 style={{ height: "100%" }}
                 src={legalDoc}
@@ -71,7 +181,7 @@ export default function VerifyBuz(props) {
                 // style={{ marginLeft: "6%" }}
                 className="col-md-5  btn btn-outline-success btn-sm mt-2"
                 type="button"
-                onClick={(e) => sendState(e, "accept", props.id)}
+                onClick={(e) => sendState(e, "acceptBuz")}
                 disabled={isSubmitting}
                 text={`${isSubmitting ? "..." : "Accept"}`}
               >
@@ -81,7 +191,7 @@ export default function VerifyBuz(props) {
                 // style={{ marginLeft: "6%" }}
                 className="col-md-5 btn btn-outline-danger btn-sm mt-2"
                 type="button"
-                onClick={(e) => sendState(e, "reject", props.id)}
+                onClick={(e) => sendState(e, "rejectBuz")}
                 disabled={isSubmitting}
                 text={`${isSubmitting ? "..." : "Reject"}`}
               >
@@ -158,7 +268,8 @@ export default function VerifyBuz(props) {
     }
     if (succss) {
       successAlert(succss);
-      props.updateOrders();
+      props.updateBuz();
+      hideModal();
       // navigate("/AfterLog");
     }
   }, [error, succss]);
@@ -178,7 +289,7 @@ export default function VerifyBuz(props) {
       setIsSubmitting(true);
       setError("");
       setSuccss("");
-      fetch(url + `user/business/order/${type}`, {
+      fetch(url + `user/platform/${type}`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -187,7 +298,6 @@ export default function VerifyBuz(props) {
         },
         body: JSON.stringify({
           ID: props.id,
-          businessNotes: businessNotes,
         }),
       })
         .then(async (res) => {
@@ -228,20 +338,21 @@ export default function VerifyBuz(props) {
   // }
 
   //this isn't needed ;)
-  // const hideModal = () => {
-  //   const modalEle = modalRef.current;
-  //   const bsModal = Modal.getInstance(modalEle);
-  //   bsModal.hide();
-  // };
+  const hideModal = () => {
+    const modalEle = modalRef.current;
+    const bsModal = Modal.getInstance(modalEle);
+    bsModal.hide();
+  };
 
   return (
     <tr className="">
+      <th scope="row">{props.xxx + 1}</th>
       {/* <td className="">{props.key}</td> use it after fix 🤨 */}
       <td className="">{props.tradeName}</td>
       <td className="">{props.branchID}</td>
       <td className="">{props.ownerID.name}</td>
       <td className="">
-        {<ReactTimeAgo date={props.updatedAt} locale="en-US" />}
+        {<ReactTimeAgo date={Date.parse(props.updatedAt)} locale="en-US" />}
       </td>
       <td className="">
         {
@@ -254,7 +365,7 @@ export default function VerifyBuz(props) {
           </button>
         }
       </td>
-      {pdff()}
+      <td> {pdff()}</td>
     </tr>
   );
 

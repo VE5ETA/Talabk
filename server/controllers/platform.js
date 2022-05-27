@@ -67,7 +67,7 @@ module.exports = {
         if (business[0]) {
           res.status(200).send(business);
         } else {
-          res.status(404).send({
+          res.status(204).send({
             message: "There are no new requests",
             success: false,
           });
@@ -179,7 +179,7 @@ module.exports = {
   acceptBuz: (req, res, next) => {
     try {
       Business.updateOne(
-        { _id: req.body.id },
+        { _id: req.body.ID },
         { $set: { businessStatus: true, businessState: "accepted" } }
       ).then((business) => {
         if (business) {
@@ -201,7 +201,7 @@ module.exports = {
   SuspenedBuz: (req, res, next) => {
     try {
       Business.updateOne(
-        { _id: req.body.id },
+        { _id: req.body.ID },
         { $set: { businessStatus: false, businessState: "Suspened" } }
       ).then((business) => {
         if (business) {
@@ -223,7 +223,7 @@ module.exports = {
   rejectBuz: (req, res, next) => {
     try {
       Business.updateOne(
-        { _id: req.body.id },
+        { _id: req.body.ID },
         { $set: { businessStatus: false, businessState: "rejected" } }
       ).then((business) => {
         if (business) {
