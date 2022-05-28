@@ -99,21 +99,35 @@ export default function Header(props) {
             {userContext.token ? (
               <ul className="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                 {userContext.isAdmin ? (
-                  <li>
-                    <NavLink
-                      to="/adminDashboard"
-                      className="nav-link text-white"
-                    >
-                      <svg
-                        className="bi d-block mx-auto mb-1"
-                        width={24}
-                        height={24}
+                  <>
+                    <li>
+                      <NavLink
+                        to="/adminDashboard"
+                        className="nav-link text-white"
                       >
-                        <FontAwesomeIcon icon={faUtensils} />
-                      </svg>
-                      Admin Dashboard 🎫
-                    </NavLink>
-                  </li>
+                        <svg
+                          className="bi d-block mx-auto mb-1"
+                          width={24}
+                          height={24}
+                        >
+                          <FontAwesomeIcon icon={faUtensils} />
+                        </svg>
+                        Admin Dashboard 🎫
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="/Business" className="nav-link text-white">
+                        <svg
+                          className="bi d-block mx-auto mb-1"
+                          width={24}
+                          height={24}
+                        >
+                          <FontAwesomeIcon icon={faUtensils} />
+                        </svg>
+                        Business 🏨
+                      </NavLink>
+                    </li>
+                  </>
                 ) : userContext.details?.workIn ? (
                   userContext.menu ? (
                     <>
@@ -133,7 +147,7 @@ export default function Header(props) {
                         </NavLink>
                       </li>
                       <li>
-                        <a href="#" className="nav-link text-white">
+                        <NavLink to="/order" className="nav-link text-white">
                           <svg
                             className="bi d-block mx-auto mb-1"
                             width={24}
@@ -142,7 +156,7 @@ export default function Header(props) {
                             <FontAwesomeIcon icon={faListSquares} />
                           </svg>
                           Orders
-                        </a>
+                        </NavLink>
                       </li>
                       <li>
                         <NavLink to="/menu" className="nav-link text-white">

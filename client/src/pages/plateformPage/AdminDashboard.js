@@ -81,12 +81,12 @@ export default function AdminDashboard() {
     }
   }, [url, userContext.details?.workIn, userContext.token]);
 
-  useEffect(() => {
-    // if (isverifyUserDone.current) {
-    //   isverifyUserDone.current = false;
-    getNewBuz();
-    // }
-  }, [getNewBuz]);
+  // useEffect(() => {
+  //   // if (isverifyUserDone.current) {
+  //   //   isverifyUserDone.current = false;
+  //   getNewBuz();
+  //   // }
+  // }, [getNewBuz]);
 
   let isGetNewOrders = useRef(true);
   const [isWorkingg, setIsWorkingg] = useState(false);

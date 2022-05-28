@@ -18,6 +18,7 @@ import Layout from "./Layout";
 import NotFound from "./NotFound";
 import AdminDashboard from "./plateformPage/AdminDashboard";
 import NewReq from "./plateformPage/NewReq";
+import Business from "./plateformPage/Business";
 // import Menu from "./cutomerPage/Menu"; deleted
 // import Cart from "./cutomerPage/Cart";
 // import Store from "./Store";
@@ -30,6 +31,7 @@ import Dashboard from "./BusinessPage/Dashboard";
 import Spinner from "../components/Spinner";
 import Menu from "../pages/BusinessPage/Menu";
 import EditMenu from "./BusinessPage/EditMenu";
+import Order from "./BusinessPage/Order";
 function App() {
   // let isDoneForNavigate = useRef(false);
 
@@ -219,6 +221,8 @@ function App() {
             <Route path="/createMenu" element={<CreateMenu />} />
             <Route path="/EditMenu" element={<EditMenu />} />
             <Route path="/menu" element={<Menu />} />
+            <Route path="/Business" element={<Business />} />
+            <Route path="/order" element={<Order />} />
             <Route path="/logout" element={<Logout />} />
             {/* </Route> */}
           </Route>

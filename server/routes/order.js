@@ -4,6 +4,7 @@ const orderController = require("../controllers/order");
 const { isValidObjID } = require("../middlewares/middleware");
 
 // actions for orders
+router.get("/showOrder", orderController.showOrder);
 router.get("/showNewOrder", orderController.showNewOrder);
 router.post("/accept", isValidObjID, orderController.accept);
 router.post("/done", isValidObjID, orderController.done);
