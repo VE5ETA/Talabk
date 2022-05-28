@@ -301,7 +301,7 @@ export default function VerifyBuz(props) {
         }),
       })
         .then(async (res) => {
-          setIsSubmitting(false);
+          // setIsSubmitting(false);
           let aa = await res.json();
           if (res.ok) {
             setSuccss(aa.message);
@@ -310,8 +310,11 @@ export default function VerifyBuz(props) {
           }
         })
         .catch((error) => {
-          setIsSubmitting(false);
+          // setIsSubmitting(false);
           setError(error);
+        })
+        .finally(() => {
+          setIsSubmitting(false);
         });
     } catch (error) {
       setIsSubmitting(false);

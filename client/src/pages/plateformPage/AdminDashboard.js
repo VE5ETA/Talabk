@@ -24,12 +24,13 @@ export default function AdminDashboard() {
       : process.env.REACT_APP_API_ENDPOINT;
   let navigate = useNavigate();
 
-  let isWorking = useRef(false);
+  let isWorking = useRef(true);
 
   const getNewBuz = useCallback(async () => {
     // setError("");
-    if (!isWorking.current) {
-      isWorking.current = true;
+    if (isWorking.current) {
+      setIsWorkingg(false);
+      isWorking.current = false;
       if (userContext.details?.workIn) {
         await fetch(url + "user/platform/showNewRequest", {
           method: "GET",
@@ -42,10 +43,10 @@ export default function AdminDashboard() {
           .then(async (res) => {
             let aa = await res.json();
             if (res.ok) {
-              await setNewBuz(aa);
+              setNewBuz(aa);
               // setSuccssed(true);
-              isWorking.current = false;
-              setTimeout(getNewBuz, 10000);
+
+              // setTimeout(getNewBuz, 10000);
             } else {
               errorAlert("Something went wrong! Please try again later.");
             }
@@ -71,10 +72,14 @@ export default function AdminDashboard() {
           // })
           .catch((error) => {
             errorAlert(error);
+          })
+          .finally(() => {
+            isWorking.current = true;
+            setIsWorkingg(true);
           });
       }
     }
-  }, [setNewBuz]);
+  }, [url, userContext.details?.workIn, userContext.token]);
 
   useEffect(() => {
     // if (isverifyUserDone.current) {
@@ -82,6 +87,25 @@ export default function AdminDashboard() {
     getNewBuz();
     // }
   }, [getNewBuz]);
+
+  let isGetNewOrders = useRef(true);
+  const [isWorkingg, setIsWorkingg] = useState(false);
+
+  useEffect(() => {
+    if (isWorkingg) {
+      setTimeout(getNewBuz, 10000);
+
+      // isWorkingg.current = false;
+    } else {
+      if (isGetNewOrders.current) {
+        isGetNewOrders.current = false;
+        getNewBuz();
+      }
+    }
+    // else {
+    //   isWorking.current = true;
+    // }
+  }, [getNewBuz, isWorkingg]);
 
   // return (
   //   <div className="page-notFound d-flex flex-row align-items-center">

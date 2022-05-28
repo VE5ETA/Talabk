@@ -27,14 +27,15 @@ export default function Dashboard() {
 
   let navigate = useNavigate();
 
-  let isWorking = useRef(false);
+  let isWorking = useRef(true);
 
-  const getNewOrders = useCallback(async () => {
+  const getNewOrders = useCallback(() => {
     // setError("");
-    if (!isWorking.current) {
-      isWorking.current = true;
+    if (isWorking.current) {
+      setIsWorkingg(false);
+      isWorking.current = false;
       if (userContext.details?.workIn) {
-        await fetch(url + "user/business/order/showNewOrder", {
+        fetch(url + "user/business/order/showNewOrder", {
           method: "GET",
           credentials: "include",
           headers: {
@@ -45,15 +46,15 @@ export default function Dashboard() {
           .then(async (res) => {
             let aa = await res.json();
             if (res.ok) {
-              await setNewOrders(aa);
+              setNewOrders(aa);
               // setSuccssed(true);
-              setTimeout(getNewOrders, 10000);
+              // setTimeout(getNewOrders, 10000);
             } else {
               errorAlert("Something went wrong! Please try again later.");
             }
           })
-          .then(async () => {
-            await fetch(url + "user/business/order/showActiveOrder", {
+          .then(() => {
+            fetch(url + "user/business/order/showActiveOrder", {
               method: "GET",
               credentials: "include",
               headers: {
@@ -63,7 +64,7 @@ export default function Dashboard() {
             }).then(async (res) => {
               let xx = await res.json();
               if (res.ok) {
-                await setActiveOrder(xx);
+                setActiveOrder(xx);
                 // setSuccssed(true);
                 // setTimeout(getNewOrders, 10000);
               } else {
@@ -72,21 +73,41 @@ export default function Dashboard() {
             });
           })
           .catch((error) => {
+            // isWorking.current = true;
             errorAlert(error);
+          })
+          .finally(() => {
+            isWorking.current = true;
+            setIsWorkingg(true);
+            // setTimeout(getNewOrders, 10000);
           });
       }
     }
-    isWorking.current = false;
-  }, [setNewOrders]);
+    // isWorking.current = false;
+  }, [url, userContext.details?.workIn, userContext.token]);
 
-  // let isGetNewOrders = useRef(true);
+  // useEffect(() => {
+  //   getNewOrders();
+  // }, [getNewOrders]);
+
+  let isGetNewOrders = useRef(true);
+  const [isWorkingg, setIsWorkingg] = useState(false);
+
   useEffect(() => {
-    // if (isGetNewOrders.current) {
-    // isGetNewOrders.current = false;
-    getNewOrders();
-    // setTimeout(getNewOrders, 10000);
+    if (isWorkingg) {
+      setTimeout(getNewOrders, 10000);
+
+      // isWorkingg.current = false;
+    } else {
+      if (isGetNewOrders.current) {
+        isGetNewOrders.current = false;
+        getNewOrders();
+      }
+    }
+    // else {
+    //   isWorking.current = true;
     // }
-  }, [getNewOrders]);
+  }, [getNewOrders, isWorkingg]);
 
   useEffect(() => {
     handleData();
@@ -96,47 +117,47 @@ export default function Dashboard() {
     if (newOrders) {
       return newOrders.map((order, index) => {
         return (
-          <>
-            <NewOrders
-              updateOrders={getNewOrders}
-              key={index}
-              id={order._id}
-              reservationInfo={order.reservationInfo}
-              orderType={order.orderType}
-              orderState={order.orderState}
-              customerNumber={order.customerNumber}
-              items={order.items}
-              subTotal={order.subTotal}
-              notes={order.notes}
-              orderDate={order.orderDate}
-              businessName={order.BusinessName}
-            />
-          </>
+          <NewOrders
+            updateOrders={getNewOrders}
+            key={index}
+            id={order._id}
+            reservationInfo={order.reservationInfo}
+            orderType={order.orderType}
+            orderState={order.orderState}
+            customerNumber={order.customerNumber}
+            items={order.items}
+            subTotal={order.subTotal}
+            notes={order.notes}
+            orderDate={order.orderDate}
+            businessName={order.BusinessName}
+          />
         );
       });
       // .reverse(); this is worng don't use this, you supposed to handle old orders first 📞
     }
   }
+  useEffect(() => {
+    handleOrders();
+  }, [activeOrder]);
+
   function handleOrders() {
     if (activeOrder) {
       return activeOrder.map((order, index) => {
         return (
-          <>
-            <NewOrders
-              updateOrders={getNewOrders}
-              key={index}
-              id={order._id}
-              reservationInfo={order.reservationInfo}
-              orderType={order.orderType}
-              orderState={order.orderState}
-              customerNumber={order.customerNumber}
-              items={order.items}
-              subTotal={order.subTotal}
-              notes={order.notes}
-              orderDate={order.orderDate}
-              businessName={order.BusinessName}
-            />
-          </>
+          <NewOrders
+            updateOrders={getNewOrders}
+            key={index}
+            id={order._id}
+            reservationInfo={order.reservationInfo}
+            orderType={order.orderType}
+            orderState={order.orderState}
+            customerNumber={order.customerNumber}
+            items={order.items}
+            subTotal={order.subTotal}
+            notes={order.notes}
+            orderDate={order.orderDate}
+            businessName={order.BusinessName}
+          />
         );
       });
       // .reverse(); this is worng don't use this, you supposed to handle old orders first 📞

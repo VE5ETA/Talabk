@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import OrdersInfo from "../components/OrdersInfo";
 import { errorAlert, successAlert } from "../helper/Options";
 
@@ -25,10 +25,6 @@ export default function Orders() {
         ".githubpreview.dev/"
       : process.env.REACT_APP_API_ENDPOINT;
 
-  // useEffect(() => {
-
-  // }, [])
-
   useEffect(() => {
     // setCustomerNumber(localStorage.getItem("customerNumber"));
     console.log(haveNumber.current);
@@ -37,7 +33,7 @@ export default function Orders() {
       setSuccssed(true);
       getOrdersInfo();
       localStorage.setItem("customerNumber", haveNumber.current);
-      setTimeout(getOrdersInfo, 5000);
+      // setTimeout(getOrdersInfo, 5000);
     }
   }, [haveNumber.current]);
 
@@ -66,38 +62,53 @@ export default function Orders() {
     }
   }
 
-  function getOrdersInfo(e) {
-    // setError("");
-    // if (phoneRegex.test(customerNumber)) {
-    fetch(url + "customer/orders", {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        customerNumber: haveNumber.current,
-      }),
-    })
-      .then(async (res) => {
-        let aa = await res.json();
-        if (res.ok) {
-          setOrdersInfo(aa);
-          setSuccssed(true);
-        } else if (res.status === 404) {
-          errorAlert("you didn't have order");
-          setSuccssed(false);
-        } else {
-          errorAlert("Something went wrong! Please try again later.");
-          setSuccssed(false);
-        }
+  const getOrdersInfo = useCallback(
+    async (e) => {
+      // setError("");
+      // if (phoneRegex.test(customerNumber)) {
+      fetch(url + "customer/orders", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customerNumber: haveNumber.current,
+        }),
       })
-      .catch((error) => {
-        setSuccssed(false);
-        errorAlert("Something went wrong! Please try again later.");
-      });
-    // } else {
-    //   errorAlert("number is invalid");
-    // }
-  }
+        .then(async (res) => {
+          // onlyOne.current = true;
+          let aa = await res.json();
+          if (res.ok) {
+            setOrdersInfo(aa);
+            setSuccssed(true);
+          } else if (res.status === 404) {
+            errorAlert("you didn't have order");
+            setSuccssed(false);
+          } else {
+            errorAlert("Something went wrong! Please try again later.");
+            setSuccssed(false);
+          }
+        })
+        .catch((error) => {
+          // onlyOne.current = true;
+          setSuccssed(false);
+          errorAlert("Something went wrong! Please try again later.");
+        })
+        .finally((onlyOne.current = true));
+      // } else {
+      //   errorAlert("number is invalid");
+      // }
+    },
+    [url]
+  );
+
+  let onlyOne = useRef(true);
+
+  useEffect(() => {
+    if (onlyOne.current) {
+      onlyOne.current = false;
+      setTimeout(getOrdersInfo, 5000);
+    }
+  });
 
   if (succssed) {
     return (

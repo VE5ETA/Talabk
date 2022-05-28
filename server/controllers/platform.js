@@ -64,7 +64,8 @@ module.exports = {
           ],
         },
       ]).then((business) => {
-        if (business[0]) {
+        // if (business[0]) { removed this to send embty array to reset the Business Verify requests on the front-end 😁
+        if (business) {
           res.status(200).send(business);
         } else {
           res.status(204).send({

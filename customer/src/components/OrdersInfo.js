@@ -92,24 +92,32 @@ export default function OrdersInfo(props) {
         </p>
 
         <div>
-          <span className="theme-color">Payment Summary</span>
+          <span className="theme-color">Order details</span>
           <div className="mb-3">
             <hr className="new1" />
           </div>
-          {Object.values(props.items).map((item, index) => {
-            return (
-              <div key={index} className="d-flex justify-content-between">
-                <span className="font-weight-bold">
-                  {item.name}(Qty:{item.quantite})
-                </span>
-                <span className="text-muted">{item.price}SAR</span>
-              </div>
-            );
-          })}
+          <ol className="list-group list-group-numbered">
+            {Object.values(props.items).map((item, index) => {
+              return (
+                <li
+                  key={index}
+                  className="list-group-item d-flex justify-content-between align-items-start"
+                >
+                  <div className="ms-2 me-auto">
+                    <div className="fw-bold">{item.name}</div>
+                    {item.price} sᴀʀ
+                  </div>
+                  <span className="badge bg-primary rounded-pill">
+                    {item.quantite}
+                  </span>
+                </li>
+              );
+            })}
+          </ol>
           <div className="d-flex justify-content-between mt-3">
             <span className="font-weight-bold">Total</span>
             <span className="font-weight-bold theme-color">
-              {props.subTotal}SAR
+              {props.subTotal} SAR
             </span>
           </div>
 
