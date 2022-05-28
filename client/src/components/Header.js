@@ -222,7 +222,7 @@ export default function Header(props) {
                     >
                       <li>
                         <a className="dropdown-item text-white" href="#">
-                          New project...
+                          Manage Business
                         </a>
                       </li>
                       <li>
@@ -230,7 +230,7 @@ export default function Header(props) {
                           to={"../EditMenu"}
                           className="dropdown-item text-white"
                         >
-                          Settings
+                          Manage Menu
                         </NavLink>
                       </li>
                       <li>

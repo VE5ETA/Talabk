@@ -110,17 +110,17 @@ export default function EditMenu(props) {
         <div className="container">
           <div className="card mb-3 max-width-880 ">
             <div className="row g-0 ">
-              <div className="col-md-4">
+              <div className="col-md-4 d-flex justify-content-center">
                 {logo ? (
                   <img
-                    style={{ maxWidth: "100%" }}
+                    style={{ maxWidth: "50%", width: "100%" }}
                     src={itemPreview}
                     className="card-image"
                     alt={name + " logo"}
                   />
                 ) : (
                   <img
-                    style={{ maxWidth: "100%" }}
+                    style={{ maxWidth: "50%", width: "100%" }}
                     src={`data:${userContext.menu.logoMimetype};base64,${userContext.menu.logo}`}
                     className="card-image"
                     alt={name + " logo"}

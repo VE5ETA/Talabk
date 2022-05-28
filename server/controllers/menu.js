@@ -118,47 +118,55 @@ module.exports = {
     try {
       Menu.findOne({ businessID: req.user.workIn }).then(async (menu) => {
         if (menu) {
-          if (req.body.username) {
-            menu.username = req.body.username;
-            //this will remake QR with the updated username
-            await generateQR(req.body.username).then(async (qr) => {
-              const x = qr.split(/[:;,]/);
-              const buffer = Buffer.from(x[3], x[2]);
-              menu.qrImg = buffer;
-              menu.qrMimetype = x[1];
-              await menu.save();
-            });
-          }
-          if (req.body.name) {
-            menu.name = req.body.name;
-          }
-          if (req.body.state) {
-            menu.state = req.body.state;
-          }
-          if (req.body.description) {
-            menu.description = req.body.description;
-          }
-          if (req.body.status) {
-            menu.status = req.body.status;
-          }
-          if (req.file) {
-            menu.logo = req.file.buffer;
-            menu.logoMimetype = req.file.mimetype;
-          }
-
-          menu.save((err) => {
-            if (err) {
-              res.status(400).send({
-                message: err,
-                success: false,
-              });
-            } else {
-              res.status(200).send({
-                message: "menu has been updated successfully",
-                success: true,
+          // this try for unique errors
+          try {
+            if (req.body.username) {
+              menu.username = req.body.username;
+              //this will remake QR with the updated username
+              await generateQR(req.body.username).then(async (qr) => {
+                const x = qr.split(/[:;,]/);
+                const buffer = Buffer.from(x[3], x[2]);
+                menu.qrImg = buffer;
+                menu.qrMimetype = x[1];
+                await menu.save();
               });
             }
-          });
+            if (req.body.name) {
+              menu.name = req.body.name;
+            }
+            if (req.body.state) {
+              menu.state = req.body.state;
+            }
+            if (req.body.description) {
+              menu.description = req.body.description;
+            }
+            if (req.body.status) {
+              menu.status = req.body.status;
+            }
+            if (req.file) {
+              menu.logo = req.file.buffer;
+              menu.logoMimetype = req.file.mimetype;
+            }
+
+            menu.save((err) => {
+              if (err) {
+                res.status(400).send({
+                  message: err,
+                  success: false,
+                });
+              } else {
+                res.status(200).send({
+                  message: "menu has been updated successfully",
+                  success: true,
+                });
+              }
+            });
+          } catch (error) {
+            res.status(400).send({
+              message: error,
+              success: false,
+            });
+          }
         } else {
           res.status(404).send({
             message: "you don't even have a menu 🙂",

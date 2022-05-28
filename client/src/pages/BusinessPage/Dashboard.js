@@ -190,9 +190,9 @@ export default function Dashboard() {
             <div className="row g-0 ">
               {userContext?.menu ? (
                 <>
-                  <div className="col-md-4">
+                  <div className="col-md-4 d-flex justify-content-center">
                     <img
-                      style={{ maxWidth: "100%" }}
+                      style={{ maxWidth: "50%", width: "100%" }}
                       src={`data:${userContext.menu.logoMimetype};base64,${userContext.menu.logo}`}
                       className="card-image"
                       alt={useContext.menu?.name + " logo"}

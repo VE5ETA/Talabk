@@ -128,7 +128,7 @@ export default function Order() {
   }, [order]);
 
   function handleData() {
-    if (order) {
+    if (order[0]) {
       return order
         .map((order, index) => {
           return (
