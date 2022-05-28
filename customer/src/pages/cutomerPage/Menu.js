@@ -126,9 +126,9 @@ export default function Menu() {
             <div className="row g-0 ">
               {menuData?.head ? (
                 <>
-                  <div className="col-md-4">
+                  <div className="col-md-4 d-flex justify-content-center">
                     <img
-                      style={{ maxWidth: "100%", width: "100%" }}
+                      style={{ maxWidth: "50%", width: "100%" }}
                       src={`data:${menuData.head.logoMimetype};base64,${menuData.head.logo}`}
                       className="card-image"
                       alt={menuData.head.name + " logo"}

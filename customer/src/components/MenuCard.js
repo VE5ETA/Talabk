@@ -9,7 +9,13 @@ export default function BuzCard(props) {
         to={"../" + props.username}
       >
         <div className="card card-block p-3">
-          <img src={props.img} alt="Photo of sunset" />
+          <div className="d-flex justify-content-center">
+            <img
+              style={{ maxWidth: "50%" }}
+              src={props.img}
+              alt="Photo of sunset"
+            />
+          </div>
           <h5 className="card-title mt-3 mb-3">{props.name}</h5>
           <strong className="d-inline-block mb-2 text-primary">
             {props.type}

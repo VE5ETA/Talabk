@@ -153,7 +153,7 @@ export default function MenuItem(props) {
               Add to Card
             </button>
           ) : (
-            <div className="d-flex gap-1 align-items-center d-inline-block mt-2 mb-2">
+            <div className="container d-flex gap-1 align-items-center justify-content-center d-inline-block mt-2 mb-2">
               <button
                 onClick={min}
                 className="btn btn-outline-danger ml-2"
