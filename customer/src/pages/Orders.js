@@ -105,8 +105,10 @@ export default function Orders() {
 
   useEffect(() => {
     if (onlyOne.current) {
-      onlyOne.current = false;
-      setTimeout(getOrdersInfo, 5000);
+      if (haveNumber.current != null) {
+        onlyOne.current = false;
+        setTimeout(getOrdersInfo, 5000);
+      }
     }
   });
 
