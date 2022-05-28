@@ -17,11 +17,11 @@ export default function Header(props) {
               className="m-4 d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none"
             >
               <NavLink
-                style={{ fontSize: 50 }}
                 className="navbar-brand text-decoration-none text-white"
                 to="/"
               >
                 Talabk
+                {/* <img style={{ maxWidth: "15%" }} src={Logotype} /> */}
               </NavLink>
             </div>
 

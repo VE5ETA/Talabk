@@ -21,21 +21,20 @@ export default function Footer() {
       <div className="container py-4 ">
         <div className="row gy-4 gx-5">
           <div className="col-lg-4 col-md-6">
-            <h5 className="h1 text-white">FB.</h5>
+            <h5 className="h1 text-white">Talabk Platform</h5>
             <p className="small text-white">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt.
+              Web application for Self Service Ordering & Payment Platform
             </p>
             <p className="small text-white mb-0">
               © Copyrights. All rights reserved.{" "}
               <a className="text-primary" href="#">
-                Bootstrapious.com
+                Talabk.com
               </a>
             </p>
           </div>
           <div className="col-lg-2 col-md-6">
-            <h5 className="text-white mb-3">Quick links</h5>
-            <ul className="list-unstyled text-white">
+            {/* <h5 className="text-white mb-3">Quick links</h5> */}
+            {/* <ul className="list-unstyled text-white">
               <li>
                 <a href="#">Home</a>
               </li>
@@ -48,7 +47,7 @@ export default function Footer() {
               <li>
                 <a href="#">FAQ</a>
               </li>
-            </ul>
+            </ul> */}
           </div>
           <div className="col-lg-2 col-md-6">
             <h5 className="text-white mb-3">Quick links</h5>

@@ -9,6 +9,7 @@ import { CartProduct } from "../../components/CartProduct";
 import { CustomerContext } from "../../context/CustomerContext";
 import { errorAlert, successAlert } from "../../helper/Options";
 import OrderDone from "../../components/OrderDone";
+import Logo from "../../image/icon_T.png";
 
 export default function Card() {
   const url =
@@ -223,20 +224,20 @@ export default function Card() {
           <div className="py-5 text-center">
             <img
               className="d-block mx-auto mb-4"
-              src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg"
+              src={Logo}
               alt=""
               width={72}
               height={72}
             />
-            <h2>Checkout form</h2>
-            <p className="lead">
+            <h2>Checkout</h2>
+            {/* <p className="lead">
               Below is an example form built entirely with Bootstrap's form
               controls. Each required form group has a validation state that can
               be triggered by attempting to submit the form without completing
               it.
-            </p>
+            </p> */}
           </div>
-          <div className="row mt-5">
+          <div className="row ">
             <div className="col-md-4 order-md-2 mb-4">
               <h4 className="d-flex justify-content-between align-items-center mb-3">
                 <span className="text-muted">Your cart</span>
