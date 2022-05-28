@@ -56,6 +56,7 @@ module.exports = {
             customerNumber: req.body.customerNumber,
             subTotal: req.body.subTotal,
             items: req.body.items,
+            tableNumber: req.body.tableNumber ? req.body.tableNumber : "",
             notes: req.body.notes,
             reservationInfo: req.body.reservationInfo,
             BusinessName: req.body.username,

@@ -22,6 +22,7 @@ module.exports = {
         {
           $match: {
             businessStatus: false,
+            // businessState: !"accepted" || !"rejected",
           },
         },
         // {
@@ -66,7 +67,14 @@ module.exports = {
       ]).then((business) => {
         // if (business[0]) { removed this to send embty array to reset the Business Verify requests on the front-end 😁
         if (business) {
-          res.status(200).send(business);
+          // const x = business.filter((e) => {
+          //   return (
+          //     e.businessState != "rejected" || e.businessState != "accepted"
+          //   );
+          // });
+          const x = business.filter((e) => e.businessState !== "rejected");
+          // console.log(x);
+          res.status(200).send(x);
         } else {
           res.status(204).send({
             message: "There are no new requests",

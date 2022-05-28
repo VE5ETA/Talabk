@@ -1,20 +1,18 @@
 import React, {
   useContext,
   useState,
-  useEffect,
   useCallback,
   useRef,
+  useEffect,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import { errorAlert, successAlert } from "../../helper/Options";
 import { UserContext } from "../../context/UserContext";
-import NewOrders from "../../components/NewOrders";
+import OldOrder from "../../components/OldOrder";
+import { errorAlert, successAlert } from "../../helper/Options";
 
-export default function Dashboard() {
+export default function Order() {
   const [userContext, setUserContext] = useContext(UserContext);
-
-  const [newOrders, setNewOrders] = useState([]);
-  const [activeOrder, setActiveOrder] = useState([]);
+  const [order, setNewBuz] = useState([]);
 
   const url =
     process.env.REACT_APP_NODE_ENV === "live"
@@ -24,18 +22,17 @@ export default function Dashboard() {
         process.env.REACT_APP_SERVER_PORT +
         ".githubpreview.dev/"
       : process.env.REACT_APP_API_ENDPOINT;
-
   let navigate = useNavigate();
 
   let isWorking = useRef(true);
 
-  const getNewOrders = useCallback(() => {
+  const getOrder = useCallback(async () => {
     // setError("");
     if (isWorking.current) {
       setIsWorkingg(false);
       isWorking.current = false;
       if (userContext.details?.workIn) {
-        fetch(url + "user/business/order/showNewOrder", {
+        await fetch(url + "user/business/order/showOrder", {
           method: "GET",
           credentials: "include",
           headers: {
@@ -46,125 +43,118 @@ export default function Dashboard() {
           .then(async (res) => {
             let aa = await res.json();
             if (res.ok) {
-              setNewOrders(aa);
+              setNewBuz(aa);
               // setSuccssed(true);
-              // setTimeout(getNewOrders, 10000);
+
+              // setTimeout(getOrder, 10000);
             } else {
               errorAlert("Something went wrong! Please try again later.");
             }
           })
-          .then(() => {
-            fetch(url + "user/business/order/showActiveOrder", {
-              method: "GET",
-              credentials: "include",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${userContext.token}`,
-              },
-            }).then(async (res) => {
-              let xx = await res.json();
-              if (res.ok) {
-                setActiveOrder(xx);
-                // setSuccssed(true);
-                // setTimeout(getNewOrders, 10000);
-              } else {
-                errorAlert("Something went wrong! Please try again later.");
-              }
-            });
-          })
+          // .then(async () => {
+          //   await fetch(url + "user/business/order/showActiveOrder", {
+          //     method: "GET",
+          //     credentials: "include",
+          //     headers: {
+          //       "Content-Type": "application/json",
+          //       Authorization: `Bearer ${userContext.token}`,
+          //     },
+          //   }).then(async (res) => {
+          //     let xx = await res.json();
+          //     if (res.ok) {
+          //       await setActiveOrder(xx);
+          //       // setSuccssed(true);
+          //       // setTimeout(getNewOrders, 10000);
+          //     } else {
+          //       errorAlert("Something went wrong! Please try again later.");
+          //     }
+          //   });
+          // })
           .catch((error) => {
-            // isWorking.current = true;
             errorAlert(error);
           })
           .finally(() => {
             isWorking.current = true;
             setIsWorkingg(true);
-            // setTimeout(getNewOrders, 10000);
           });
       }
     }
-    // isWorking.current = false;
   }, [url, userContext.details?.workIn, userContext.token]);
 
   // useEffect(() => {
-  //   getNewOrders();
-  // }, [getNewOrders]);
+  //   // if (isverifyUserDone.current) {
+  //   //   isverifyUserDone.current = false;
+  //   getOrder();
+  //   // }
+  // }, [getOrder]);
 
   let isGetNewOrders = useRef(true);
   const [isWorkingg, setIsWorkingg] = useState(false);
 
   useEffect(() => {
     if (isWorkingg) {
-      setTimeout(getNewOrders, 10000);
+      setTimeout(getOrder, 10000);
 
       // isWorkingg.current = false;
     } else {
       if (isGetNewOrders.current) {
         isGetNewOrders.current = false;
-        getNewOrders();
+        getOrder();
       }
     }
     // else {
     //   isWorking.current = true;
     // }
-  }, [getNewOrders, isWorkingg]);
+  }, [getOrder, isWorkingg]);
+
+  // return (
+  //   <div className="page-notFound d-flex flex-row align-items-center">
+  //     <div className="container">
+  //       <div className="row justify-content-center">
+  //         <div className="col-md-12 text-center">
+  //           <span className="display-1 d-block">👮‍♂️🚨</span>
+  //           <div className="mb-4 lead">this is AdminDashboard .</div>
+  //           <a onClick={() => navigate("/")} className="btn btn-link">
+  //             Back to Home
+  //           </a>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 
   useEffect(() => {
     handleData();
-  }, [newOrders]);
+  }, [order]);
 
   function handleData() {
-    if (newOrders) {
-      return newOrders.map((order, index) => {
-        return (
-          <NewOrders
-            updateOrders={getNewOrders}
-            key={index}
-            id={order._id}
-            reservationInfo={order.reservationInfo}
-            orderType={order.orderType}
-            orderState={order.orderState}
-            customerNumber={order.customerNumber}
-            items={order.items}
-            subTotal={order.subTotal}
-            notes={order.notes}
-            orderDate={order.orderDate}
-            businessName={order.BusinessName}
-            tableNumber={order.tableNumber}
-          />
-        );
-      });
-      // .reverse(); this is worng don't use this, you supposed to handle old orders first 📞
+    if (order) {
+      return order
+        .map((order, index) => {
+          return (
+            <OldOrder
+              key={index}
+              xxx={index}
+              getOrder={getOrder}
+              id={order._id}
+              // ownerID={order.ownerID}
+              businessID={order.businessID}
+              reservationInfo={order.reservationInfo}
+              BusinessName={order.BusinessName}
+              orderType={order.orderType}
+              orderState={order.orderState}
+              customerNumber={order.customerNumber}
+              tradeName={order.tradeName}
+              subTotal={order.subTotal}
+              items={order.items}
+              notes={order.notes}
+              orderDate={order.orderDate}
+              tableNumber={order.tableNumber}
+            />
+          );
+        })
+        .reverse(); // this is worng don't use this, you supposed to handle old orders first 📞
     }
-  }
-  useEffect(() => {
-    handleOrders();
-  }, [activeOrder]);
-
-  function handleOrders() {
-    if (activeOrder) {
-      return activeOrder.map((order, index) => {
-        return (
-          <NewOrders
-            updateOrders={getNewOrders}
-            key={index}
-            id={order._id}
-            reservationInfo={order.reservationInfo}
-            orderType={order.orderType}
-            orderState={order.orderState}
-            customerNumber={order.customerNumber}
-            items={order.items}
-            subTotal={order.subTotal}
-            notes={order.notes}
-            orderDate={order.orderDate}
-            businessName={order.BusinessName}
-            tableNumber={order.tableNumber}
-          />
-        );
-      });
-      // .reverse(); this is worng don't use this, you supposed to handle old orders first 📞
-    }
-    console.log(newOrders);
   }
   return (
     // <div className="page-notFound d-flex flex-row align-items-center">
@@ -188,7 +178,7 @@ export default function Dashboard() {
         <div className="container">
           <div className="card mb-3 max-width-880 ">
             <div className="row g-0 ">
-              {userContext?.menu ? (
+              {/* {userContext?.menu ? (
                 <>
                   <div className="col-md-4">
                     <img
@@ -196,14 +186,14 @@ export default function Dashboard() {
                       src={`data:${userContext.menu.logoMimetype};base64,${userContext.menu.logo}`}
                       className="card-image"
                       alt={useContext.menu?.name + " logo"}
-                    />
-                    {/* <img
+                    /> */}
+              {/* <img
                             style={{ maxWidth: "50% " }}
                             src={`data:${userContext.menu.qrMimetype};base64,${userContext.menu.qrImg}`}
                             className="card-image"
                             alt={useContext.menu?.name + " logo"}
                           /> */}
-                  </div>
+              {/* </div>
                   <div className="col-md-5">
                     <div className="card-body">
                       <h5 className="card-title">{userContext.menu.name}</h5>
@@ -221,7 +211,7 @@ export default function Dashboard() {
                     />
                   </div>
                 </>
-              ) : null}
+              ) : null} */}
             </div>
           </div>
         </div>
@@ -232,19 +222,33 @@ export default function Dashboard() {
       {/* <div className=" py-5 "> use this inseted 👨‍🏫 */}
       <div className="">
         <div className="row g-0 ">
-          <div className="col-md-8">
+          {/* <div className="col-md-8"> */}
+          <div className="">
             <div className="list-group ">
               {/* <br /> */}
               <div className="m-5 rounded ">
-                {activeOrder[0] ? (
+                {order[0] ? (
                   <div
-                    href="#"
                     // className="list-group-item list-group-item-action active"
-                    className="list-group-item list-group-item-action text-center "
+                    className="list-group-item text-center "
                     aria-current="true"
                   >
-                    <h3>Active Orders ⏲</h3>
-                    {handleOrders()}
+                    <h3>All Orders ⏲</h3>
+                    <table className="table table-hover">
+                      <thead className="">
+                        <tr>
+                          <th scope="col">#</th>
+                          {/* use it after fix 🤨 */}
+                          <th scope="col">Customer Phone Number</th>
+                          <th scope="col">Order Type</th>
+                          <th scope="col">Order State</th>
+                          <th scope="col">Sub Total</th>
+                          <th scope="col">At</th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>{handleData()}</tbody>
+                    </table>
                   </div>
                 ) : (
                   <div
@@ -253,7 +257,7 @@ export default function Dashboard() {
                     className="list-group-item list-group-item-action text-center "
                     aria-current="true"
                   >
-                    <h3 style={{ minHeight: "555px" }}>Active Orders ⏲</h3>
+                    <h3 style={{ minHeight: "555px" }}>All Orders ⏲</h3>
 
                     {/* this isn't working need to fix  🔴 also do it for part below 😊 */}
                     {/* <div> No active orders yet</div> */}
@@ -262,10 +266,10 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-          <div className="col-md-4">
+          {/* <div className="col-md-4">
             <div className="container ">
               <div className="list-group ">
-                {/* <br /> */}
+
                 <div className="m-5 rounded">
                   {newOrders[0] ? (
                     <div
@@ -291,7 +295,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

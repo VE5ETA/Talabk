@@ -3,6 +3,24 @@ const { Business } = require("../models/business");
 const mongoose = require("mongoose");
 
 module.exports = {
+  showOrder: (req, res, next) => {
+    if (req.user.workIn) {
+      Order.find({ businessID: req.user.workIn }).then((order) => {
+        // console.log(order);
+        if (order[0]) {
+          res.status(200).send(order);
+        } else {
+          res.status(200).send({
+            message: "There are no new order",
+          });
+        }
+      });
+    } else {
+      res.status(500).send({
+        message: "you don't have business",
+      });
+    }
+  },
   showNewOrder: (req, res, next) => {
     if (req.user.workIn) {
       Order.find({ businessID: req.user.workIn, orderState: "new" }).then(

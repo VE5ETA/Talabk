@@ -125,18 +125,22 @@ export default function NewOrders(props) {
       <p className="card-title mb-3">order ID: {props.id}</p>
       <p>
         Order state:
-        {neww ? (
-          <strong className="d-inline-block mb-2 text-warning">
-            &nbsp;{props.orderState}
-          </strong>
-        ) : accepted ? (
+        {props.orderState === "accepted" || props.orderState === "done" ? (
           <strong className="d-inline-block mb-2 text-success">
             &nbsp;{props.orderState}
           </strong>
-        ) : null}
+        ) : props.orderState === "new" ? (
+          <strong className="d-inline-block mb-2 text-primary">
+            &nbsp;{props.orderState}
+          </strong>
+        ) : (
+          <strong className="d-inline-block mb-2 text-danger">
+            &nbsp;{props.orderState}
+          </strong>
+        )}
       </p>
       <div>
-        <span className="theme-color">Order details</span>
+        {/* <span className="theme-color">Order details</span> */}
         <div className="mb-3">
           <hr className="new1" />
         </div>
@@ -224,6 +228,46 @@ export default function NewOrders(props) {
           </div>
         ) : null}
 
+        {props.tableNumber ? (
+          <>
+            {/* <br></br>
+            <span className="theme-color">
+              reservation details <FontAwesomeIcon icon={faCreditCard} />
+            </span>
+            <div className="mb-3">
+              <hr className="new1" />
+            </div> */}
+
+            <li className="list-group-item d-flex justify-content-between align-items-start rounded">
+              <div className="ms-2 me-auto">
+                <div className="fw-bold">Table number: {props.tableNumber}</div>
+              </div>
+            </li>
+            {/* <li className="list-group-item d-flex justify-content-between align-items-start">
+              <div className="ms-2 me-auto">
+                <div className="fw-bold">
+                  Time: {props.reservationInfo.time}
+                </div>
+              </div>
+            </li>
+            <li className="list-group-item d-flex justify-content-between align-items-start">
+              <div className="ms-2 me-auto">
+                <div className="fw-bold">
+                  Date: {props.reservationInfo.date}
+                </div>
+              </div>
+            </li>
+            <li className="list-group-item d-flex justify-content-between align-items-start">
+              <div className="ms-2 me-auto">
+                <div className="fw-bold">
+                  Reservation time: {props.reservationInfo.reservationTime}
+                </div>
+              </div>
+            </li> */}
+          </>
+        ) : null}
+        <br></br>
+
         <span className="theme-color">
           Payment Summary <FontAwesomeIcon icon={faCreditCard} />
         </span>
@@ -233,7 +277,9 @@ export default function NewOrders(props) {
         <div className="d-flex justify-content-between">
           <span className="font-weight-bold">
             {/* {item.name}(Qty:{item.quantite}) */}
-            <FontAwesomeIcon icon={faPhone} /> {props.customerNumber}
+            <FontAwesomeIcon icon={faPhone} />
+            {"  "}
+            <a href={`tel:${props.customerNumber}`}>{props.customerNumber}</a>
           </span>
           {/* <span className="text-muted">{item.price}SAR</span> */}
         </div>
@@ -244,7 +290,7 @@ export default function NewOrders(props) {
             {/* <FontAwesomeIcon icon={faMoneyBill} /> */}
           </span>
           <span className="font-weight-bold theme-color">
-            {props.subTotal}SAR
+            {props.subTotal} SAR
           </span>
           {/* <div className="col-md-6 d-flex align-items-center justify-content-center"></div> */}
         </div>
