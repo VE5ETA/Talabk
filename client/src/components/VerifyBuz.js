@@ -179,17 +179,27 @@ export default function VerifyBuz(props) {
               {/* <div className="row "> */}
               <button
                 // style={{ marginLeft: "6%" }}
-                className="col-md-5  btn btn-outline-success btn-sm mt-2"
+                className="col-md-3  btn btn-outline-success btn-sm mt-2"
                 type="button"
                 onClick={(e) => sendState(e, "acceptBuz")}
                 disabled={isSubmitting}
                 text={`${isSubmitting ? "..." : "Accept"}`}
               >
-                Accept ✔{/* <FontAwesomeIcon icon={faRotate} /> */}
+                Activate ✔{/* <FontAwesomeIcon icon={faRotate} /> */}
               </button>
               <button
                 // style={{ marginLeft: "6%" }}
-                className="col-md-5 btn btn-outline-danger btn-sm mt-2"
+                className="col-md-3  btn btn-outline-warning btn-sm mt-2"
+                type="button"
+                onClick={(e) => sendState(e, "SuspenedBuz")}
+                disabled={isSubmitting}
+                text={`${isSubmitting ? "..." : "Suspend"}`}
+              >
+                Suspend ⚠{/* <FontAwesomeIcon icon={faRotate} /> */}
+              </button>
+              <button
+                // style={{ marginLeft: "6%" }}
+                className="col-md-3 btn btn-outline-danger btn-sm mt-2"
                 type="button"
                 onClick={(e) => sendState(e, "rejectBuz")}
                 disabled={isSubmitting}

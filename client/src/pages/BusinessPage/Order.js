@@ -12,7 +12,7 @@ import { errorAlert, successAlert } from "../../helper/Options";
 
 export default function Order() {
   const [userContext, setUserContext] = useContext(UserContext);
-  const [order, setNewBuz] = useState([]);
+  const [order, setOrder] = useState([]);
 
   const url =
     process.env.REACT_APP_NODE_ENV === "live"
@@ -43,7 +43,7 @@ export default function Order() {
           .then(async (res) => {
             let aa = await res.json();
             if (res.ok) {
-              setNewBuz(aa);
+              setOrder(aa);
               // setSuccssed(true);
 
               // setTimeout(getOrder, 10000);

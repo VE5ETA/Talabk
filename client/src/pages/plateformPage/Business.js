@@ -7,12 +7,12 @@ import React, {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
-import OldOrder from "../../components/OldOrder";
+import VerifyBuz from "../../components/VerifyBuz";
 import { errorAlert, successAlert } from "../../helper/Options";
 
 export default function Business() {
   const [userContext, setUserContext] = useContext(UserContext);
-  const [order, setNewBuz] = useState([]);
+  const [Buz, setBuz] = useState([]);
 
   const url =
     process.env.REACT_APP_NODE_ENV === "live"
@@ -26,13 +26,13 @@ export default function Business() {
 
   let isWorking = useRef(true);
 
-  const getOrder = useCallback(async () => {
+  const getBusiness = useCallback(async () => {
     // setError("");
     if (isWorking.current) {
       setIsWorkingg(false);
       isWorking.current = false;
       if (userContext.details?.workIn) {
-        await fetch(url + "user/business/order/showOrder", {
+        await fetch(url + "user/platform/showBusiness", {
           method: "GET",
           credentials: "include",
           headers: {
@@ -43,10 +43,10 @@ export default function Business() {
           .then(async (res) => {
             let aa = await res.json();
             if (res.ok) {
-              setNewBuz(aa);
+              setBuz(aa);
               // setSuccssed(true);
 
-              // setTimeout(getOrder, 10000);
+              // setTimeout(getBusiness, 10000);
             } else {
               errorAlert("Something went wrong! Please try again later.");
             }
@@ -84,28 +84,28 @@ export default function Business() {
   // useEffect(() => {
   //   // if (isverifyUserDone.current) {
   //   //   isverifyUserDone.current = false;
-  //   getOrder();
+  //   getBusiness();
   //   // }
-  // }, [getOrder]);
+  // }, [getBusiness]);
 
   let isGetNewOrders = useRef(true);
   const [isWorkingg, setIsWorkingg] = useState(false);
 
   useEffect(() => {
     if (isWorkingg) {
-      setTimeout(getOrder, 10000);
+      setTimeout(getBusiness, 10000);
 
       // isWorkingg.current = false;
     } else {
       if (isGetNewOrders.current) {
         isGetNewOrders.current = false;
-        getOrder();
+        getBusiness();
       }
     }
     // else {
     //   isWorking.current = true;
     // }
-  }, [getOrder, isWorkingg]);
+  }, [getBusiness, isWorkingg]);
 
   // return (
   //   <div className="page-notFound d-flex flex-row align-items-center">
@@ -125,35 +125,29 @@ export default function Business() {
 
   useEffect(() => {
     handleData();
-  }, [order]);
+  }, [Buz]);
 
   function handleData() {
-    if (order) {
-      return order
-        .map((order, index) => {
-          return (
-            <OldOrder
-              key={index}
-              xxx={index}
-              getOrder={getOrder}
-              id={order._id}
-              // ownerID={order.ownerID}
-              businessID={order.businessID}
-              reservationInfo={order.reservationInfo}
-              BusinessName={order.BusinessName}
-              orderType={order.orderType}
-              orderState={order.orderState}
-              customerNumber={order.customerNumber}
-              tradeName={order.tradeName}
-              subTotal={order.subTotal}
-              items={order.items}
-              notes={order.notes}
-              orderDate={order.orderDate}
-              tableNumber={order.tableNumber}
-            />
-          );
-        })
-        .reverse(); // this is worng don't use this, you supposed to handle old orders first 📞
+    if (Buz) {
+      return Buz.map((buz, index) => {
+        return (
+          <VerifyBuz
+            key={index}
+            xxx={index}
+            updateBuz={getBusiness}
+            id={buz._id}
+            ownerID={buz.ownerID}
+            tradeName={buz.tradeName}
+            branchID={buz.branchID}
+            businessType={buz.businessType}
+            businessStatus={buz.businessStatus}
+            businessState={buz.businessState}
+            createdAt={buz.createdAt}
+            updatedAt={buz.updatedAt}
+            // LegalDocs={buz.LegalDocs} // not needed removed with update v2.0 ⭕
+          />
+        );
+      }).reverse(); // this is worng don't use this, you supposed to handle old orders first 📞
     }
   }
   return (
@@ -227,22 +221,21 @@ export default function Business() {
             <div className="list-group ">
               {/* <br /> */}
               <div className="m-5 rounded ">
-                {order[0] ? (
+                {Buz[0] ? (
                   <div
                     // className="list-group-item list-group-item-action active"
                     className="list-group-item text-center "
                     aria-current="true"
                   >
-                    <h3>All Orders ⏲</h3>
+                    <h3>New Business Verify requests ⏲</h3>
                     <table className="table table-hover">
                       <thead className="">
                         <tr>
                           <th scope="col">#</th>
                           {/* use it after fix 🤨 */}
-                          <th scope="col">Customer Phone Number</th>
-                          <th scope="col">Order Type</th>
-                          <th scope="col">Order State</th>
-                          <th scope="col">Sub Total</th>
+                          <th scope="col">Business Trade Name</th>
+                          <th scope="col">Business Branch Id</th>
+                          <th scope="col">Business owner</th>
                           <th scope="col">At</th>
                           <th scope="col"></th>
                         </tr>
@@ -257,7 +250,9 @@ export default function Business() {
                     className="list-group-item list-group-item-action text-center "
                     aria-current="true"
                   >
-                    <h3 style={{ minHeight: "555px" }}>All Orders ⏲</h3>
+                    <h3 style={{ minHeight: "555px" }}>
+                      New Business Verify requests ⏲
+                    </h3>
 
                     {/* this isn't working need to fix  🔴 also do it for part below 😊 */}
                     {/* <div> No active orders yet</div> */}

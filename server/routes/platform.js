@@ -4,6 +4,7 @@ const platformController = require("../controllers/platform");
 router.get("/adminAccountTest", platformController.test);
 router.get("/adminTest", platformController.adminTest); // for get all Active business
 router.get("/showNewRequest", platformController.showNewRequest);
+router.get("/showBusiness", platformController.showBusiness);
 router.post("/acceptBuz", platformController.acceptBuz);
 router.post("/SuspenedBuz", platformController.SuspenedBuz);
 router.post("/rejectBuz", platformController.rejectBuz);
