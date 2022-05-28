@@ -88,6 +88,8 @@ export default function CreateMenu() {
             if (!response.ok) {
               if (response.status === 403) {
                 setError(resJson.message);
+              } else if (response.status === 415) {
+                setError(resJson.message);
               } else {
                 setError(resJson.message.message);
               }
