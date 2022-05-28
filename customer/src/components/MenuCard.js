@@ -11,7 +11,7 @@ export default function BuzCard(props) {
         <div className="card card-block p-3">
           <div className="d-flex justify-content-center">
             <img
-              style={{ maxWidth: "50%" }}
+              style={{ maxWidth: "50%", height: "100%" }}
               src={props.img}
               alt="Photo of sunset"
             />
