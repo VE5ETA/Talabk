@@ -227,7 +227,7 @@ export default function Business() {
                     className="list-group-item text-center "
                     aria-current="true"
                   >
-                    <h3>New Business Verify requests ⏲</h3>
+                    <h3>Current Business ⏲</h3>
                     <table className="table table-hover">
                       <thead className="">
                         <tr>
@@ -250,9 +250,7 @@ export default function Business() {
                     className="list-group-item list-group-item-action text-center "
                     aria-current="true"
                   >
-                    <h3 style={{ minHeight: "555px" }}>
-                      New Business Verify requests ⏲
-                    </h3>
+                    <h3 style={{ minHeight: "555px" }}>Current Business ⏲</h3>
 
                     {/* this isn't working need to fix  🔴 also do it for part below 😊 */}
                     {/* <div> No active orders yet</div> */}
