@@ -6,7 +6,6 @@
 
 ### Todo
 
-- [ ] check order import in customer controlle.
 - [ ] update all api url schema to be lowercase and to be all standard.
 - [ ] update all functions with trycatch Statement
   - [ ] and HTTP response status codes to be standardized.
@@ -14,9 +13,11 @@
 
 ### In Progress
 
-- [ ] prevent the menu from displaying any manu/item/table if status are false.
-
 ### Done ✓
+
+- [x] check order import in customer controlle.
+
+- [x] prevent the menu from displaying any manu/item/table if status are false.
 
 - [x] ~~prevent the business from doing any action before verifing.~~
 
