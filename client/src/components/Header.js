@@ -13,6 +13,8 @@ import { errorAlert, infoAlert } from "../helper/Options";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import LoadingSpinner from "../components/LoadingSpinner";
+
 export default function Header(props) {
   const url =
     process.env.REACT_APP_NODE_ENV === "live"
@@ -27,6 +29,8 @@ export default function Header(props) {
   const [error, setError] = useState(undefined);
   const [succssed, setSuccssed] = useState(false);
   const [userContext, setUserContext] = useContext(UserContext);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -44,6 +48,8 @@ export default function Header(props) {
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
+
+    setIsLoading(true);
 
     const genericErrorMessage = "Something went wrong! Please try again later.";
     fetch(url + "user/logout", {
@@ -71,6 +77,9 @@ export default function Header(props) {
       .catch((error) => {
         setIsSubmitting(false);
         setError(genericErrorMessage);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -199,64 +208,68 @@ export default function Header(props) {
                 )}
 
                 <li>
-                  <div className="dropdown-center text-end ">
-                    <a
-                      href="#"
-                      className="nav-link text-white dropdown-toggle"
-                      id="dropdownUser1"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <svg
-                        className="bi d-block mx-auto mb-1"
-                        width={24}
-                        height={24}
+                  {isLoading ? (
+                    <LoadingSpinner />
+                  ) : (
+                    <div className="dropdown-center text-end ">
+                      <a
+                        href="#"
+                        className="nav-link text-white dropdown-toggle"
+                        id="dropdownUser1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
                       >
-                        <FontAwesomeIcon icon={faUser} />
-                      </svg>
-                      Profile
-                    </a>
-                    <ul
-                      className="dropdown-menu text-small bg-dark text-center"
-                      aria-labelledby="dropdownUser1"
-                    >
-                      <li>
-                        <a className="dropdown-item text-white" href="#">
-                          Manage Business
-                        </a>
-                      </li>
-                      <li>
-                        <NavLink
-                          to={"../EditMenu"}
-                          className="dropdown-item text-white"
+                        <svg
+                          className="bi d-block mx-auto mb-1"
+                          width={24}
+                          height={24}
                         >
-                          Manage Menu
-                        </NavLink>
-                      </li>
-                      <li>
-                        <a className="dropdown-item text-white" href="#">
-                          Profile
-                        </a>
-                      </li>
-                      <li>
-                        <hr className="dropdown-divider" />
-                      </li>
-                      <li>
-                        <form
-                          onSubmit={formSubmitHandler}
-                          className="dropdown-item text-white"
-                          href="#"
-                        >
-                          <button
-                            type="submit"
-                            className="btn btn-outline-secondary"
+                          <FontAwesomeIcon icon={faUser} />
+                        </svg>
+                        Profile
+                      </a>
+                      <ul
+                        className="dropdown-menu text-small bg-dark text-center"
+                        aria-labelledby="dropdownUser1"
+                      >
+                        <li>
+                          <a className="dropdown-item text-white" href="#">
+                            Manage Business
+                          </a>
+                        </li>
+                        <li>
+                          <NavLink
+                            to={"../EditMenu"}
+                            className="dropdown-item text-white"
                           >
-                            logout
-                          </button>
-                        </form>
-                      </li>
-                    </ul>
-                  </div>
+                            Manage Menu
+                          </NavLink>
+                        </li>
+                        <li>
+                          <a className="dropdown-item text-white" href="#">
+                            Profile
+                          </a>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <form
+                            onSubmit={formSubmitHandler}
+                            className="dropdown-item text-white"
+                            href="#"
+                          >
+                            <button
+                              type="submit"
+                              className="btn btn-outline-secondary"
+                            >
+                              logout
+                            </button>
+                          </form>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
                 </li>
               </ul>
             ) : (

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import BuzCard from "../components/MenuCard";
 import axios from "axios";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function Store() {
   let [MenusData, setMenusData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const url =
     process.env.REACT_APP_NODE_ENV === "live"
@@ -23,7 +25,14 @@ export default function Store() {
   }, [MenusData]);
 
   function getMenusData() {
-    axios.get(url + "customer/stores").then((res) => setMenusData(res.data));
+    setIsLoading(true);
+
+    axios
+      .get(url + "customer/stores")
+      .then((res) => setMenusData(res.data))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
   function data() {
@@ -43,7 +52,7 @@ export default function Store() {
   return (
     <section className="py-5">
       <div className="container mt-2 res-card">
-        <div className="row">{data()}</div>
+        <div className="row">{isLoading ? <LoadingSpinner /> : data()}</div>
       </div>
     </section>
   );

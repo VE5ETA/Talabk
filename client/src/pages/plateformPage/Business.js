@@ -10,9 +10,13 @@ import { UserContext } from "../../context/UserContext";
 import VerifyBuz from "../../components/VerifyBuz";
 import { errorAlert, successAlert } from "../../helper/Options";
 
+import LoadingSpinner from "../../components/LoadingSpinner";
+
 export default function Business() {
   const [userContext, setUserContext] = useContext(UserContext);
   const [Buz, setBuz] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const url =
     process.env.REACT_APP_NODE_ENV === "live"
@@ -74,6 +78,7 @@ export default function Business() {
             errorAlert(error);
           })
           .finally(() => {
+            setIsLoading(false);
             isWorking.current = true;
             setIsWorkingg(true);
           });
@@ -94,11 +99,12 @@ export default function Business() {
   useEffect(() => {
     if (isWorkingg) {
       setTimeout(getBusiness, 10000);
-
+      // setIsLoading(true);
       // isWorkingg.current = false;
     } else {
       if (isGetNewOrders.current) {
         isGetNewOrders.current = false;
+        setIsLoading(true);
         getBusiness();
       }
     }

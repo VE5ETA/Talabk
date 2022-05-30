@@ -4,6 +4,10 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { errorAlert, successAlert } from "../helper/Options";
 
+import Img from "../pages/img/Login.png";
+
+import LoadingSpinner from "../components/LoadingSpinner";
+
 export default function SignUp() {
   const url =
     process.env.REACT_APP_NODE_ENV === "live"
@@ -27,6 +31,8 @@ export default function SignUp() {
 
   const navigate = useNavigate();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     if (error) {
       errorAlert(error);
@@ -41,6 +47,8 @@ export default function SignUp() {
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
+
+    setIsLoading(true);
 
     const genericErrorMessage = "Something went wrong! Please try again later.";
 
@@ -81,8 +89,12 @@ export default function SignUp() {
         .catch((error) => {
           setIsSubmitting(false);
           setError(genericErrorMessage);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     } else {
+      setIsLoading(false);
       setIsSubmitting(false);
       setError("password didn't match");
     }
@@ -92,74 +104,80 @@ export default function SignUp() {
   return (
     <div className="create-form">
       <div className="wrapper rounded bg-white d-flex justify-content-center align-items-center">
-        <div
-          style={{ border: "none", width: "75%" }}
-          className="card login-form m-4"
-        >
-          <div className="text-center intro">
-            <img src="https://i.imgur.com/uNiv4bD.png" width={160} />
-          </div>
-          <form onSubmit={formSubmitHandler}>
-            <div className="mt-4 text-center">
-              <h4>SignUp.</h4>
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <div
+            style={{ border: "none", width: "75%" }}
+            className="card login-form m-4"
+          >
+            <div className="text-center intro">
+              <img src={Img} width={160} />
+            </div>
+            <form onSubmit={formSubmitHandler}>
+              <div className="mt-4 text-center">
+                <h4>SignUp.</h4>
 
-              <div className="mt-3 inputbox">
-                <input
-                  className="form-control"
-                  id="name"
-                  placeholder="Name"
-                  onChange={(e) => setName(e.target.value)}
-                  type="text"
-                />
+                <div className="mt-3 inputbox">
+                  <input
+                    className="form-control"
+                    id="name"
+                    placeholder="Name"
+                    onChange={(e) => setName(e.target.value)}
+                    type="text"
+                  />
+                </div>
+                <div className="inputbox">
+                  <input
+                    className="form-control"
+                    id="username"
+                    placeholder="Username"
+                    onChange={(e) => setUsername(e.target.value)}
+                    type="text"
+                  />
+                </div>
+                <div className="inputbox">
+                  <input
+                    className="form-control"
+                    id="email"
+                    placeholder="Email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    type="email"
+                  />
+                </div>
+                <div className="inputbox">
+                  <input
+                    className="form-control"
+                    id="password"
+                    placeholder="Password"
+                    type="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <div className="inputbox">
+                  <input
+                    className="form-control"
+                    id="confirmPassword"
+                    placeholder="Confirm password"
+                    type="password"
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                </div>
               </div>
-              <div className="inputbox">
-                <input
-                  className="form-control"
-                  id="username"
-                  placeholder="Username"
-                  onChange={(e) => setUsername(e.target.value)}
-                  type="text"
-                />
+              <div className="mt-2">
+                <button className="btn btn-warning btn-block login-btn">
+                  SignUp
+                </button>
               </div>
-              <div className="inputbox">
-                <input
-                  className="form-control"
-                  id="email"
-                  placeholder="Email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  type="email"
-                />
+              <div className="col-lg-12 text-center mt-4">
+                <label className="form-label">
+                  did you have account before?
+                </label>
+                <NavLink to="/login"> login here</NavLink>
               </div>
-              <div className="inputbox">
-                <input
-                  className="form-control"
-                  id="password"
-                  placeholder="Password"
-                  type="password"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <div className="inputbox">
-                <input
-                  className="form-control"
-                  id="confirmPassword"
-                  placeholder="Confirm password"
-                  type="password"
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="mt-2">
-              <button className="btn btn-warning btn-block login-btn">
-                SignUp
-              </button>
-            </div>
-            <div className="col-lg-12 text-center mt-4">
-              <label className="form-label">did you have account before?</label>
-              <NavLink to="/login"> login here</NavLink>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
+        )}
       </div>
     </div>
 

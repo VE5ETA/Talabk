@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { CustomerContext } from "../context/CustomerContext";
-
+import success from "../pages/img/success-tick-dribbble.gif";
 export default function OrderDone(props) {
   const [customerContext, setCustomerContext] = useContext(CustomerContext);
 
@@ -18,11 +18,13 @@ export default function OrderDone(props) {
       <div className="wrapper rounded bg-white ">
         <div className="modal-dialog ">
           <div className="modal-content">
-            <div className="modal-body">
+            <div className="modal-body ">
               <img
-                className="m-auto"
+                width={"300px"}
+                height={"225px"}
+                className="m-auto "
                 style={{ maxWidth: "100%" }}
-                src="https://cdn.dribbble.com/users/147386/screenshots/5315437/success-tick-dribbble.gif"
+                src={success}
               ></img>
               <div className="px-4 py-5">
                 <h5 className="text-uppercase">

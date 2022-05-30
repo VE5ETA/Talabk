@@ -5,10 +5,12 @@ import MenuItem from "../../components/MenuItem";
 import { CustomerContext } from "../../context/CustomerContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import LoadingSpinner from "../../components/LoadingSpinner";
 // import NotFound from "../NotFound";
 
 export default function Menu() {
   const [customerContext, setCustomerContext] = useContext(CustomerContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const url =
     process.env.REACT_APP_NODE_ENV === "live"
@@ -62,6 +64,7 @@ export default function Menu() {
   // }
 
   function getmenuData() {
+    setIsLoading(true);
     axios
       .get(url + `customer/@${username}`)
       .then(async (res) => {
@@ -79,6 +82,9 @@ export default function Menu() {
       .catch((error) => {
         console.log(error);
         navigate("/notFound");
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }
 
@@ -120,41 +126,43 @@ export default function Menu() {
 
   return (
     <>
-      <section className="py-5">
-        <div className="container">
-          <div className="card mb-3 max-width-540 ">
-            <div className="row g-0 ">
-              {menuData?.head ? (
-                <>
-                  <div className="col-md-4 d-flex justify-content-center">
-                    <img
-                      style={{ maxWidth: "50%", width: "100%" }}
-                      src={`data:${menuData.head.logoMimetype};base64,${menuData.head.logo}`}
-                      className="card-image"
-                      alt={menuData.head.name + " logo"}
-                    />
-                  </div>
-                  <div className="col-md-8">
-                    <div className="card-body">
-                      <h5 className="card-title">{menuData.head.name}</h5>
-                      <p className="card-text">{menuData.head.description}</p>
-                      {/* if business have contact info */}
-                      {/* <a className="text-decoration-none" href="#">
+      {isLoading ? null : (
+        <section className="py-5">
+          <div className="container">
+            <div className="card mb-3 max-width-540 ">
+              <div className="row g-0 ">
+                {menuData?.head ? (
+                  <>
+                    <div className="col-md-4 d-flex justify-content-center">
+                      <img
+                        style={{ maxWidth: "50%", width: "100%" }}
+                        src={`data:${menuData.head.logoMimetype};base64,${menuData.head.logo}`}
+                        className="card-image"
+                        alt={menuData.head.name + " logo"}
+                      />
+                    </div>
+                    <div className="col-md-8">
+                      <div className="card-body">
+                        <h5 className="card-title">{menuData.head.name}</h5>
+                        <p className="card-text">{menuData.head.description}</p>
+                        {/* if business have contact info */}
+                        {/* <a className="text-decoration-none" href="#">
                         www.website-link.com
                       </a> */}
+                      </div>
                     </div>
-                  </div>
-                </>
-              ) : null}
+                  </>
+                ) : null}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <div className="container">
         <div className="row ">
-          {data()}
-          {cartButton()}
+          {isLoading ? <LoadingSpinner /> : data()}
+          {isLoading ? null : cartButton()}
           {/* {console.log(Object.keys(customerContext?.items).length === 0)} */}
           {/* {customerContext?.items != undefined ||
           Object.keys(customerContext?.items).length === 0 ? (

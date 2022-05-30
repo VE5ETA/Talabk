@@ -8,9 +8,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 // import NotFound from "../NotFound";
 
+import LoadingSpinner from "../../components/LoadingSpinner";
+
 export default function Menu() {
   const [userContext, setUserContext] = useContext(UserContext);
-
+  const [isLoading, setIsLoading] = useState(false);
   const url =
     process.env.REACT_APP_NODE_ENV === "live"
       ? "https://" +
@@ -43,8 +45,9 @@ export default function Menu() {
     data();
   }, [menuData]);
 
-  async function getmenuData() {
-    await fetch(url + "user/business/menu/menu", {
+  function getmenuData() {
+    setIsLoading(true);
+    fetch(url + "user/business/menu/menu", {
       method: "GET",
       credentials: "include",
 
@@ -65,27 +68,32 @@ export default function Menu() {
       })
       .catch((error) => {
         navigate("/notFound");
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }
 
   function data() {
     if (menuData[0]) {
-      return menuData.map((item, index) => {
-        if (item) {
-          return (
-            <MenuItem
-              key={index}
-              status={item.status}
-              id={item._id}
-              menuID={item.MenuID}
-              img={`data:${item.imgMimetype};base64,${item.img}`}
-              name={item.name}
-              price={item.price}
-              itemDone={getmenuData}
-            />
-          );
-        }
-      });
+      return menuData
+        .map((item, index) => {
+          if (item) {
+            return (
+              <MenuItem
+                key={index}
+                status={item.status}
+                id={item._id}
+                menuID={item.MenuID}
+                img={`data:${item.imgMimetype};base64,${item.img}`}
+                name={item.name}
+                price={item.price}
+                itemDone={getmenuData}
+              />
+            );
+          }
+        })
+        .reverse();
     }
   }
 

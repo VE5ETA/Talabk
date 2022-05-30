@@ -5,6 +5,10 @@ import "./Style/styles.min.css";
 import { UserContext } from "../context/UserContext";
 import { errorAlert, infoAlert } from "../helper/Options";
 
+import Img from "../pages/img/Login.png";
+
+import LoadingSpinner from "../components/LoadingSpinner";
+
 export default function Login() {
   const url =
     process.env.REACT_APP_NODE_ENV === "live"
@@ -26,6 +30,8 @@ export default function Login() {
   const navigate = useNavigate();
   // const location = useLocation(); //in the future
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     if (error) {
       errorAlert(error);
@@ -42,6 +48,8 @@ export default function Login() {
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
+
+    setIsLoading(true);
 
     const genericErrorMessage = "Something went wrong! Please try again later.";
 
@@ -77,58 +85,65 @@ export default function Login() {
       .catch((error) => {
         setIsSubmitting(false);
         setError(genericErrorMessage);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   return (
     <div className="create-form">
       <div className="wrapper rounded bg-white d-flex justify-content-center align-items-center">
-        <div
-          style={{ border: "none", width: "75%" }}
-          className="card  login-form m-4"
-        >
-          <div className="text-center intro">
-            <img src="https://i.imgur.com/uNiv4bD.png" width={160} />
-          </div>
-          <form onSubmit={formSubmitHandler}>
-            <div className="mt-4 text-center">
-              <h4>Log In.</h4>
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <div
+            style={{ border: "none", width: "75%" }}
+            className="card  login-form m-4"
+          >
+            <div className="text-center intro">
+              <img src={Img} width={160} />
+            </div>
+            <form onSubmit={formSubmitHandler}>
+              <div className="mt-4 text-center">
+                <h4>Log In.</h4>
 
-              <div className="mt-3 inputbox">
-                <input
-                  className="form-control"
-                  id="username"
-                  placeholder="username"
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
+                <div className="mt-3 inputbox">
+                  <input
+                    className="form-control"
+                    id="username"
+                    placeholder="username"
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
+                <div className="inputbox">
+                  <input
+                    className="form-control"
+                    id="password"
+                    placeholder="Password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <i className="fa fa-lock" />
+                </div>
               </div>
-              <div className="inputbox">
-                <input
-                  className="form-control"
-                  id="password"
-                  placeholder="Password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <i className="fa fa-lock" />
+              <div className="mt-2">
+                <button className="btn btn-warning btn-block login-btn">
+                  Log In
+                </button>
               </div>
-            </div>
-            <div className="mt-2">
-              <button className="btn btn-warning btn-block login-btn">
-                Log In
-              </button>
-            </div>
-            <div className="col-lg-12 text-center mt-4">
-              <label className="form-label">
-                if you didn't have account create one?
-              </label>
-              <NavLink to="/signup"> signup here</NavLink>
-            </div>
-          </form>
-        </div>
+              <div className="col-lg-12 text-center mt-4">
+                <label className="form-label">
+                  if you didn't have account create one?
+                </label>
+                <NavLink to="/signup"> signup here</NavLink>
+              </div>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );

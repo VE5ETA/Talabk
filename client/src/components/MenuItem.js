@@ -9,6 +9,8 @@ import {
 import { UserContext } from "../context/UserContext";
 import { errorAlert, successAlert } from "../helper/Options";
 
+import LoadingSpinner from "../components/LoadingSpinner";
+
 export default function MenuItem(props) {
   const [userContext, setUserContext] = useContext(UserContext);
   const [isClicked, setIsClicked] = useState(false);
@@ -19,6 +21,8 @@ export default function MenuItem(props) {
   const [price, setPrice] = useState(props.price);
   const [item, setItem] = useState(props.item);
   const [itemPreview, setItemPreview] = useState(props.img);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (item) {
@@ -45,8 +49,7 @@ export default function MenuItem(props) {
     }
     if (succss) {
       successAlert(succss);
-
-      props.itemDone();
+      // props.itemDone();
     }
   }, [error, succss]);
 
@@ -56,6 +59,8 @@ export default function MenuItem(props) {
       setIsSubmitting(true);
       setError("");
       setSuccss("");
+
+      setIsLoading(true);
 
       const formData = new FormData(formRef.current);
       formData.append("ID", props.id);
@@ -77,13 +82,18 @@ export default function MenuItem(props) {
           } else {
             setSuccss(resJson.message);
             setUpdateMode(false);
+            await props.itemDone();
           }
         })
         .catch((error) => {
           setIsSubmitting(false);
           setError(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     } catch (error) {
+      setIsLoading(false);
       console.error(error);
       setError(error);
     }
@@ -96,6 +106,8 @@ export default function MenuItem(props) {
       setIsSubmitting(true);
       setError("");
       setSuccss("");
+
+      setIsLoading(true);
 
       fetch(url + "user/business/menu/Item", {
         method: "DELETE",
@@ -119,15 +131,20 @@ export default function MenuItem(props) {
             }
           } else {
             setSuccss(resJson.message);
+            await props.itemDone();
           }
         })
         .catch((error) => {
           setIsSubmitting(false);
           setError(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
       // }
       // }
     } catch (error) {
+      setIsLoading(false);
       console.error(error);
       setError(error);
     }
@@ -138,180 +155,192 @@ export default function MenuItem(props) {
       <div className="card flex-md-row mb-4 box-shadow h-md-200 shadow p-2 mb-5 bg-body rounded">
         <div className="card-body d-flex flex-column ">
           {updateMode ? (
-            <form className="form" onSubmit={editItem} ref={formRef}>
-              <img
-                id="frame"
-                src={itemPreview}
-                className="flex-auto d-md-block menu-item-img mb-3"
-                alt="Card cap"
-              />
-              <div className="input-group mb-3">
-                <div className="input-group-prepend">
-                  <span className="input-group-text">Name</span>
-                </div>
-                <input
-                  name="name"
-                  id="name"
-                  type="text"
-                  className="form-control"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div className="input-group mb-3">
-                <div className="input-group-prepend">
-                  <span className="input-group-text">Price</span>
-                </div>
-                <input
-                  name="price"
-                  id="price"
-                  type="number"
-                  className="form-control"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                />
-                <div className="input-group-append">
-                  <span className="input-group-text">
-                    SAR <FontAwesomeIcon icon={faTags} />
-                  </span>
-                </div>
-              </div>
-
-              <div className="form-check form-switch">
-                {itemStatus ? (
-                  <>
+            <>
+              {isLoading ? (
+                <LoadingSpinner />
+              ) : (
+                <form className="form" onSubmit={editItem} ref={formRef}>
+                  <img
+                    id="frame"
+                    src={itemPreview}
+                    className="flex-auto d-md-block menu-item-img mb-3"
+                    alt="Card cap"
+                  />
+                  <div className="input-group mb-3">
+                    <div className="input-group-prepend">
+                      <span className="input-group-text">Name</span>
+                    </div>
                     <input
-                      name="status"
-                      className="form-check-input"
-                      type="checkbox"
-                      role="switch"
-                      id="status"
-                      value={itemStatus}
-                      onChange={() => setItemStatus(!itemStatus)}
-                    />
-                    <label
-                      className="form-check-label text-success "
-                      htmlFor="flexSwitchCheckDefault"
-                    >
-                      Active
-                    </label>
-                  </>
-                ) : (
-                  <>
-                    <input
-                      name="status"
-                      className="form-check-input"
-                      type="checkbox"
-                      role="switch"
-                      id="status"
-                      value={itemStatus}
-                      onChange={() => setItemStatus(!itemStatus)}
-                    />
-                    <label
-                      className="form-check-label text-danger"
-                      htmlFor="flexSwitchCheckDefault"
-                    >
-                      disabled
-                    </label>
-                  </>
-                )}
-              </div>
-
-              <div className="d-flex align-items-center d-inline-block mt-2">
-                <div className="align-items-center ">
-                  <h5 className="mr-1">
-                    {/* <label>item logo</label> */}
-                    <input
-                      name="item"
-                      id="item"
+                      name="name"
+                      id="name"
+                      type="text"
                       className="form-control"
-                      type="file"
-                      onChange={(e) => setItem(e.target.files[0])}
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                     />
-                  </h5>
-                </div>
-              </div>
-              <div className="row ">
-                <div className="col-md-6 d-flex align-items-center justify-content-center">
-                  <button
-                    className="btn btn-outline-danger btn-sm mt-2"
-                    type="button"
-                    onClick={() => setUpdateMode(false)}
-                  >
-                    Cancel <FontAwesomeIcon icon={faTrashCan} />
-                  </button>
-                </div>
-                <div className="col-md-6 d-flex align-items-center justify-content-center">
-                  <button
-                    className=" btn btn-outline-primary btn-sm mt-2"
-                    type="submit"
-                    disabled={isSubmitting}
-                    text={`${isSubmitting ? "..." : "Done"}`}
-                    // onClick={() => editItem()}
-                  >
-                    Done <FontAwesomeIcon icon={faRotate} />
-                  </button>
-                </div>
-              </div>
-            </form>
+                  </div>
+                  <div className="input-group mb-3">
+                    <div className="input-group-prepend">
+                      <span className="input-group-text">Price</span>
+                    </div>
+                    <input
+                      name="price"
+                      id="price"
+                      type="number"
+                      className="form-control"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                    />
+                    <div className="input-group-append">
+                      <span className="input-group-text">
+                        SAR <FontAwesomeIcon icon={faTags} />
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="form-check form-switch">
+                    {itemStatus ? (
+                      <>
+                        <input
+                          name="status"
+                          className="form-check-input"
+                          type="checkbox"
+                          role="switch"
+                          id="status"
+                          value={itemStatus}
+                          onChange={() => setItemStatus(!itemStatus)}
+                        />
+                        <label
+                          className="form-check-label text-success "
+                          htmlFor="flexSwitchCheckDefault"
+                        >
+                          Active
+                        </label>
+                      </>
+                    ) : (
+                      <>
+                        <input
+                          name="status"
+                          className="form-check-input"
+                          type="checkbox"
+                          role="switch"
+                          id="status"
+                          value={itemStatus}
+                          onChange={() => setItemStatus(!itemStatus)}
+                        />
+                        <label
+                          className="form-check-label text-danger"
+                          htmlFor="flexSwitchCheckDefault"
+                        >
+                          disabled
+                        </label>
+                      </>
+                    )}
+                  </div>
+
+                  <div className="d-flex align-items-center d-inline-block mt-2">
+                    <div className="align-items-center ">
+                      <h5 className="mr-1">
+                        {/* <label>item logo</label> */}
+                        <input
+                          name="item"
+                          id="item"
+                          className="form-control"
+                          type="file"
+                          onChange={(e) => setItem(e.target.files[0])}
+                        />
+                      </h5>
+                    </div>
+                  </div>
+                  <div className="row ">
+                    <div className="col-md-6 d-flex align-items-center justify-content-center">
+                      <button
+                        className="btn btn-outline-danger btn-sm mt-2"
+                        type="button"
+                        onClick={() => setUpdateMode(false)}
+                      >
+                        Cancel <FontAwesomeIcon icon={faTrashCan} />
+                      </button>
+                    </div>
+                    <div className="col-md-6 d-flex align-items-center justify-content-center">
+                      <button
+                        className=" btn btn-outline-primary btn-sm mt-2"
+                        type="submit"
+                        disabled={isSubmitting}
+                        text={`${isSubmitting ? "..." : "Done"}`}
+                        // onClick={() => editItem()}
+                      >
+                        Done <FontAwesomeIcon icon={faRotate} />
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              )}
+            </>
           ) : (
             <>
-              <img
-                src={props.img}
-                className="flex-auto d-md-block menu-item-img mb-2"
-                alt="Card cap"
-              />
-
-              <h3 className="mb-0">
-                <div
-                  style={{ wordBreak: "break-all" }}
-                  className="text-dark text-decoration-none"
-                  href="#"
-                >
-                  {props.name}
-                </div>
-              </h3>
-              {props.status ? (
-                <strong className="d-inline-block mb-2 text-success">
-                  Active
-                </strong>
+              {isLoading ? (
+                <LoadingSpinner />
               ) : (
-                <strong className="d-inline-block mb-2 text-danger">
-                  Disabled
-                </strong>
+                <>
+                  <img
+                    src={props.img}
+                    className="flex-auto d-md-block menu-item-img mb-2"
+                    alt="Card cap"
+                  />
+
+                  <h3 className="mb-0">
+                    <div
+                      style={{ wordBreak: "break-all" }}
+                      className="text-dark text-decoration-none"
+                      href="#"
+                    >
+                      {props.name}
+                    </div>
+                  </h3>
+                  {props.status ? (
+                    <strong className="d-inline-block mb-2 text-success">
+                      Active
+                    </strong>
+                  ) : (
+                    <strong className="d-inline-block mb-2 text-danger">
+                      Disabled
+                    </strong>
+                  )}
+
+                  <div className="d-flex align-items-center d-inline-block mt-2">
+                    <div className="align-items-center ">
+                      <h5 className="mr-1">
+                        {props.price} SAR <FontAwesomeIcon icon={faTags} />
+                      </h5>
+                    </div>
+                  </div>
+
+                  <div className="row ">
+                    <div className="col-md-6 d-flex align-items-center justify-content-center">
+                      <button
+                        className="btn btn-outline-danger btn-sm mt-2"
+                        type="button"
+                        onClick={() => {
+                          deleteItem();
+                        }}
+                      >
+                        Delete <FontAwesomeIcon icon={faTrashCan} />
+                      </button>
+                    </div>
+
+                    <div className="col-md-6 d-flex align-items-center justify-content-center">
+                      <button
+                        className=" btn btn-outline-primary btn-sm mt-2"
+                        type="button"
+                        onClick={() => setUpdateMode(true)}
+                      >
+                        Edit <FontAwesomeIcon icon={faRotate} />
+                      </button>
+                    </div>
+                  </div>
+                </>
               )}
-
-              <div className="d-flex align-items-center d-inline-block mt-2">
-                <div className="align-items-center ">
-                  <h5 className="mr-1">
-                    {props.price} SAR <FontAwesomeIcon icon={faTags} />
-                  </h5>
-                </div>
-              </div>
-
-              <div className="row ">
-                <div className="col-md-6 d-flex align-items-center justify-content-center">
-                  <button
-                    className="btn btn-outline-danger btn-sm mt-2"
-                    type="button"
-                    onClick={() => {
-                      deleteItem();
-                    }}
-                  >
-                    Delete <FontAwesomeIcon icon={faTrashCan} />
-                  </button>
-                </div>
-
-                <div className="col-md-6 d-flex align-items-center justify-content-center">
-                  <button
-                    className=" btn btn-outline-primary btn-sm mt-2"
-                    type="button"
-                    onClick={() => setUpdateMode(true)}
-                  >
-                    Edit <FontAwesomeIcon icon={faRotate} />
-                  </button>
-                </div>
-              </div>
             </>
           )}
         </div>
