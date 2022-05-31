@@ -212,7 +212,7 @@ module.exports = {
         const z = x.filter((m) => delete m.items);
         // let z = menus.pop()
 
-        if (menus[0]) {
+        if (z[0]) {
           res.status(200).send(z);
         } else {
           res.status(404).send({
