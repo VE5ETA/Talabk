@@ -60,13 +60,13 @@ export default function Card() {
     const genericErrorMessage = "Something went wrong! Please try again later.";
 
     if (customerContext?.orderType === "reservation") {
-      if (customerContext?.reservationInfo.personNumber === "") {
+      if (customerContext?.reservationInfo?.personNumber === "") {
         setError("person number is invalid");
         setIsSubmitting(false);
-      } else if (customerContext?.reservationInfo.date === "") {
+      } else if (customerContext?.reservationInfo?.date === "") {
         setError("date is invalid");
         setIsSubmitting(false);
-      } else if (customerContext?.reservationInfo.time === "") {
+      } else if (customerContext?.reservationInfo?.time === "") {
         setError("time is invalid");
         setIsSubmitting(false);
       } else if (customerContext?.ID !== undefined) {
