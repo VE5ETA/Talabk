@@ -75,34 +75,17 @@ export default function CreateBuz() {
           body: formData,
           headers: { Authorization: `Bearer ${userContext.token}` },
         })
-          .then(async (res) => res.json()) // you might need to change this
+          // .then(async (res) => res.json()) // you might need to change this
           .then(async (response) => {
+            let resJson = await response.json();
+
             setIsSubmitting(false);
-            if (response) {
-              setSuccss(response.message);
+            if (!response.ok) {
+              setError(resJson.message);
             } else {
               setIsSubmitting(false);
-              setError(error);
+              setSuccss(resJson.message);
             }
-            // if (!response.ok) {
-            //   console.log(response.message);
-            //   if (response.status === 400) {
-            //     setError("Please fill all the fields correctly!");
-            //   } else if (response.status === 401) {
-            //     setError("Invalid email and password combination.");
-            //   } else if (response.status === 500) {
-            //     setError(response.message);
-            //   } else {
-            //     setError(response.message);
-            //   }
-            // } else {
-            //   // const data = await response.json();
-            //   // setUserContext((oldValues) => {
-            //   //   return { ...oldValues, token: data.token };
-            //   // });
-            //   setSuccss(response.message);
-            //   setSuccssed(true); // later 🕔// now it's the time ⌛
-            // }
           })
           .catch((error) => {
             setIsSubmitting(false);

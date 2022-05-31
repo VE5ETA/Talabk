@@ -232,19 +232,26 @@ export default function Header(props) {
                         className="dropdown-menu text-small bg-dark text-center"
                         aria-labelledby="dropdownUser1"
                       >
-                        <li>
-                          <a className="dropdown-item text-white" href="#">
-                            Manage Business
-                          </a>
-                        </li>
-                        <li>
-                          <NavLink
-                            to={"../EditMenu"}
-                            className="dropdown-item text-white"
-                          >
-                            Manage Menu
-                          </NavLink>
-                        </li>
+                        {userContext.details?.workIn && !userContext.isAdmin ? (
+                          <li>
+                            <NavLink
+                              to={"../EditBuz"}
+                              className="dropdown-item text-white"
+                            >
+                              Manage Business
+                            </NavLink>
+                          </li>
+                        ) : null}
+                        {userContext.details?.workIn && userContext.menu ? (
+                          <li>
+                            <NavLink
+                              to={"../EditMenu"}
+                              className="dropdown-item text-white"
+                            >
+                              Manage Menu
+                            </NavLink>
+                          </li>
+                        ) : null}
                         <li>
                           <a className="dropdown-item text-white" href="#">
                             Profile

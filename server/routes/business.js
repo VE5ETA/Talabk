@@ -14,7 +14,12 @@ router.post(
   businessController.create
 );
 router.get("/", businessController.info);
-router.put("/", businessController.update);
+router.put(
+  "/",
+  pdf.single("pdf"),
+  LimitErrorHandler,
+  businessController.update
+);
 router.delete("/", businessController.delete);
 //this were used in old version
 // router.post(
