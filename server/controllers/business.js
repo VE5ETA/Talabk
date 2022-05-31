@@ -111,28 +111,37 @@ module.exports = {
   update: (req, res, next) => {
     // this needs to updated ❗
     try {
-      Business.findOne({ ownerID: req.user._id }).then((business) => {
+      Business.findOne({ ownerID: req.user._id }).then(async (business) => {
         if (business) {
+          // let branch = false;
           if (req.body.tradeName) {
             business.tradeName = req.body.tradeName;
           }
           if (req.body.branchID) {
-            Business.findOne({
-              tradeName: req.body.tradeName,
-              branchID: { $regex: new RegExp(req.body.branchID, "i") },
-            }).then((businessBranchIDexists) => {
-              if (businessBranchIDexists) {
-                res.send({
-                  message: " this business Branch ID already exist",
-                });
-              } else {
-                business.branchID = req.body.branchID;
+            business.branchID = req.body.branchID;
+            // await Business.findOne({
+            //   tradeName: req.body.tradeName,
+            //   branchID: { $regex: new RegExp(req.body.branchID, "i") },
+            // }).then((businessBranchIDexists) => {
+            //   if (businessBranchIDexists) {
+            //     branch = true;
+            //   }
+            // });
+          }
+          if (req.file) {
+            BuzDocs.findOne({ _id: business.LegalDocs }).then((doc) => {
+              if (doc) {
+                doc.pdf = req.file.buffer;
+                doc.save();
               }
             });
+            business.businessState = "pending";
+            business.businessStatus = false;
           }
           if (req.body.businessType) {
             business.businessType = req.body.businessType;
           }
+
           business.updatedAt = Date.now();
           business.save((err, business) => {
             if (err) {

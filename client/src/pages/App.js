@@ -31,6 +31,7 @@ import Dashboard from "./BusinessPage/Dashboard";
 import Spinner from "../components/Spinner";
 import Menu from "../pages/BusinessPage/Menu";
 import EditMenu from "./BusinessPage/EditMenu";
+import EditBuz from "./BusinessPage/EditBuz";
 import Order from "./BusinessPage/Order";
 function App() {
   // let isDoneForNavigate = useRef(false);
@@ -220,6 +221,7 @@ function App() {
             <Route path="/createBusiness" element={<CreateForm />} />
             <Route path="/createMenu" element={<CreateMenu />} />
             <Route path="/EditMenu" element={<EditMenu />} />
+            <Route path="/EditBuz" element={<EditBuz />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/Business" element={<Business />} />
             <Route path="/order" element={<Order />} />

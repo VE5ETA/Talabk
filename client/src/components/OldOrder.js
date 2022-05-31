@@ -436,7 +436,7 @@ export default function OldOrder(props) {
             className="btn btn-primary btn-sm"
             onClick={showModal}
           >
-            Review legal document
+            Order details
           </button>
         }
       </td>
