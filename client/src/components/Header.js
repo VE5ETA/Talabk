@@ -252,11 +252,11 @@ export default function Header(props) {
                             </NavLink>
                           </li>
                         ) : null}
-                        <li>
+                        {/* <li>
                           <a className="dropdown-item text-white" href="#">
                             Profile
                           </a>
-                        </li>
+                        </li> */}
                         <li>
                           <hr className="dropdown-divider" />
                         </li>
